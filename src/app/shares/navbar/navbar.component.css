@@ -1,0 +1,11 @@
+.router-link-active{
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    padding: 5px;
+    text-decoration: none;
+    margin: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: all 0.3s;
+}
