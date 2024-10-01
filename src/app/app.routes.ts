@@ -26,6 +26,11 @@ export const routes: Routes = [
         component: ClienteComponent,
         children: [
             {
+                path: '',
+                redirectTo: 'formulario',
+                pathMatch: 'full'
+            },
+            {
                 path: 'formulario',
                 component: FormularioComponent
 

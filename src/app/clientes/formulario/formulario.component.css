@@ -1,0 +1,43 @@
+.input-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .user-label {
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .user-label-select {
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+  }
+  
+  .btn-primary {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #6b7280;
+    color: white;
+  }
+  
+  .btn-success {
+    background-color: #10b981;
+    color: white;
+  }
+
+  
