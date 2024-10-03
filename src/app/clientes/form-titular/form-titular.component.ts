@@ -1,17 +1,30 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators,FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { initFlowbite } from 'flowbite';
+import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
+
 @Component({
   selector: 'app-form-titular',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, FormsModule],
   templateUrl: './form-titular.component.html',
   styleUrl: './form-titular.component.css'
 })
-export class FormTitularComponent {
+export class FormTitularComponent implements OnInit {
+
+
+  peruRegions:Iregiones[] = PERU;
+  provincias: IProvincias[] = [];
+  distritos: string[] = [];
+  
+  selectedDepartamento: string = '';
+  selectedProvincia: string = '';
+  selectedDistrito: string = '';
+
 
   formTitular: FormGroup ;
   isInvalidDate: boolean = false;
@@ -42,6 +55,10 @@ export class FormTitularComponent {
     });
    }
 
+  ngOnInit(): void {
+    initFlowbite();
+  }
+
 
    saveSectionOne(){
     console.log('Form Data:', this.formTitular.value);
@@ -58,15 +75,21 @@ export class FormTitularComponent {
       
     }
 
-    dateValidator(control: any) {
-      const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-      return regex.test(control.value) ? null : { invalidDate: true };
+    
+  
+    
+
+    onDepartamentoChange(departamento: string) {
+      this.selectedDepartamento = departamento;
+      this.provincias = this.peruRegions.find(d => d.departamento === departamento)?.provincias || [];
+      this.distritos = [];  // Reiniciar distritos cuando se cambia de departamento
+      this.selectedProvincia = '';
     }
   
-    validateDate() {
-      const control = this.formTitular.get('fechaNacimiento');
-      if (control && control.value) {
-        this.isInvalidDate = !this.dateValidator(control);
-      }
+    onProvinciaChange(provincia: string) {
+      this.selectedProvincia = provincia;
+      this.distritos = this.provincias.find(p => p.provincia === provincia)?.distritos || [];
     }
+
+   
 }
