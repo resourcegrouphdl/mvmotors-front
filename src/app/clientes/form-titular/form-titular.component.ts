@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { FormserviceService } from '../data-acces/services/formservice.service';
@@ -11,6 +11,7 @@ import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
   selector: 'app-form-titular',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './form-titular.component.html',
   styleUrl: './form-titular.component.css'
 })
@@ -24,12 +25,13 @@ export class FormTitularComponent implements OnInit {
   selectedDepartamento: string = '';
   selectedProvincia: string = '';
   selectedDistrito: string = '';
-
+  selectedRadioButtons: string = '';
 
   formTitular: FormGroup ;
   isInvalidDate: boolean = false;
+  licenciaStatus: any;
 
-  constructor(private _fb:FormBuilder , private _formService: FormserviceService, private _router: Router) {
+  constructor(private _fb:FormBuilder , private _formService: FormserviceService, private _router: Router, private cdr: ChangeDetectorRef) {
 
     this.formTitular = this._fb.group({
       nombre: ['',(Validators.required, Validators.minLength(3))],
@@ -44,6 +46,7 @@ export class FormTitularComponent implements OnInit {
       fechaNacimiento: ['', (Validators.required, Validators.minLength(3))],
       telefono1: ['', (Validators.required, Validators.minLength(3))],
       telefono2: ['', (Validators.required, Validators.minLength(3))],
+      licenciaStatus: ['', (Validators.required)],
       licenciaConducir: ['', (Validators.required, Validators.minLength(3))],
       dniFrenteuRL: ['',  (Validators.required, Validators.minLength(3))],
       dniReversoURL: ['', (Validators.required, Validators.minLength(3))],
@@ -57,6 +60,18 @@ export class FormTitularComponent implements OnInit {
 
   ngOnInit(): void {
     initFlowbite();
+
+    this.formTitular.get('licenciaStatus')!.valueChanges.subscribe(value => {
+      this.selectedRadioButtons = value;
+      if (value === 'si') {
+        this.formTitular.get('licenciaConducir')!.setValidators([Validators.required]);
+      } else {
+        this.formTitular.get('licenciaConducir')!.clearValidators();
+      };
+      this.formTitular.get('licenciaConducir')!.updateValueAndValidity();
+      this.cdr.markForCheck();
+    });
+
   }
 
 
