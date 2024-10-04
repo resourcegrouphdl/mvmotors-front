@@ -9,17 +9,10 @@ import { TablaclientesComponent } from './clientes/tablaclientes/tablaclientes.c
 export const routes: Routes = [
     {
         path:'',
-        redirectTo : 'home',
+        redirectTo : 'cliente',
         pathMatch: 'full'
         
        
-    },
-    {
-        path: 'home',
-        component: HomeComponent,
-        
-        
-    
     },
     {
         path: 'cliente',
@@ -34,14 +27,10 @@ export const routes: Routes = [
                 path: 'formulario',
                 component: FormularioComponent
 
-            },
-            {
-                path: 'clientes',
-                component: TablaclientesComponent
             }
+          
         ]
        
-
     },
     {
         path: '**',

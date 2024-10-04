@@ -2,7 +2,7 @@
 
   <div class="  p-6 shadow-xl md:m-auto  bg-gradient-to-bl from-teal-400 to-blue-500 mt-10 rounded-md  ">
 
-      <form class="" >
+      <form class=""  (submit)="onSubmit()"  >
 
           <!-- Sección 1: Datos del Usuario -->
        
@@ -22,6 +22,7 @@
 
 
           <!-- Sección 2: Datos del Fiador -->
+
           <div *ngIf="currentSection === 2">
 
 
@@ -31,9 +32,18 @@
               <app-form-fiador></app-form-fiador>
 
               <!-- Campos para datos del fiador -->
+      
+              <button type="button" 
+                (click)="prevSection()"  
+                class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"  
+                >seccion anterior , datos del Titular </button>
               
-              <button type="button" (click)="prevSection()" class="btn btn-secondary m-5">Previous</button>
-              <button type="button" (click)="nextSection()" class="btn btn-primary">Next</button>
+              
+              <button type="button" 
+                (click)="nextSection()"  
+                class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"  
+                > continue a la seccion siguiente </button>
+
           </div>
 
 
@@ -118,8 +128,13 @@
 
               
 
-              <button type="button" (click)="prevSection()" class="btn btn-secondary m-5">Previous</button>
-              <button type="submit" class="btn btn-success" >Submit</button>
+              <button type="button" 
+              (click)="prevSection()"  
+              class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"  
+              >seccion anterior , datos del Fiador </button>
+              
+              <button type="submit"  class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+              > Finalizar formulario </button>
           </div>
 
       </form>

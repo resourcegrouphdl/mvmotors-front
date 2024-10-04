@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators,FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,FormsModule,ReactiveFormsModule, MaxValidator } from '@angular/forms';
 import { toast } from 'ngx-sonner';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 import { Router } from '@angular/router';
@@ -34,9 +34,9 @@ export class FormTitularComponent implements OnInit {
   constructor(private _fb:FormBuilder , private _formService: FormserviceService, private _router: Router, private cdr: ChangeDetectorRef) {
 
     this.formTitular = this._fb.group({
-      nombre: ['',(Validators.required, Validators.minLength(3))],
+      nombre: ['',(Validators.required, Validators.minLength(5))],
       documentType: ['',(Validators.required, Validators.minLength(3))],
-      documentNumber: ['',(Validators.required, Validators.minLength(3))],
+      documentNumber: ['',(Validators.required, Validators.minLength(5))],
       estadoCivil: ['',(Validators.required, Validators.minLength(3))],
       email: ['',(Validators.required, Validators.email)],
       departamento: ['',(Validators.required, Validators.minLength(3))],
@@ -44,10 +44,10 @@ export class FormTitularComponent implements OnInit {
       distrito: ['', (Validators.required, Validators.minLength(3))],
       direccion: ['', (Validators.required, Validators.minLength(3))],
       fechaNacimiento: ['', (Validators.required, Validators.minLength(3))],
-      telefono1: ['', (Validators.required, Validators.minLength(3))],
+      telefono1: ['', (Validators.required, Validators.minLength(3),Validators.maxLength(11), Validators.pattern('^[0-9]*$'))],
       telefono2: ['', (Validators.required, Validators.minLength(3))],
       licenciaStatus: ['', (Validators.required)],
-      licenciaConducir: ['', (Validators.required, Validators.minLength(3))],
+      licenciaConducir: ['', ( Validators.minLength(3))],
       dniFrenteuRL: ['',  (Validators.required, Validators.minLength(3))],
       dniReversoURL: ['', (Validators.required, Validators.minLength(3))],
       reciboDeServicioURL: ['', (Validators.required, Validators.minLength(3))],

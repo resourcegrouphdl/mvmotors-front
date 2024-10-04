@@ -1,18 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 import { Router } from '@angular/router';
 import { FormBuilder , ReactiveFormsModule , FormControlName, Validators, FormGroup} from '@angular/forms';
+import { NgIf } from '@angular/common';
 import { toast } from 'ngx-sonner';
+import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
+import { initFlowbite } from 'flowbite';
 
 
 @Component({
   selector: 'app-form-fiador',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule , NgIf],
   templateUrl: './form-fiador.component.html',
   styleUrl: './form-fiador.component.css'
 })
-export class FormFiadorComponent {
+export class FormFiadorComponent implements OnInit {
+
+
+  peruRegions:Iregiones[] = PERU;
+  provincias: IProvincias[] = [];
+  distritos: string[] = [];
+
+  selectedDepartamento: string = '';
+  selectedProvincia: string = '';
+  selectedDistrito: string = '';
+  selectedRadioButtons: string = '';
+
 
   formFiador: FormGroup ;
 
@@ -42,6 +56,9 @@ export class FormFiadorComponent {
       serlfieURL: ['', (Validators.required, Validators.minLength(3))],
     });
    }
+  ngOnInit(): void {
+    initFlowbite();
+  }
 
 
    saveSectionOne(){
@@ -59,4 +76,17 @@ export class FormFiadorComponent {
       
     }
 
+    onDepartamentoChange(departamento: string) {
+      this.selectedDepartamento = departamento;
+      this.provincias = this.peruRegions.find(d => d.departamento === departamento)?.provincias || [];
+      this.distritos = [];  // Reiniciar distritos cuando se cambia de departamento
+      this.selectedProvincia = '';
+    }
+  
+    onProvinciaChange(provincia: string) {
+      this.selectedProvincia = provincia;
+      this.distritos = this.provincias.find(p => p.provincia === provincia)?.distritos || [];
+    }
+
+   
 }

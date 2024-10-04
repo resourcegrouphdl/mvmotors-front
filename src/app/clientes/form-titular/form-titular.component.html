@@ -5,6 +5,7 @@
     <!-- sub-Sección 1: dni consulta -->
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+
       <div class="inline-block relative min-w-44 max-w-44">
         <label for="doc" class="block mb-2 text-gray-900 dark:text-white">
           Tipo de Documento</label
@@ -17,7 +18,11 @@
           <option value="dni">Doc Nac Identidad</option>
           <option value="CA">Carnet De Extranjeria</option>
         </select>
-      </div>
+
+        @if (!formTitular.get('documentType')?.valid) {
+        <div class="text-red-500 text-sm p-2 border-red-500">Este campo es requerido</div>
+        }
+        </div>
 
       <div class="mb-6">
         <label
@@ -31,7 +36,12 @@
           id="default-input"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
+
+        @if (!formTitular.get('documentNumber')?.valid) {
+        <div class="text-red-500 text-sm p-2 border-red-500">Este campo es requerido</div>
+        }
       </div>
+
     </div>
 
     <!-- sub-Sección 2: Datos del Usuario -->
@@ -59,12 +69,16 @@
           </span>
           <input
             type="text"
-            formControlName="nombrre"
+            formControlName="nombre"
             id="name"
             class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="elonmusk"
           />
         </div>
+
+        @if (!formTitular.get('nombre')?.valid ) {
+        <div class="text-red-500 text-sm p-2 border-red-500">Ingrese su nomble y apellido </div>
+        }
       </div>
 
       <div class="inline-block relative min-w-44 w-full">
@@ -79,13 +93,17 @@
           <option value="casado">Casado</option>
           <option value="soltero">Soltero</option>
         </select>
+
+        @if (!formTitular.get('estadoCivil')?.valid || !formTitular.get('estadoCivil')?.touched) {
+        <div class="text-red-500 text-sm p-2 border-red-500">Elija La Opcion ,Requerido</div>
+        }
       </div>
 
       <div class="inline-block w-full">
         <label for="input" class="block mb-2 text-gray-900 dark:text-white"
           >Email</label
         >
-        <div class="relative mb-6">
+        <div class="relative mb-1">
           <div
             class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
           >
@@ -112,7 +130,12 @@
             placeholder="nombre @ mail .com"
           />
         </div>
+          @if (!formTitular.get('email')?.valid) {
+                  <div class="text-red-500 text-sm p-2 border-red-500">Ingrese su correo electronico</div>
+                  }
       </div>
+        
+          
     </div>
 
     <!-- sub-Sección 3: Datos del direccion -->
@@ -136,6 +159,11 @@
           </option>
           }
         </select>
+
+        @if (!formTitular.get('departamento')?.valid || !formTitular.get('departamento')?.touched) {
+        <div class="text-red-500 text-sm p-2 border-red-500">ELija el Departamento </div>         
+        }
+
       </div>
 
       <div class="relative inline-block min-w-44 w-full">
@@ -156,6 +184,10 @@
           </option>
           }
         </select>
+
+        @if (!formTitular.get('provincia')?.valid || !formTitular.get('provincia')?.touched) {
+        <div class="text-red-500 text-sm p-2 border-red-500">Elija la provincia</div>
+        }
       </div>
 
       <div class="relative inline-block min-w-44 w-full">
@@ -172,7 +204,11 @@
           <option value="{{ distrito }}">{{ distrito }}</option>
           }
         </select>
+        @if (!formTitular.get('distrito')?.valid || !formTitular.get('distrito')?.touched) {
+         <div class="text-red-500 text-sm p-2 border-red-500">Elija el distrito</div>
+        }
       </div>
+
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -186,6 +222,10 @@
           id="direccion"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
+
+        @if (!formTitular.get('direccion')?.valid) {
+        <div class="text-red-500 text-sm p-2 border-red-500">Ingrese su direccion</div>
+        }
       </div>
 
       <!-- telefono 1-->
@@ -243,12 +283,16 @@
               type="phone"
               id="phone-input1"
               class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              placeholder="123-456-7890"
+              
+              placeholder="123 456 789"
               required
             />
           </div>
         </div>
+
+        @if (!formTitular.get('telefono1')?.valid ) {
+        <div class="text-red-500 text-sm p-2 border-red-500"> numero telefono requerido</div>
+        }
       </div>
 
       <!-- telefono 2-->
@@ -306,12 +350,16 @@
               type="phone"
               id="phone-input2"
               class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              placeholder="123-456-7890"
+             
+              placeholder="123 456 789"
               required
             />
           </div>
         </div>
+
+        @if (!formTitular.get('telefono2')?.valid ) {
+        <div class="text-red-500 text-sm p-2 border-red-500"> numero telefono requerido</div>
+        }
       </div>
 
       <!-- fib telefno-->
@@ -342,9 +390,14 @@
             id="default-datepicker"
             type="text"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Select date"
+            placeholder="Seleccina fecha"
           />
         </div>
+        
+        @if (!formTitular.get('fechaNacimiento')?.valid ) {
+        <div class="text-red-500 text-sm p-2 border-red-500"> fecha de nacimiento requerida</div>
+        }
+
       </div>
 
       <div class="inline-block w-full">
@@ -407,6 +460,9 @@
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
       </div>
+
+      
+
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
