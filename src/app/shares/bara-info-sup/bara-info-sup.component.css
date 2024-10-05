@@ -1,0 +1,23 @@
+svg{
+    margin-left: 1rem;
+    fill: white;
+}
+
+.dots {
+    display: inline-block;
+    font-size: 1.5em;
+    letter-spacing: 0.2em;
+    animation: dotAnimation 3s ease-in-out infinite;
+  }
+  
+  @keyframes dotAnimation {
+    0%, 100% {
+      letter-spacing: 0.2em;
+      opacity: 1; /* Completamente visible */
+    }
+    100% {
+      letter-spacing: 2em; /* Separación máxima */
+      opacity: 0; /* Completamente transparente */
+    }
+  }
+  

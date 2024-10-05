@@ -1,12 +1,14 @@
-<section class="w-full h-screen bg-gray-200 flex flex-col ">
+<section class="w-full  bg-gray-200 flex flex-col ">
 
-  <div class="  p-6 shadow-xl md:m-auto  bg-gradient-to-bl from-teal-400 to-blue-500 mt-10 rounded-md  ">
+  <div class="  p-6 shadow-xl mx-auto   mt-10 rounded-md container">
 
       <form class=""  (submit)="onSubmit()"  >
 
           <!-- Sección 1: Datos del Usuario -->
        
           <div *ngIf="currentSection === 1">
+
+            <h2 class="mb-12 font-bold uppercase"> Datos Personales del Titular </h2>
 
             <app-form-titular></app-form-titular>
 
@@ -26,7 +28,7 @@
           <div *ngIf="currentSection === 2">
 
 
-            <h2 class="mb-12 fon"> Dtos Personales del Fiador </h2>
+            <h2 class="mb-12 font-bold uppercase"> Datos Personales del Fiador </h2>
 
               
               <app-form-fiador></app-form-fiador>
