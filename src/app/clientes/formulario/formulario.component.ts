@@ -51,6 +51,41 @@ export class FormularioComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   downloadURL: string | null = null;
 
+  slectedImagenDniFrente: File | null = null;
+  imagePreviewDniFrente: string | ArrayBuffer | null = null;
+  downloadURLDniFrente: string | null = null;
+
+  slectedImagenDniReverso: File | null = null;
+  imagePreviewDniReverso: string | ArrayBuffer | null = null;
+  downloadURLDniReverso: string | null = null;
+
+  slectedImagenReciboServicio: File | null = null;
+  imagePreviewReciboServicio: string | ArrayBuffer | null = null;
+  downloadURLReciboServicio: string | null = null;
+
+  slectedImagenLicenciaFrente: File | null = null;
+  imagePreviewLicenciaFrente: string | ArrayBuffer | null = null;
+  downloadURLLicenciaFrente: string | null = null;
+
+  slectedImagenLicenciaReverso: File | null = null;
+  imagePreviewLicenciaReverso: string | ArrayBuffer | null = null;
+  downloadURLLicenciaReverso: string | null = null;
+
+  slectedImagenFotoCasa: File | null = null;
+  imagePreviewFotoCasa: string | ArrayBuffer | null = null;
+  downloadURLFotoCasa: string | null = null;
+
+  //fiador
+
+  slectedImagenDniFrenteFiador: File | null = null;
+  imagePreviewDniFrenteFiador: string | ArrayBuffer | null = null;
+  downloadURLDniFrenteFiador: string | null = null;
+
+  slectedImagenDniReversoFiador: File | null = null;
+  imagePreviewDniReversoFiador: string | ArrayBuffer | null = null;
+  downloadURLDniReversoFiador: string | null = null;
+
+
 
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
@@ -95,6 +130,8 @@ export class FormularioComponent implements OnInit {
         (Validators.required, Validators.minLength(3)),
       ],
       fotoCasaURL: ['', (Validators.required, Validators.minLength(3))],
+
+      //fiador
 
       formularioFiador: this.fb.group({
         documentTypeFiafor: [
@@ -237,6 +274,54 @@ export class FormularioComponent implements OnInit {
       reader.readAsDataURL(this.selectedImage);
     }
   }
+
+  onDniSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenDniFrente = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewDniFrente = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenDniFrente);
+    }
+  }
+
+  onDniReversoSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenDniReverso = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewDniReverso = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenDniReverso);
+    }
+  }
+
+  onReciboSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenReciboServicio = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewReciboServicio = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenReciboServicio);
+    }
+  }
+
+
+
+
+
+
 
   async uploadImage(file: File){
       this.isUploading = true;
