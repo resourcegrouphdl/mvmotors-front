@@ -12,8 +12,9 @@ import { FormFiadorComponent } from '../form-fiador/form-fiador.component';
 import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
 
 import { initFlowbite } from 'flowbite';
-import { error } from 'console';
+
 import { Observable, of } from 'rxjs';
+import { FormserviceService } from '../data-acces/services/formservice.service';
 
 @Component({
   selector: 'app-formulario',
@@ -88,7 +89,7 @@ export class FormularioComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private _formService: FormserviceService) {
     this.formularioCliente = this.fb.group({
       documentType: ['', (Validators.required, Validators.minLength(3))],
       documentNumber: ['', (Validators.required, Validators.minLength(5))],
@@ -229,10 +230,20 @@ export class FormularioComponent implements OnInit {
       });
   }
 
-  nextSection() {
-    if (this.currentSection < 3) {
+
+  async nextSection() {
+    try{
+      if (this.currentSection < 3) {
       this.currentSection++;
+      this._formService.saveFormTiular(this.formularioCliente.value);
+      console.log(this.formularioCliente.value);
     }
+    }catch{
+      console.log('error al guardar el formulario')
+    }
+    
+    
+
   }
 
   prevSection() {
@@ -272,6 +283,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreview = reader.result;
       };
       reader.readAsDataURL(this.selectedImage);
+      this.uploadImage(this.selectedImage,'serlfieURL');
     }
   }
 
@@ -286,6 +298,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewDniFrente = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenDniFrente);
+      this.uploadImage(this.slectedImagenDniFrente,'dniFrenteuRL');
     }
   }
 
@@ -300,6 +313,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewDniReverso = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenDniReverso);
+      this.uploadImage(this.slectedImagenDniReverso,'dniReversoURL');
     }
   }
 
@@ -314,7 +328,58 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewReciboServicio = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenReciboServicio);
+      this.uploadImage(this.slectedImagenReciboServicio,'reciboDeServicioURL');
     }
+  }
+
+  onFachadaSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenFotoCasa = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewFotoCasa = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenFotoCasa);
+      this.uploadImage(this.slectedImagenFotoCasa,'fotoCasaURL');
+    }
+  }
+
+  onLicFrenteSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenLicenciaFrente = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewLicenciaFrente = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenLicenciaFrente);
+      this.uploadImage(this.slectedImagenLicenciaFrente,'licConducirFrenteURL');
+    }
+  }
+
+  
+  onLicFrenteRevereso(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenLicenciaReverso = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewLicenciaReverso = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenLicenciaReverso);
+
+      this.uploadImage(this.slectedImagenLicenciaReverso,'licConducirReversoURL');
+
+    }
+
+    
   }
 
 
@@ -323,7 +388,9 @@ export class FormularioComponent implements OnInit {
 
 
 
-  async uploadImage(file: File){
+
+
+  async uploadImage(file: File, campo: string) {
       this.isUploading = true;
       const filePath = `images/${Date.now()}_${file}`; // Ruta en el storage
       
@@ -352,7 +419,7 @@ export class FormularioComponent implements OnInit {
       ()=>{
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
-          this.formularioCliente.get('serlfieURL')!.setValue(downloadURL);
+          this.formularioCliente.get(campo)!.setValue(downloadURL);
           this.isUploading = false;
           this.isUploaded = true;
         });

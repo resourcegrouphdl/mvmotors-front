@@ -534,7 +534,7 @@
               >
               <input
                 type="text"
-                formControlName=" licenciaConducir"
+                formControlName="licenciaConducir"
                 id="default-input"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
@@ -554,11 +554,7 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -567,7 +563,7 @@
                         (change)="onFileSelected($event)"
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -576,24 +572,8 @@
                   </div>
                   <div *ngIf="selectedImage">
                     <img [src]="imagePreview" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                      (click)="uploadImage(selectedImage)"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                   
+                  
                   </div>
                 </div>
               </div>
@@ -613,11 +593,7 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -626,7 +602,7 @@
                         (change)="onDniSelected($event)"
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                        
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -635,24 +611,8 @@
                   </div>
                   <div *ngIf="slectedImagenDniFrente">
                     <img [src]="imagePreviewDniFrente" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      (click)="uploadImage(slectedImagenDniFrente)"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                    
+                   
                   </div>
                 </div>
               </div>
@@ -672,11 +632,7 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -685,7 +641,7 @@
                         (change)="onDniReversoSelected($event)"
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                        
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -694,24 +650,8 @@
                   </div>
                   <div *ngIf="slectedImagenDniReverso">
                     <img [src]="imagePreviewDniReverso" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      (click)="uploadImage(slectedImagenDniReverso)"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                    
+                 
                   </div>
                 </div>
               </div>
@@ -731,11 +671,7 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -744,7 +680,7 @@
                         (change)="onReciboSelected($event)"
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -753,24 +689,8 @@
                   </div>
                   <div *ngIf="slectedImagenReciboServicio">
                     <img [src]="imagePreviewReciboServicio" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      (click)="uploadImage(slectedImagenReciboServicio)"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                    
+                 
                   </div>
                 </div>
               </div>
@@ -800,46 +720,27 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
                         type="file"
                         hidden
-                        (change)="onReciboSelected($event)"
+                        (change)="onFachadaSelected($event)"
+                        
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
                       </div>
                     </label>
                   </div>
-                  <div *ngIf="slectedImagenReciboServicio">
-                    <img [src]="imagePreviewReciboServicio" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      (click)="uploadImage(slectedImagenReciboServicio)"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                  <div *ngIf="slectedImagenFotoCasa">
+                    <img [src]="imagePreviewFotoCasa" alt="Vista previa" />
+                  
+                 
                   </div>
                 </div>
               </div>
@@ -860,46 +761,27 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
                         type="file"
                         hidden
-                        (change)="onReciboSelected($event)"
+                        (change)="onLicFrenteSelected($event)"
+                       
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
                       </div>
                     </label>
                   </div>
-                  <div *ngIf="slectedImagenReciboServicio">
-                    <img [src]="imagePreviewReciboServicio" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      (click)="uploadImage(slectedImagenReciboServicio)"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                  <div *ngIf="slectedImagenLicenciaFrente">
+                    <img [src]="imagePreviewLicenciaFrente" alt="Vista previa" />
+                    
+                
                   </div>
                 </div>
               </div>
@@ -919,46 +801,24 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  <h4
-                    class="text-center text-gray-900 text-sm font-medium leading-snug"
-                  >
-                    arrastra aqui tu archivo
-                  </h4>
+                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
                         type="file"
                         hidden
-                        (change)="onReciboSelected($event)"
+                        (change)="onLicFrenteRevereso($event)"
                       />
                       <div
-                        *ngIf="!isUploading && !isUploaded"
+                      
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
                       </div>
                     </label>
                   </div>
-                  <div *ngIf="slectedImagenReciboServicio">
-                    <img [src]="imagePreviewReciboServicio" alt="Vista previa" />
-                    <button
-                      *ngIf="!isUploading && !isUploaded"
-                      (click)="uploadImage(slectedImagenReciboServicio)"
-                      class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Confirmal Imagen
-                    </button>
-                    <div
-                      *ngIf="isUploading"
-                      class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700"
-                    >
-                      <div
-                        class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500"
-                        style="width: 45%"
-                      >
-                        {{ uploadProgress }}
-                      </div>
-                    </div>
+                  <div *ngIf="slectedImagenLicenciaReverso">
+                    <img [src]="imagePreviewLicenciaReverso" alt="Vista previa" />
                   </div>
                 </div>
               </div>
