@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { NgIf } from '@angular/common';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from "@angular/fire/storage";
 import {
@@ -12,7 +13,6 @@ import { FormFiadorComponent } from '../form-fiador/form-fiador.component';
 import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
 
 import { initFlowbite } from 'flowbite';
-
 import { Observable, of } from 'rxjs';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 
@@ -21,12 +21,14 @@ import { FormserviceService } from '../data-acces/services/formservice.service';
   standalone: true,
   imports: [
     NgIf,
+  
     ReactiveFormsModule,
     FormTitularComponent,
     FormFiadorComponent,
   ],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
+  
 })
 export class FormularioComponent implements OnInit {
   currentSection: number = 1;
@@ -91,6 +93,8 @@ export class FormularioComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private _formService: FormserviceService) {
     this.formularioCliente = this.fb.group({
+
+      formTitular: this.fb.group({
       documentType: ['', (Validators.required, Validators.minLength(3))],
       documentNumber: ['', (Validators.required, Validators.minLength(5))],
       //linea1
@@ -132,6 +136,7 @@ export class FormularioComponent implements OnInit {
       ],
       fotoCasaURL: ['', (Validators.required, Validators.minLength(3))],
 
+    }),
       //fiador
 
       formularioFiador: this.fb.group({
@@ -144,8 +149,11 @@ export class FormularioComponent implements OnInit {
           (Validators.required, Validators.minLength(5)),
         ],
         nombreFiador: ['', (Validators.required, Validators.minLength(5))],
+        apellidoFiador: ['', (Validators.required, Validators.minLength(5))],
         estadoCivilFiador: ['', (Validators.required, Validators.minLength(3))],
         emailFiador: ['', (Validators.required, Validators.email)],
+        fechaNacimientoFiador: ['', (Validators.required, Validators.minLength(3))],
+
         departamentoFiador: [
           '',
           (Validators.required, Validators.minLength(3)),
@@ -161,7 +169,7 @@ export class FormularioComponent implements OnInit {
           Validators.pattern('^[0-9]*$')),
         ],
         telefonoSegFiador: ['', Validators.minLength(9)],
-        fechaNacimiento: ['', (Validators.required, Validators.minLength(3))],
+        
 
         //-- seccion de fotografias
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxSonnerToaster } from 'ngx-sonner';
 import { initFlowbite } from 'flowbite';
+
 @Component({
   selector: 'app-root',
   standalone: true,
