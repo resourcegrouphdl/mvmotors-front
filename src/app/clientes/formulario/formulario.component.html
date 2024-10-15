@@ -10,7 +10,7 @@
 
         <h2 class="m-10 uppercase font-bold">Datos Del Titular</h2>
 
-        <ng-container  formGroupName ="formTitutlar">
+        <ng-container  formGroupName = "formTitular">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <fieldset class="inline-block relative min-w-44 max-w-44">
               <label for="doc" class="block mb-2 text-gray-900 dark:text-white">
@@ -25,11 +25,9 @@
                 <option value="CA">Carnet De Extranjeria</option>
               </select>
 
-              @if (!formularioCliente.get('documentType')?.valid) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
+              <div *ngIf="formularioCliente.get('formTitular.documentType')?.invalid && formularioCliente.get('formTitular.documentType')?.touched" class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
-              }
             </fieldset>
 
             <fieldset class="mb-6">
@@ -45,7 +43,7 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('documentNumber')?.valid) {
+              @if (!formularioCliente.get('formTitular.documentNumber')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
@@ -85,7 +83,7 @@
                 />
               </div>
 
-              @if (!formularioCliente.get('nombre')?.valid ) {
+              @if (!formularioCliente.get('formTitular.nombre')?.valid ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su nombre
               </div>
@@ -121,7 +119,7 @@
                 />
               </div>
 
-              @if (!formularioCliente.get('nombre')?.valid ) {
+              @if (!formularioCliente.get('formTitular.apellido')?.valid ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su nombre
               </div>
@@ -144,7 +142,7 @@
                 <option value="soltero">Soltero</option>
               </select>
 
-              @if (!formularioCliente.get('estadoCivil')?.valid ||
+              @if (!formularioCliente.get('formTitular.estadoCivil')?.valid ||
               !formularioCliente.get('estadoCivil')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija La Opcion ,Requerido
@@ -189,7 +187,7 @@
                   placeholder="nombre @ mail .com"
                 />
               </div>
-              @if (!formularioCliente.get('email')?.valid) {
+              @if (!formularioCliente.get('formTitular.email')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su correo electronico
               </div>
@@ -225,7 +223,7 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
 
-                @if (!formularioCliente.get('birthDate')?.valid) {
+                @if (!formularioCliente.get('formTitular.fechaNacimiento')?.valid) {
                 <div class="text-red-500 text-sm p-2 border-red-500">
                   Este campo es requerido
                 </div>
@@ -256,8 +254,8 @@
                 }
               </select>
 
-              @if (!formularioCliente.get('departamento')?.valid ||
-              !formularioCliente.get('departamento')?.touched) {
+              @if (!formularioCliente.get('formTitular.departamento')?.valid ||
+              !formularioCliente.get('formTitular.departamento')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 ELija el Departamento
               </div>
@@ -285,8 +283,8 @@
                 }
               </select>
 
-              @if (!formularioCliente.get('provincia')?.valid ||
-              !formularioCliente.get('provincia')?.touched) {
+              @if (!formularioCliente.get('formTitular.provincia')?.valid ||
+              !formularioCliente.get('formTitular.provincia')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija la provincia
               </div>
@@ -310,8 +308,8 @@
                 <option value="{{ distrito }}">{{ distrito }}</option>
                 }
               </select>
-              @if (!formularioCliente.get('distrito')?.valid ||
-              !formularioCliente.get('distrito')?.touched) {
+              @if (!formularioCliente.get('formTitular.distrito')?.valid ||
+              !formularioCliente.get('formTitular.distrito')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija el distrito
               </div>
@@ -335,7 +333,7 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('direccion')?.valid) {
+              @if (!formularioCliente.get('formTitular.direccion')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su direccion
               </div>
@@ -403,7 +401,7 @@
                 </div>
               </div>
 
-              @if (!formularioCliente.get('telefono1')?.valid ) {
+              @if (!formularioCliente.get('formTitular.telefono1')?.valid ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 numero telefono requerido
               </div>
@@ -838,9 +836,10 @@
           type="button"
           
           (click)="nextSection()"
+          
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          continue a la seccion, datos del Fiador
+          continue 
         </button>
       </div>
 
@@ -860,14 +859,14 @@
               >
               <select
                 id="doc"
-                formControlName="documentTypeFiafor"
+                formControlName="documentTypeFiador"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="dni">Doc Nac Identidad</option>
                 <option value="CA">Carnet De Extranjeria</option>
               </select>
 
-              @if (!formularioCliente.get('documentTypeFiafor')?.valid) {
+              @if (!formularioCliente.get('formularioFiador.documentTypeFiador')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
@@ -887,7 +886,7 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('documentNumberFiador')?.valid) {
+              @if (!formularioCliente.get('formularioFiador.documentNumberFiador')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
@@ -927,7 +926,7 @@
                 />
               </div>
 
-              @if (!formularioCliente.get('nombreFiador')?.valid ) {
+              @if (!formularioCliente.get('formularioFiador.nombreFiador')?.valid ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su nombre
               </div>
@@ -963,7 +962,7 @@
                 />
               </div>
 
-              @if (!formularioCliente.get('apellidoFiador')?.valid ) {
+              @if (!formularioCliente.get('formularioFiador.apellidoFiador')?.valid ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su nombre
               </div>
@@ -986,7 +985,7 @@
                 <option value="soltero">Soltero</option>
               </select>
 
-              @if (!formularioCliente.get('estadoCivilFiador')?.valid ||
+              @if (!formularioCliente.get('formularioFiador.estadoCivilFiador')?.valid ||
               !formularioCliente.get('estadoCivil')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija La Opcion ,Requerido
@@ -1031,7 +1030,7 @@
                   placeholder="nombre @ mail .com"
                 />
               </div>
-              @if (!formularioCliente.get('emailFiador')?.valid) {
+              @if (!formularioCliente.get('formularioFiador.emailFiador')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su correo electronico
               </div>
@@ -1067,7 +1066,7 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
 
-                @if (!formularioCliente.get('fechaNacimientoFiador')?.valid) {
+                @if (!formularioCliente.get('formularioFiador.fechaNacimientoFiador')?.valid) {
                 <div class="text-red-500 text-sm p-2 border-red-500">
                   Este campo es requerido
                 </div>
@@ -1098,8 +1097,8 @@
                 }
               </select>
 
-              @if (!formularioCliente.get('departamentoFiador')?.valid ||
-              !formularioCliente.get('departamento')?.touched) {
+              @if (!formularioCliente.get('formularioFiador.departamentoFiador')?.valid ||
+              !formularioCliente.get('formularioFiador.departamentoFiador')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 ELija el Departamento
               </div>
@@ -1127,8 +1126,8 @@
                 }
               </select>
 
-              @if (!formularioCliente.get('provinciaFiador')?.valid ||
-              !formularioCliente.get('provincia')?.touched) {
+              @if (!formularioCliente.get('formularioFiador.provinciaFiador')?.valid ||
+              !formularioCliente.get('formularioFiador.provincia.fiador')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija la provincia
               </div>
@@ -1137,7 +1136,7 @@
 
             <div class="relative inline-block min-w-44 w-full">
               <label
-                for="distrito"
+                for="distritoFiador"
                 class="block mb-2 text-gray-900 dark:text-white"
                 >Distrito</label
               >
@@ -1152,8 +1151,8 @@
                 <option value="{{ distrito }}">{{ distrito }}</option>
                 }
               </select>
-              @if (!formularioCliente.get('distritoFiador')?.valid ||
-              !formularioCliente.get('distrito')?.touched) {
+              @if (!formularioCliente.get('formularioFiador.distritoFiador')?.valid ||
+              !formularioCliente.get('formularioFiador.distritoFiador')?.touched) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija el distrito
               </div>
@@ -1177,7 +1176,7 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('direccionFiador')?.valid) {
+              @if (!formularioCliente.get('formularioFiador.direccionFiador')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su direccion
               </div>
@@ -1245,7 +1244,7 @@
                 </div>
               </div>
 
-              @if (!formularioCliente.get('telefonoPriFiador')?.valid ) {
+              @if (!formularioCliente.get('formularioFiador.telefonoPriFiador')?.valid ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 numero telefono requerido
               </div>
@@ -1339,7 +1338,7 @@
                       <input
                         type="file"
                         hidden
-                        (change)="onDniSelected($event)"
+                        (change)="onDniFiadorSelected($event)"
                       />
                       <div
                         
@@ -1349,8 +1348,8 @@
                       </div>
                     </label>
                   </div>
-                  <div *ngIf="slectedImagenDniFrente">
-                    <img [src]="imagePreviewDniFrente" alt="Vista previa" />
+                  <div *ngIf="slectedImagenDniFrenteFiador">
+                    <img [src]="imagePreviewDniFrenteFiador" alt="Vista previa" />
                     
                    
                   </div>
@@ -1378,7 +1377,7 @@
                       <input
                         type="file"
                         hidden
-                        (change)="onDniReversoSelected($event)"
+                        (change)="onDniFiadorReversoSelected($event)"
                       />
                       <div
                         
@@ -1388,8 +1387,8 @@
                       </div>
                     </label>
                   </div>
-                  <div *ngIf="slectedImagenDniReverso">
-                    <img [src]="imagePreviewDniReverso" alt="Vista previa" />
+                  <div *ngIf="slectedImagenDniReversoFiador">
+                    <img [src]="imagePreviewDniReversoFiador" alt="Vista previa" />
                     
                  
                   </div>
@@ -1417,7 +1416,7 @@
                       <input
                         type="file"
                         hidden
-                        (change)="onReciboSelected($event)"
+                        (change)="onReciboFiadorSelected($event)"
                       />
                       <div
                        
@@ -1427,8 +1426,8 @@
                       </div>
                     </label>
                   </div>
-                  <div *ngIf="slectedImagenReciboServicio">
-                    <img [src]="imagePreviewReciboServicio" alt="Vista previa" />
+                  <div *ngIf="slectedImagenReciboServicioFiador">
+                    <img [src]="imagePreviewReciboServicioFiador" alt="Vista previa" />
                     
                  
                   </div>
@@ -1455,7 +1454,7 @@
                                 <input
                                   type="file"
                                   hidden
-                                  (change)="onFachadaSelected($event)"
+                                  (change)="onFachadaFiadorSelected($event)"
                                   
                                 />
                                 <div
@@ -1466,8 +1465,8 @@
                                 </div>
                               </label>
                             </div>
-                            <div *ngIf="slectedImagenFotoCasa">
-                              <img [src]="imagePreviewFotoCasa" alt="Vista previa" />
+                            <div *ngIf="slectedImagenFotoCasaFiador">
+                              <img [src]="imagePreviewFotoCasaFiador" alt="Vista previa" />
                             
                           
                             </div>
@@ -1494,34 +1493,48 @@
 
         <!-- Campos para datos del fiador -->
 
-        
+        <button
+          type="button"
+          (click)="prevSection()"
+          class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+        >
+          seccion anterior 
+
+
+
+        </button>
 
         <button
           type="button"
           (click)="nextSection()"
-          disabled="formularioFiador.invalid"
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          continue a la seccion siguiente
+          seccion siguiente
         </button>
       </div>
 
       <div *ngIf="currentSection === 3" >
         <h2 class="mb-12 fon">Referencias del titular</h2>
 
+
+        <app-produto-solicitado></app-produto-solicitado>
+
         <button
           type="button"
           (click)="prevSection()"
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          seccion anterior , datos del Fiador
+          seccion anterior 
+
+
+
         </button>
 
         <button
           type="submit"
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          Finalizar formulario
+          Finalizar 
         </button>
       </div>
     </form>

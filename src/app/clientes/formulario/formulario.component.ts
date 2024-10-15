@@ -11,6 +11,7 @@ import {
 import { FormTitularComponent } from '../form-titular/form-titular.component';
 import { FormFiadorComponent } from '../form-fiador/form-fiador.component';
 import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
+import { ProdutoSolicitadoComponent } from '../produto-solicitado/produto-solicitado.component';
 
 import { initFlowbite } from 'flowbite';
 import { Observable, of } from 'rxjs';
@@ -25,6 +26,7 @@ import { FormserviceService } from '../data-acces/services/formservice.service';
     ReactiveFormsModule,
     FormTitularComponent,
     FormFiadorComponent,
+    ProdutoSolicitadoComponent,
   ],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
@@ -88,7 +90,13 @@ export class FormularioComponent implements OnInit {
   imagePreviewDniReversoFiador: string | ArrayBuffer | null = null;
   downloadURLDniReversoFiador: string | null = null;
 
+  slectedImagenReciboServicioFiador: File | null = null;
+  imagePreviewReciboServicioFiador: string | ArrayBuffer | null = null;
+  downloadURLReciboServicioFiador: string | null = null;
 
+  slectedImagenFotoCasaFiador: File | null = null;
+  imagePreviewFotoCasaFiador: string | ArrayBuffer | null = null;
+  downloadURLFotoCasaFiador: string | null = null;
 
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private _formService: FormserviceService) {
@@ -140,7 +148,7 @@ export class FormularioComponent implements OnInit {
       //fiador
 
       formularioFiador: this.fb.group({
-        documentTypeFiafor: [
+        documentTypeFiador: [
           '',
           (Validators.required, Validators.minLength(3)),
         ],
@@ -221,18 +229,18 @@ export class FormularioComponent implements OnInit {
   ngOnInit(): void {
     initFlowbite();
     this.formularioCliente
-      .get('licenciaStatus')!
+      .get('formTitular.licenciaStatus')!
       .valueChanges.subscribe((value) => {
         this.selectedRadioButtons = value;
         if (value === 'si') {
           this.formularioCliente
-            .get('licenciaConducir')!
+            .get('formTitular.licenciaConducir')!
             .setValidators([Validators.required]);
         } else {
-          this.formularioCliente.get('licenciaConducir')!.clearValidators();
+          this.formularioCliente.get('formTitular.licenciaConducir')!.clearValidators();
         }
         this.formularioCliente
-          .get('licenciaConducir')!
+          .get('formTitular.licenciaConducir')!
           .updateValueAndValidity();
         this.cdr.markForCheck();
       });
@@ -243,7 +251,7 @@ export class FormularioComponent implements OnInit {
     try{
       if (this.currentSection < 3) {
       this.currentSection++;
-      this._formService.saveFormTiular(this.formularioCliente.value);
+      //this._formService.saveFormTiular(this.formularioCliente.value);
       console.log(this.formularioCliente.value);
     }
     }catch{
@@ -291,7 +299,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreview = reader.result;
       };
       reader.readAsDataURL(this.selectedImage);
-      this.uploadImage(this.selectedImage,'serlfieURL');
+      this.uploadImage(this.selectedImage,'formTitular.serlfieURL');
     }
   }
 
@@ -306,7 +314,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewDniFrente = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenDniFrente);
-      this.uploadImage(this.slectedImagenDniFrente,'dniFrenteuRL');
+      this.uploadImage(this.slectedImagenDniFrente,'formTitular.dniFrenteuRL');
     }
   }
 
@@ -321,7 +329,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewDniReverso = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenDniReverso);
-      this.uploadImage(this.slectedImagenDniReverso,'dniReversoURL');
+      this.uploadImage(this.slectedImagenDniReverso,'formTitular.dniReversoURL');
     }
   }
 
@@ -336,7 +344,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewReciboServicio = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenReciboServicio);
-      this.uploadImage(this.slectedImagenReciboServicio,'reciboDeServicioURL');
+      this.uploadImage(this.slectedImagenReciboServicio,'formTitular.reciboDeServicioURL');
     }
   }
 
@@ -351,7 +359,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewFotoCasa = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenFotoCasa);
-      this.uploadImage(this.slectedImagenFotoCasa,'fotoCasaURL');
+      this.uploadImage(this.slectedImagenFotoCasa,'formTitular.fotoCasaURL');
     }
   }
 
@@ -366,7 +374,7 @@ export class FormularioComponent implements OnInit {
         this.imagePreviewLicenciaFrente = reader.result;
       };
       reader.readAsDataURL(this.slectedImagenLicenciaFrente);
-      this.uploadImage(this.slectedImagenLicenciaFrente,'licConducirFrenteURL');
+      this.uploadImage(this.slectedImagenLicenciaFrente,'formTitular.licConducirFrenteURL');
     }
   }
 
@@ -383,7 +391,7 @@ export class FormularioComponent implements OnInit {
       };
       reader.readAsDataURL(this.slectedImagenLicenciaReverso);
 
-      this.uploadImage(this.slectedImagenLicenciaReverso,'licConducirReversoURL');
+      this.uploadImage(this.slectedImagenLicenciaReverso,'formTitular.licConducirReversoURL');
 
     }
 
@@ -435,4 +443,68 @@ export class FormularioComponent implements OnInit {
       )
 
   }
+
+
+  // secion del fiador 
+
+  onDniFiadorSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenDniFrenteFiador = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewDniFrenteFiador = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenDniFrenteFiador);
+      this.uploadImage(this.slectedImagenDniFrenteFiador,'formularioFiador.dniFrenteuRLfiador');
+    }
+  }
+
+  onDniFiadorReversoSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenDniReversoFiador = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewDniReversoFiador = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenDniReversoFiador);
+      this.uploadImage(this.slectedImagenDniReversoFiador,'formularioFiador.dniReversoURLfiador');
+    }
+  }
+
+  onReciboFiadorSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenReciboServicioFiador = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewReciboServicioFiador = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenReciboServicioFiador);
+      this.uploadImage(this.slectedImagenReciboServicioFiador,'formularioFiador.reciboDeServicioURLfiador');
+    }
+  }
+
+  onFachadaFiadorSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.slectedImagenFotoCasaFiador = fileInput.files[0];
+
+      // Mostrar vista previa
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewFotoCasaFiador = reader.result;
+      };
+      reader.readAsDataURL(this.slectedImagenFotoCasaFiador);
+      this.uploadImage(this.slectedImagenFotoCasaFiador,'formularioFiador.fotoCasaURLfiador');
+    }
+  }
+
 }
