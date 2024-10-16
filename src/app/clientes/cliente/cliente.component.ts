@@ -5,16 +5,17 @@ import { RouterOutlet,RouterLink,RouterLinkActive } from '@angular/router';
 import { VideoPlayComponent } from '../../shares/video-play/video-play.component';
 import { FooterComponent } from '../../shares/footer/footer.component';
 import { FormularioComponent } from '../formulario/formulario.component';
+import { TablaclientesComponent } from "../../shares/tablaclientes/tablaclientes.component";
 @Component({
   selector: 'app-cliente',
   standalone: true,
   imports: [NavbarComponent,
-    RouterOutlet,RouterLink,
+    RouterOutlet, RouterLink,
     RouterLinkActive,
     BaraInfoSupComponent,
     VideoPlayComponent,
     FooterComponent,
-    FormularioComponent], 
+    FormularioComponent, TablaclientesComponent], 
   templateUrl: './cliente.component.html',
   styleUrl: './cliente.component.css'
 })

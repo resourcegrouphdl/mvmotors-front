@@ -16,6 +16,7 @@ import { ProdutoSolicitadoComponent } from '../produto-solicitado/produto-solici
 import { initFlowbite } from 'flowbite';
 import { Observable, of } from 'rxjs';
 import { FormserviceService } from '../data-acces/services/formservice.service';
+import { IModelos, IMotos, MOTOS } from '../data-acces/motos';
 
 @Component({
   selector: 'app-formulario',
@@ -44,6 +45,10 @@ export class FormularioComponent implements OnInit {
   peruRegions: Iregiones[] = PERU;
   provincias: IProvincias[] = [];
   distritos: string[] = [];
+
+  motocicletaMarcas: IMotos[] = MOTOS;
+  motocicletaModelos: IModelos[] = [];
+  motocicletaColores: string[] = [];
 
   selectedDepartamento: string = '';
   selectedProvincia: string = '';

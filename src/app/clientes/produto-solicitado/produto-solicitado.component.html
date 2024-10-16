@@ -192,6 +192,44 @@
     </div>
   </div>
 
+  <!-- dato del vehiculo -->
+
+  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+   
+
+    <fieldset class="max-w-sm mx-auto">
+      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Marca De la Motocicleta</label>
+      <select (change)="onMarcaChange(selectMarca)" [(ngModel)]="selectMarca"  formControlName ="marca" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+        <option *ngFor="let marca of motocicletaMarcas" value={{marca.marca}}>{{marca.marca}}</option>
+        
+      </select>
+    </fieldset>
+
+    <fieldset class="max-w-sm mx-auto">
+      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Modelo De la Motocicleta</label>
+      <select (change)="onModeloSelect(selectMdodelo)" [(ngModel)]="selectMdodelo" formControlName="modelo" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option *ngFor="let modelo of motocicletaModelos" value="{{modelo.modelo}}" >{{modelo.modelo}} </option>
+       
+      </select>
+    </fieldset>
+
+    <fieldset class="max-w-sm mx-auto">
+      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Color De la Motocicleta</label>
+      <select formControlName="color" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        
+        <option *ngFor="let color of motocicletaColores" value={{color}}>{{color}}</option>
+       
+      </select>
+    </fieldset>
+
+
+
+   
+
+    
+  </form>
+
   <!--                   -->
   <h3 class="m-10 uppercase font-semibold "> DATOS DE LA FINANCIACION  </h3>
 

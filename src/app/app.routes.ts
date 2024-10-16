@@ -3,7 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './shares/notfound/notfound.component';
 import { ClienteComponent } from './clientes/cliente/cliente.component';
 import { FormularioComponent } from './clientes/formulario/formulario.component';
-import { TablaclientesComponent } from './clientes/tablaclientes/tablaclientes.component';
+import { TablaclientesComponent } from './shares/tablaclientes/tablaclientes.component';
 
 
 export const routes: Routes = [
