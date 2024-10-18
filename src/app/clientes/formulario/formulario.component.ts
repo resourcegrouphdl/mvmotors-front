@@ -17,6 +17,7 @@ import { initFlowbite } from 'flowbite';
 import { Observable, of } from 'rxjs';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 import { IModelos, IMotos, MOTOS } from '../data-acces/motos';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-formulario',
@@ -133,20 +134,14 @@ export class FormularioComponent implements OnInit {
       telefono2: ['', Validators.minLength(9)],
 
       licenciaStatus: ['', Validators.required],
-      licenciaConducir: ['', Validators.minLength(3)],
+      licenciaConducir: [''],
       //-- seccion de fotografias
       serlfieURL: ['', (Validators.required, Validators.minLength(3))],
       dniFrenteuRL: ['', (Validators.required, Validators.minLength(3))],
       dniReversoURL: ['', (Validators.required, Validators.minLength(3))],
       reciboDeServicioURL: ['', (Validators.required, Validators.minLength(3))],
-      licConducirFrenteURL: [
-        '',
-        (Validators.required, Validators.minLength(3)),
-      ],
-      licConducirReversoURL: [
-        '',
-        (Validators.required, Validators.minLength(3)),
-      ],
+      licConducirFrenteURL: [ ''  ],
+      licConducirReversoURL: [''],
       fotoCasaURL: ['', (Validators.required, Validators.minLength(3))],
 
     }),
@@ -194,38 +189,73 @@ export class FormularioComponent implements OnInit {
           '',
           (Validators.required, Validators.minLength(3)),
         ],
-        reciboDeServicioURLfiador: [
-          '',
-          (Validators.required, Validators.minLength(3)),
-        ],
+        
         fotoCasaURLfiador: ['', (Validators.required, Validators.minLength(3))],
       }),
 
       formularioVehiculo: this.fb.group({
-        priReferenciaTitular: [
-          '',
+
+        //primer referencia
+
+        priNombreReferenciaTitular: ['',
           (Validators.required, Validators.minLength(5)),
         ],
-        segReferenciaTitular: [
-          '',
+        priApellidoReferenciaTitular: ['',
           (Validators.required, Validators.minLength(5)),
         ],
-        TerReferenciaTitular: [
-          '',
+        priTelefonoReferenciaTitular: ['',
           (Validators.required, Validators.minLength(5)),
         ],
+        priParentescoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+
+        //segunda referencia
+
+        segNombreReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+        segApellidoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+        segTelefonoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+        segParentescoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+
+        //tercera referencia
+
+        terNombreReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+        terApellidoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+        terTelefonoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+        terParentescoReferenciaTitular: ['',
+          (Validators.required, Validators.minLength(5)),
+        ],
+
+        //vehiculo
 
         marcaVehiculo: ['', (Validators.required, Validators.minLength(3))],
         modeloVehiculo: ['', (Validators.required, Validators.minLength(3))],
         colorVehiculo: ['', (Validators.required, Validators.minLength(3))],
 
+        // financiamiento
+
         inicialVehiculo: ['', (Validators.required, Validators.minLength(3))],
-        precioVehiculo: ['', (Validators.required, Validators.minLength(3))],
-        cuotaVehiculo: ['', (Validators.required, Validators.minLength(3))],
-        plazoVehiculo: ['', (Validators.required, Validators.minLength(3))],
+        numeroQuincenas: ['', (Validators.required, Validators.minLength(3))],
+        montotDeLaCuota: ['', (Validators.required, Validators.minLength(3))],
+
+        //vendedor
 
         nombreDelVendedor: ['', (Validators.required, Validators.minLength(3))],
-        PuntoDeVenta: ['', (Validators.required, Validators.minLength(3))],
+        puntoDeVenta: ['', (Validators.required, Validators.minLength(3))],
 
         mensajeOpcional: ['', (Validators.required, Validators.minLength(3))],
       }),
@@ -274,8 +304,19 @@ export class FormularioComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Form Data:');
+
+    try{
+      console.log('Form Data:');
+    this._formService.saveFormTiular(this.formularioCliente.value);
+    toast('Formulario enviado con éxito' );
+    this.formularioCliente.reset();
+    this.currentSection = 1;
     // Aquí puedes manejar el envío del formulario
+    } catch{
+      console.log('error al guardar el formulario');
+     
+    }
+    
   }
 
   onDepartamentoChange(departamento: string) {

@@ -1,0 +1,58 @@
+
+
+
+    <body>
+    <!-- carousel -->
+    <div class="carousel" #carousel >
+        <!-- list item -->
+        <div class="list" #list>
+            <div  *ngFor="let item of slides; let i = index" [class.active]="i===currentSlideIndex " class="item" #item>
+                <img [src]="item.imageUrl">
+                <div class="content md:absolute " #content>
+                    <div class="author  ">{{item.author}}</div>
+                    <div class="title ">{{item.title}}</div>
+                    <div class="topic md:font-bold md:text-8xl text-4xl">{{item.dtopic}}</div>
+                    <div class="md:des hidden">
+                        <!-- lorem 50 -->
+                        {{item.description}}
+                    </div>
+                    <div class="buttons">
+                        <button>VER MAS</button>
+                        <button>LA QUIERO YA</button>
+                    </div>
+                </div>
+            </div>
+            
+          
+            
+        </div>
+        <!-- list thumnail -->
+        <div class="thumbnail" #thumbnail>
+            <div *ngFor="let thumbnail of thumbnails" class="item" #itemTUmbnail>
+                <img [src]="thumbnail.imageUrl">
+                <div class="content">
+                    <div class="title">
+                        {{thumbnail.title}}
+                    </div>
+                    <div class="description">
+                        {{thumbnail.shortDescription}}
+                    </div>
+                </div>
+            </div>
+        
+            
+            
+        </div>
+        <!-- next prev -->
+
+        <div class="arrows">
+            <button id="prev" (click)="nextSlide()" ><</button>
+            <button id="next" (click)="prevSlide()">></button>
+        </div>
+        <!-- time running -->
+        <div class="time" #time></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
