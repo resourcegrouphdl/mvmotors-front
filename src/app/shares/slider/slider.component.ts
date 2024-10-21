@@ -9,10 +9,12 @@ import {
 } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { toast } from 'ngx-sonner';
+import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-slider',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, RouterLink],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
 })

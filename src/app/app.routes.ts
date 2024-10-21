@@ -6,6 +6,11 @@ import { FormularioComponent } from './clientes/formulario/formulario.component'
 import { TablaclientesComponent } from './shares/tablaclientes/tablaclientes.component';
 import { ProdutoSolicitadoComponent } from './clientes/produto-solicitado/produto-solicitado.component';
 import { InicioComponent } from './inicio/inicio/inicio.component';
+import { GaleriaNuevasComponent } from './tienda/galeria-nuevas/galeria-nuevas.component';
+import { GaleriaSegundaComponent } from './tienda/galeria-segunda/galeria-segunda.component';
+import { QuienesSomosComponent } from './institucional/quienes-somos/quienes-somos.component';
+import { ContactanosComponent } from './contact/contactanos/contactanos.component';
+import { NoticiasComponent } from './blog/noticias/noticias.component';
 
 
 export const routes: Routes = [
@@ -24,6 +29,26 @@ export const routes: Routes = [
         path: 'formato/:id',
         component: ProdutoSolicitadoComponent
 
+    },
+    {
+        path: 'motos-nuevas',
+        component: GaleriaNuevasComponent
+    },
+    {
+        path: 'motos-seminuevas',
+        component: GaleriaSegundaComponent
+    },
+    {
+        path: 'quienes-somos',
+        component:QuienesSomosComponent
+    },
+    {
+        path: 'contacto',
+        component:ContactanosComponent
+    },
+    {
+        path: 'blog',
+        component: NoticiasComponent
     },
     {
         path: 'cliente',

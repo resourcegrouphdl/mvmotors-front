@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { NgIf } from '@angular/common';
+import { NgIf,NgClass } from '@angular/common';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from "@angular/fire/storage";
 import {
   ReactiveFormsModule,
@@ -18,13 +18,14 @@ import { Observable, of } from 'rxjs';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 import { IModelos, IMotos, MOTOS } from '../data-acces/motos';
 import { toast } from 'ngx-sonner';
+import 'flowbite';
 
 @Component({
   selector: 'app-formulario',
   standalone: true,
   imports: [
     NgIf,
-  
+    NgClass,
     ReactiveFormsModule,
     FormTitularComponent,
     FormFiadorComponent,
@@ -36,6 +37,9 @@ import { toast } from 'ngx-sonner';
 })
 export class FormularioComponent implements OnInit {
   currentSection: number = 1;
+  isModalOpen : boolean = false;
+  
+
 
   isUploading = false;
   isUploaded = false;
@@ -262,7 +266,9 @@ export class FormularioComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+
     initFlowbite();
+
     this.formularioCliente
       .get('formTitular.licenciaStatus')!
       .valueChanges.subscribe((value) => {
@@ -303,21 +309,42 @@ export class FormularioComponent implements OnInit {
     }
   }
 
+  // Método para enviar el formulario
   onSubmit() {
 
+    this.openMOdal();
+
+   
+    
+  }
+
+  formulariCompleto(){
     try{
       console.log('Form Data:');
     this._formService.saveFormTiular(this.formularioCliente.value);
     toast('Formulario enviado con éxito' );
     this.formularioCliente.reset();
+    this.cancelModal();
     this.currentSection = 1;
     // Aquí puedes manejar el envío del formulario
     } catch{
       console.log('error al guardar el formulario');
      
     }
-    
   }
+
+  openMOdal(){
+    this.isModalOpen = true;
+  }
+
+  cancelModal(){
+    this.isModalOpen = false;
+  }
+
+
+
+
+  // Métodos para manejar los cambios en los selectores de departamento, provincia y distrito
 
   onDepartamentoChange(departamento: string) {
     this.selectedDepartamento = departamento;
@@ -553,4 +580,5 @@ export class FormularioComponent implements OnInit {
     }
   }
 
+  
 }

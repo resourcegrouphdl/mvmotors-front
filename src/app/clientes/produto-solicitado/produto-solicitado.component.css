@@ -1,0 +1,21 @@
+h4{
+    font-size: small;
+}
+
+
+  @media print {
+    .print-container {
+      page-break-inside: avoid;
+      break-inside: avoid;
+      display: inline-block;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .print-container img {
+      width: 100%;
+      height: auto;
+    }
+    .print-container:nth-child(2n) {
+      page-break-after: always;
+    }
+  }

@@ -5,12 +5,12 @@
     <form class="" [formGroup]="formularioCliente" (submit)="onSubmit()">
       <!-- Sección 1: Datos del Usuario -->
 
-      <div *ngIf="currentSection === 1" >
+      <div *ngIf="currentSection === 1">
         <!-- sub-Sección 1: dni consulta -->
 
         <h2 class="m-10 uppercase font-bold">Datos Del Titular</h2>
 
-        <ng-container  formGroupName = "formTitular">
+        <ng-container formGroupName="formTitular">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <fieldset class="inline-block relative min-w-44 max-w-44">
               <label for="doc" class="block mb-2 text-gray-900 dark:text-white">
@@ -25,7 +25,13 @@
                 <option value="CA">Carnet De Extranjeria</option>
               </select>
 
-              <div *ngIf="formularioCliente.get('formTitular.documentType')?.invalid && formularioCliente.get('formTitular.documentType')?.touched" class="text-red-500 text-sm p-2 border-red-500">
+              <div
+                *ngIf="
+                  formularioCliente.get('formTitular.documentType')?.invalid &&
+                  formularioCliente.get('formTitular.documentType')?.touched
+                "
+                class="text-red-500 text-sm p-2 border-red-500"
+              >
                 Este campo es requerido
               </div>
             </fieldset>
@@ -43,7 +49,8 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('formTitular.documentNumber')?.valid) {
+              @if (!formularioCliente.get('formTitular.documentNumber')?.valid)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
@@ -223,7 +230,8 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
 
-                @if (!formularioCliente.get('formTitular.fechaNacimiento')?.valid) {
+                @if
+                (!formularioCliente.get('formTitular.fechaNacimiento')?.valid) {
                 <div class="text-red-500 text-sm p-2 border-red-500">
                   Este campo es requerido
                 </div>
@@ -552,7 +560,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -561,7 +568,6 @@
                         (change)="onFileSelected($event)"
                       />
                       <div
-                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -570,8 +576,6 @@
                   </div>
                   <div *ngIf="selectedImage">
                     <img [src]="imagePreview" alt="Vista previa" />
-                   
-                  
                   </div>
                 </div>
               </div>
@@ -591,7 +595,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -600,7 +603,6 @@
                         (change)="onDniSelected($event)"
                       />
                       <div
-                        
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -609,8 +611,6 @@
                   </div>
                   <div *ngIf="slectedImagenDniFrente">
                     <img [src]="imagePreviewDniFrente" alt="Vista previa" />
-                    
-                   
                   </div>
                 </div>
               </div>
@@ -630,7 +630,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -639,7 +638,6 @@
                         (change)="onDniReversoSelected($event)"
                       />
                       <div
-                        
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -648,8 +646,6 @@
                   </div>
                   <div *ngIf="slectedImagenDniReverso">
                     <img [src]="imagePreviewDniReverso" alt="Vista previa" />
-                    
-                 
                   </div>
                 </div>
               </div>
@@ -669,7 +665,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -678,7 +673,6 @@
                         (change)="onReciboSelected($event)"
                       />
                       <div
-                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -686,24 +680,21 @@
                     </label>
                   </div>
                   <div *ngIf="slectedImagenReciboServicio">
-                    <img [src]="imagePreviewReciboServicio" alt="Vista previa" />
-                    
-                 
+                    <img
+                      [src]="imagePreviewReciboServicio"
+                      alt="Vista previa"
+                    />
                   </div>
                 </div>
               </div>
             </div>
 
             <!--    -->
-
-
-
           </div>
 
           <!--seccion de los ingresos -->
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-
             <!--    -->
 
             <div>
@@ -718,17 +709,14 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
                         type="file"
                         hidden
                         (change)="onFachadaSelected($event)"
-                        
                       />
                       <div
-                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -737,18 +725,16 @@
                   </div>
                   <div *ngIf="slectedImagenFotoCasa">
                     <img [src]="imagePreviewFotoCasa" alt="Vista previa" />
-                  
-                 
                   </div>
                 </div>
               </div>
             </div>
             <!--    -->
 
-             <!--    -->
+            <!--    -->
 
-             <div *ngIf="selectedRadioButtons === 'si'" >
-              <div 
+            <div *ngIf="selectedRadioButtons === 'si'">
+              <div
                 class="w-full py-2 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed"
               >
                 <div class="grid gap-1">
@@ -759,17 +745,14 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
                         type="file"
                         hidden
                         (change)="onLicFrenteSelected($event)"
-                       
                       />
                       <div
-                       
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -777,17 +760,18 @@
                     </label>
                   </div>
                   <div *ngIf="slectedImagenLicenciaFrente">
-                    <img [src]="imagePreviewLicenciaFrente" alt="Vista previa" />
-                    
-                
+                    <img
+                      [src]="imagePreviewLicenciaFrente"
+                      alt="Vista previa"
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <!--    -->
-             <!--    -->
+            <!--    -->
 
-            <div   *ngIf="selectedRadioButtons === 'si'">
+            <div *ngIf="selectedRadioButtons === 'si'">
               <div
                 class="w-full py-2 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed"
               >
@@ -799,7 +783,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -808,7 +791,6 @@
                         (change)="onLicFrenteRevereso($event)"
                       />
                       <div
-                      
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -816,30 +798,28 @@
                     </label>
                   </div>
                   <div *ngIf="slectedImagenLicenciaReverso">
-                    <img [src]="imagePreviewLicenciaReverso" alt="Vista previa" />
+                    <img
+                      [src]="imagePreviewLicenciaReverso"
+                      alt="Vista previa"
+                    />
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
 
           <!--segundo campo-->
 
-          <div
-            class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6"
-          ></div> </ng-container
-        >
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6"></div>
+        </ng-container>
 
         <!--fin de la seccion 1-->
         <button
           type="button"
-          
           (click)="nextSection()"
-          
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          continue 
+          continue
         </button>
       </div>
 
@@ -847,11 +827,10 @@
       <!-- Sección 2: Datos del Fiador -->
       <!-- Sección 2 -->
 
-      <div *ngIf="currentSection === 2" >
+      <div *ngIf="currentSection === 2">
         <h2 class="mb-12 font-bold uppercase">Datos Personales del Fiador</h2>
 
-        <ng-container formGroupName ="formularioFiador" > 
-
+        <ng-container formGroupName="formularioFiador">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <fieldset class="inline-block relative min-w-44 max-w-44">
               <label for="doc" class="block mb-2 text-gray-900 dark:text-white">
@@ -866,7 +845,9 @@
                 <option value="CA">Carnet De Extranjeria</option>
               </select>
 
-              @if (!formularioCliente.get('formularioFiador.documentTypeFiador')?.valid) {
+              @if
+              (!formularioCliente.get('formularioFiador.documentTypeFiador')?.valid)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
@@ -886,7 +867,9 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('formularioFiador.documentNumberFiador')?.valid) {
+              @if
+              (!formularioCliente.get('formularioFiador.documentNumberFiador')?.valid)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Este campo es requerido
               </div>
@@ -926,7 +909,9 @@
                 />
               </div>
 
-              @if (!formularioCliente.get('formularioFiador.nombreFiador')?.valid ) {
+              @if
+              (!formularioCliente.get('formularioFiador.nombreFiador')?.valid )
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su nombre
               </div>
@@ -962,7 +947,9 @@
                 />
               </div>
 
-              @if (!formularioCliente.get('formularioFiador.apellidoFiador')?.valid ) {
+              @if
+              (!formularioCliente.get('formularioFiador.apellidoFiador')?.valid
+              ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su nombre
               </div>
@@ -985,8 +972,11 @@
                 <option value="soltero">Soltero</option>
               </select>
 
-              @if (!formularioCliente.get('formularioFiador.estadoCivilFiador')?.valid ||
-              !formularioCliente.get('formularioFiador.estadoCivilFiador')?.touched) {
+              @if
+              (!formularioCliente.get('formularioFiador.estadoCivilFiador')?.valid
+              ||
+              !formularioCliente.get('formularioFiador.estadoCivilFiador')?.touched)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija La Opcion ,Requerido
               </div>
@@ -1030,7 +1020,8 @@
                   placeholder="nombre @ mail .com"
                 />
               </div>
-              @if (!formularioCliente.get('formularioFiador.emailFiador')?.valid) {
+              @if
+              (!formularioCliente.get('formularioFiador.emailFiador')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su correo electronico
               </div>
@@ -1066,7 +1057,9 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
 
-                @if (!formularioCliente.get('formularioFiador.fechaNacimientoFiador')?.valid) {
+                @if
+                (!formularioCliente.get('formularioFiador.fechaNacimientoFiador')?.valid)
+                {
                 <div class="text-red-500 text-sm p-2 border-red-500">
                   Este campo es requerido
                 </div>
@@ -1097,8 +1090,11 @@
                 }
               </select>
 
-              @if (!formularioCliente.get('formularioFiador.departamentoFiador')?.valid ||
-              !formularioCliente.get('formularioFiador.departamentoFiador')?.touched) {
+              @if
+              (!formularioCliente.get('formularioFiador.departamentoFiador')?.valid
+              ||
+              !formularioCliente.get('formularioFiador.departamentoFiador')?.touched)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 ELija el Departamento
               </div>
@@ -1126,8 +1122,11 @@
                 }
               </select>
 
-              @if (!formularioCliente.get('formularioFiador.provinciaFiador')?.valid ||
-              !formularioCliente.get('formularioFiador.provincia.fiador')?.touched) {
+              @if
+              (!formularioCliente.get('formularioFiador.provinciaFiador')?.valid
+              ||
+              !formularioCliente.get('formularioFiador.provincia.fiador')?.touched)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija la provincia
               </div>
@@ -1151,8 +1150,11 @@
                 <option value="{{ distrito }}">{{ distrito }}</option>
                 }
               </select>
-              @if (!formularioCliente.get('formularioFiador.distritoFiador')?.valid ||
-              !formularioCliente.get('formularioFiador.distritoFiador')?.touched) {
+              @if
+              (!formularioCliente.get('formularioFiador.distritoFiador')?.valid
+              ||
+              !formularioCliente.get('formularioFiador.distritoFiador')?.touched)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija el distrito
               </div>
@@ -1176,7 +1178,9 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
-              @if (!formularioCliente.get('formularioFiador.direccionFiador')?.valid) {
+              @if
+              (!formularioCliente.get('formularioFiador.direccionFiador')?.valid)
+              {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su direccion
               </div>
@@ -1244,7 +1248,9 @@
                 </div>
               </div>
 
-              @if (!formularioCliente.get('formularioFiador.telefonoPriFiador')?.valid ) {
+              @if
+              (!formularioCliente.get('formularioFiador.telefonoPriFiador')?.valid
+              ) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 numero telefono requerido
               </div>
@@ -1314,10 +1320,8 @@
             </div>
           </div>
           <!--seccion de los ingresos -->
-          
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            
             <!--    -->
 
             <div>
@@ -1332,7 +1336,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                  
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -1341,7 +1344,6 @@
                         (change)="onDniFiadorSelected($event)"
                       />
                       <div
-                        
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -1349,9 +1351,10 @@
                     </label>
                   </div>
                   <div *ngIf="slectedImagenDniFrenteFiador">
-                    <img [src]="imagePreviewDniFrenteFiador" alt="Vista previa" />
-                    
-                   
+                    <img
+                      [src]="imagePreviewDniFrenteFiador"
+                      alt="Vista previa"
+                    />
                   </div>
                 </div>
               </div>
@@ -1371,7 +1374,6 @@
                   </h2>
                 </div>
                 <div class="grid gap-2">
-                 
                   <div class="flex items-center justify-center">
                     <label>
                       <input
@@ -1380,7 +1382,6 @@
                         (change)="onDniFiadorReversoSelected($event)"
                       />
                       <div
-                        
                         class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
                       >
                         Elije un archivo
@@ -1388,9 +1389,10 @@
                     </label>
                   </div>
                   <div *ngIf="slectedImagenDniReversoFiador">
-                    <img [src]="imagePreviewDniReversoFiador" alt="Vista previa" />
-                    
-                 
+                    <img
+                      [src]="imagePreviewDniReversoFiador"
+                      alt="Vista previa"
+                    />
                   </div>
                 </div>
               </div>
@@ -1398,63 +1400,50 @@
 
             <!--       -->
 
-            
-
             <!--    -->
-          <div>
-                        <div
-                          class="w-full py-2 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed"
-                        >
-                          <div class="grid gap-1">
-                            <h2
-                              class="text-center text-black font-bold text-xs uppercase leading-4"
-                            >
-                              FACHADA DE LA VIVIENDA
-                            </h2>
-                          </div>
-                          <div class="grid gap-2">
-                            
-                            <div class="flex items-center justify-center">
-                              <label>
-                                <input
-                                  type="file"
-                                  hidden
-                                  (change)="onFachadaFiadorSelected($event)"
-                                  
-                                />
-                                <div
-                                
-                                  class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
-                                >
-                                  Elije un archivo
-                                </div>
-                              </label>
-                            </div>
-                            <div *ngIf="slectedImagenFotoCasaFiador">
-                              <img [src]="imagePreviewFotoCasaFiador" alt="Vista previa" />
-                            
-                          
-                            </div>
-                          </div>
-                        </div>
+            <div>
+              <div
+                class="w-full py-2 bg-gray-50 rounded-2xl border border-gray-300 gap-3 grid border-dashed"
+              >
+                <div class="grid gap-1">
+                  <h2
+                    class="text-center text-black font-bold text-xs uppercase leading-4"
+                  >
+                    FACHADA DE LA VIVIENDA
+                  </h2>
+                </div>
+                <div class="grid gap-2">
+                  <div class="flex items-center justify-center">
+                    <label>
+                      <input
+                        type="file"
+                        hidden
+                        (change)="onFachadaFiadorSelected($event)"
+                      />
+                      <div
+                        class="flex w-28 h-9 px-2 flex-col bg-indigo-600 rounded-full shadow text-white text-xs font-semibold leading-4 items-center justify-center cursor-pointer focus:outline-none"
+                      >
+                        Elije un archivo
                       </div>
-
-
+                    </label>
+                  </div>
+                  <div *ngIf="slectedImagenFotoCasaFiador">
+                    <img
+                      [src]="imagePreviewFotoCasaFiador"
+                      alt="Vista previa"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!--seccion de los ingresos -->
 
-         
-
           <!--segundo campo-->
 
-          <div
-            class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6"
-          ></div>
-
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6"></div>
         </ng-container>
-
-       
 
         <!-- Campos para datos del fiador -->
 
@@ -1463,10 +1452,7 @@
           (click)="prevSection()"
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          seccion anterior 
-
-
-
+          seccion anterior
         </button>
 
         <button
@@ -1478,11 +1464,10 @@
         </button>
       </div>
 
-      <div *ngIf="currentSection === 3" >
-        <h3 class="m-10 uppercase font-semibold "> REFERENCIAS    </h3>
+      <div *ngIf="currentSection === 3">
+        <h3 class="m-10 uppercase font-semibold">REFERENCIAS</h3>
 
-
-        <ng-container formGroupName = "formularioVehiculo">
+        <ng-container formGroupName="formularioVehiculo">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label
@@ -1493,13 +1478,13 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "priNombreReferenciaTitular"
+                formControlName="priNombreReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="last_name"
@@ -1509,13 +1494,13 @@
               <input
                 type="text"
                 id="last_name"
-                formControlName = "priApellidoReferenciaTitular"
+                formControlName="priApellidoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="phone"
@@ -1525,14 +1510,14 @@
               <input
                 type="tel"
                 id="phone"
-                formControlName = "priTelefonoReferenciaTitular"
+                formControlName="priTelefonoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="123-45-678"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="Parentesco"
@@ -1542,16 +1527,16 @@
               <input
                 type="text"
                 id="Parentesco"
-                formControlName = "priParentescoReferenciaTitular"
+                formControlName="priParentescoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
           </div>
-        
+
           <!--                   -->
-        
+
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label
@@ -1562,13 +1547,13 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "segNombreReferenciaTitular"
+                formControlName="segNombreReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="last_name"
@@ -1578,13 +1563,13 @@
               <input
                 type="text"
                 id="last_name"
-                formControlName = "segApellidoReferenciaTitular"
+                formControlName="segApellidoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="phone"
@@ -1594,14 +1579,14 @@
               <input
                 type="tel"
                 id="phone"
-                formControlName = "segTelefonoReferenciaTitular"
+                formControlName="segTelefonoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="123-45-678"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="Parentesco"
@@ -1611,16 +1596,16 @@
               <input
                 type="text"
                 id="Parentesco"
-                formControlName = "segParentescoReferenciaTitular"
+                formControlName="segParentescoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
           </div>
-        
+
           <!--                   -->
-        
+
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label
@@ -1631,13 +1616,13 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "terNombreReferenciaTitular"
+                formControlName="terNombreReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="nombre"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="last_name"
@@ -1647,13 +1632,13 @@
               <input
                 type="text"
                 id="last_name"
-                formControlName = "terApellidoReferenciaTitular"
+                formControlName="terApellidoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="apellido"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="phone"
@@ -1663,14 +1648,14 @@
               <input
                 type="tel"
                 id="phone"
-                formControlName = "terTelefonoReferenciaTitular"
+                formControlName="terTelefonoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="123-45-678"
                 pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="Parentesco"
@@ -1680,20 +1665,18 @@
               <input
                 type="text"
                 id="Parentesco"
-                formControlName = "terParentescoReferenciaTitular"
+                formControlName="terParentescoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
           </div>
-        
-          <h3 class="m-10 uppercase font-semibold "> DATOS DEL VEHICULO   </h3>
+
+          <h3 class="m-10 uppercase font-semibold">DATOS DEL VEHICULO</h3>
           <!-- dato del vehiculo -->
-        
-          <div  class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-           
-        
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
               <label
                 for="first_name"
@@ -1703,13 +1686,13 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "marcaVehiculo"
+                formControlName="marcaVehiculo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="marca"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="first_name"
@@ -1719,13 +1702,13 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "modeloVehiculo"
+                formControlName="modeloVehiculo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="modelo"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="first_name"
@@ -1735,220 +1718,232 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "colorVehiculo"
+                formControlName="colorVehiculo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
                 required
               />
             </div>
           </div>
-        
-        
+
           <!--                   -->
-        
-        
-          <h3 class="m-10 uppercase font-semibold "> DATOS DE LA FINANCIACION  </h3>
-        
+
+          <h3 class="m-10 uppercase font-semibold">DATOS DE LA FINANCIACION</h3>
+
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        
             <div class="w-full">
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ingrese monto de la inicial</label>
-        
-                <fieldset>
-               <div class="max-w-[18rem] mx-auto flex " >
-             
-              <div class="relative w-full">
-                <div
-                  class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none"
-                >
-                  <svg
-                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 16"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
-                    />
-                  </svg>
-                </div>
-                <input
-                  type="number"
-                  id="currency-input"
-                  class="block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                  placeholder="Ingrese monto"
-                  formControlName = "inicialVehiculo"
-                  required
-                />
-              </div>
-              <button
-                id="dropdown-currency-button"
-                data-dropdown-toggle="dropdown-currency"
-                class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-e-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                type="button"
+              <label
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Ingrese monto de la inicial</label
               >
-                  <svg
-              width="20px"
-              height="20px"
-              viewBox="0 0 64 64"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              aria-hidden="true"
-              role="img"
-              class="iconify iconify--emojione"
-              preserveAspectRatio="xMidYMid meet"
-              fill="#000000"
-            >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <g fill="#ed4c5c">
-                  <path
-                    d="M62 32c0-13.1-8.3-24.2-20-28.3v56.6C53.7 56.2 62 45.1 62 32"
-                  ></path>
-                  <path
-                    d="M2 32c0 13.1 8.4 24.2 20 28.3V3.7C10.4 7.8 2 18.9 2 32z"
-                  ></path>
-                </g>
-                <path
-                  d="M42 3.7C38.9 2.6 35.5 2 32 2s-6.9.6-10 1.7v56.6c3.1 1.1 6.5 1.7 10 1.7s6.9-.6 10-1.7V3.7z"
-                  fill="#f9f9f9"
-                ></path>
-              </g>
-                 </svg>
-                PEN
-                <svg
-                  class="w-2.5 h-2.5 ms-2.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              <div
-                id="dropdown-currency"
-                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
-              >
-                <ul
-                  class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                  aria-labelledby="dropdown-currency-button"
-                >
-                  <li>
-                    <button
-                      type="button"
-                      class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem"
+
+              <fieldset>
+                <div class="max-w-[18rem] mx-auto flex">
+                  <div class="relative w-full">
+                    <div
+                      class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none"
                     >
-                      <div class="inline-flex items-center">
-                        <svg
-                          fill="none"
-                          aria-hidden="true"
-                          class="h-4 w-4 me-2"
-                          viewBox="0 0 20 15"
+                      <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="number"
+                      id="currency-input"
+                      class="block p-2.5 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-e-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                      placeholder="Ingrese monto"
+                      formControlName="inicialVehiculo"
+                      required
+                    />
+                  </div>
+                  <button
+                    id="dropdown-currency-button"
+                    data-dropdown-toggle="dropdown-currency"
+                    class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-e-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                    type="button"
+                  >
+                    <svg
+                      width="20px"
+                      height="20px"
+                      viewBox="0 0 64 64"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      aria-hidden="true"
+                      role="img"
+                      class="iconify iconify--emojione"
+                      preserveAspectRatio="xMidYMid meet"
+                      fill="#000000"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <g fill="#ed4c5c">
+                          <path
+                            d="M62 32c0-13.1-8.3-24.2-20-28.3v56.6C53.7 56.2 62 45.1 62 32"
+                          ></path>
+                          <path
+                            d="M2 32c0 13.1 8.4 24.2 20 28.3V3.7C10.4 7.8 2 18.9 2 32z"
+                          ></path>
+                        </g>
+                        <path
+                          d="M42 3.7C38.9 2.6 35.5 2 32 2s-6.9.6-10 1.7v56.6c3.1 1.1 6.5 1.7 10 1.7s6.9-.6 10-1.7V3.7z"
+                          fill="#f9f9f9"
+                        ></path>
+                      </g>
+                    </svg>
+                    PEN
+                    <svg
+                      class="w-2.5 h-2.5 ms-2.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 10 6"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m1 1 4 4 4-4"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    id="dropdown-currency"
+                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
+                  >
+                    <ul
+                      class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                      aria-labelledby="dropdown-currency-button"
+                    >
+                      <li>
+                        <button
+                          type="button"
+                          class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                          role="menuitem"
                         >
-                          <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
-                          <mask
-                            id="a"
-                            style="mask-type: luminance"
-                            width="20"
-                            height="15"
-                            x="0"
-                            y="0"
-                            maskUnits="userSpaceOnUse"
-                          >
-                            <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
-                          </mask>
-                          <g mask="url(#a)">
-                            <path
-                              fill="#D02F44"
-                              fill-rule="evenodd"
-                              d="M19.6.5H0v.933h19.6V.5zm0 1.867H0V3.3h19.6v-.933zM0 4.233h19.6v.934H0v-.934zM19.6 6.1H0v.933h19.6V6.1zM0 7.967h19.6V8.9H0v-.933zm19.6 1.866H0v.934h19.6v-.934zM0 11.7h19.6v.933H0V11.7zm19.6 1.867H0v.933h19.6v-.933z"
-                              clip-rule="evenodd"
-                            />
-                            <path fill="#46467F" d="M0 .5h8.4v6.533H0z" />
-                            <g filter="url(#filter0_d_343_121520)">
-                              <path
-                                fill="url(#paint0_linear_343_121520)"
-                                fill-rule="evenodd"
-                                d="M1.867 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.866 0a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM7.467 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zM2.333 3.3a.467.467 0 100-.933.467.467 0 000 .933zm2.334-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.4.467a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm-2.334.466a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.466a.467.467 0 11-.933 0 .467.467 0 01.933 0zM1.4 4.233a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM6.533 4.7a.467.467 0 11-.933 0 .467.467 0 01.933 0zM7 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zM3.267 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0z"
-                                clip-rule="evenodd"
-                              />
-                            </g>
-                          </g>
-                          <defs>
-                            <linearGradient
-                              id="paint0_linear_343_121520"
-                              x1=".933"
-                              x2=".933"
-                              y1="1.433"
-                              y2="6.1"
-                              gradientUnits="userSpaceOnUse"
+                          <div class="inline-flex items-center">
+                            <svg
+                              fill="none"
+                              aria-hidden="true"
+                              class="h-4 w-4 me-2"
+                              viewBox="0 0 20 15"
                             >
-                              <stop stop-color="#fff" />
-                              <stop offset="1" stop-color="#F0F0F0" />
-                            </linearGradient>
-                            <filter
-                              id="filter0_d_343_121520"
-                              width="6.533"
-                              height="5.667"
-                              x=".933"
-                              y="1.433"
-                              color-interpolation-filters="sRGB"
-                              filterUnits="userSpaceOnUse"
-                            >
-                              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                              <feColorMatrix
-                                in="SourceAlpha"
-                                result="hardAlpha"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                              <rect
+                                width="19.6"
+                                height="14"
+                                y=".5"
+                                fill="#fff"
+                                rx="2"
                               />
-                              <feOffset dy="1" />
-                              <feColorMatrix
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
-                              />
-                              <feBlend
-                                in2="BackgroundImageFix"
-                                result="effect1_dropShadow_343_121520"
-                              />
-                              <feBlend
-                                in="SourceGraphic"
-                                in2="effect1_dropShadow_343_121520"
-                                result="shape"
-                              />
-                            </filter>
-                          </defs>
-                        </svg>
-                        USD
-                      </div>
-                    </button>
-                  </li>
-        
-                  
-                </ul>
-              </div>
+                              <mask
+                                id="a"
+                                style="mask-type: luminance"
+                                width="20"
+                                height="15"
+                                x="0"
+                                y="0"
+                                maskUnits="userSpaceOnUse"
+                              >
+                                <rect
+                                  width="19.6"
+                                  height="14"
+                                  y=".5"
+                                  fill="#fff"
+                                  rx="2"
+                                />
+                              </mask>
+                              <g mask="url(#a)">
+                                <path
+                                  fill="#D02F44"
+                                  fill-rule="evenodd"
+                                  d="M19.6.5H0v.933h19.6V.5zm0 1.867H0V3.3h19.6v-.933zM0 4.233h19.6v.934H0v-.934zM19.6 6.1H0v.933h19.6V6.1zM0 7.967h19.6V8.9H0v-.933zm19.6 1.866H0v.934h19.6v-.934zM0 11.7h19.6v.933H0V11.7zm19.6 1.867H0v.933h19.6v-.933z"
+                                  clip-rule="evenodd"
+                                />
+                                <path fill="#46467F" d="M0 .5h8.4v6.533H0z" />
+                                <g filter="url(#filter0_d_343_121520)">
+                                  <path
+                                    fill="url(#paint0_linear_343_121520)"
+                                    fill-rule="evenodd"
+                                    d="M1.867 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.866 0a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM7.467 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zM2.333 3.3a.467.467 0 100-.933.467.467 0 000 .933zm2.334-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.4.467a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm-2.334.466a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.466a.467.467 0 11-.933 0 .467.467 0 01.933 0zM1.4 4.233a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM6.533 4.7a.467.467 0 11-.933 0 .467.467 0 01.933 0zM7 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zM3.267 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0z"
+                                    clip-rule="evenodd"
+                                  />
+                                </g>
+                              </g>
+                              <defs>
+                                <linearGradient
+                                  id="paint0_linear_343_121520"
+                                  x1=".933"
+                                  x2=".933"
+                                  y1="1.433"
+                                  y2="6.1"
+                                  gradientUnits="userSpaceOnUse"
+                                >
+                                  <stop stop-color="#fff" />
+                                  <stop offset="1" stop-color="#F0F0F0" />
+                                </linearGradient>
+                                <filter
+                                  id="filter0_d_343_121520"
+                                  width="6.533"
+                                  height="5.667"
+                                  x=".933"
+                                  y="1.433"
+                                  color-interpolation-filters="sRGB"
+                                  filterUnits="userSpaceOnUse"
+                                >
+                                  <feFlood
+                                    flood-opacity="0"
+                                    result="BackgroundImageFix"
+                                  />
+                                  <feColorMatrix
+                                    in="SourceAlpha"
+                                    result="hardAlpha"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                  />
+                                  <feOffset dy="1" />
+                                  <feColorMatrix
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+                                  />
+                                  <feBlend
+                                    in2="BackgroundImageFix"
+                                    result="effect1_dropShadow_343_121520"
+                                  />
+                                  <feBlend
+                                    in="SourceGraphic"
+                                    in2="effect1_dropShadow_343_121520"
+                                    result="shape"
+                                  />
+                                </filter>
+                              </defs>
+                            </svg>
+                            USD
+                          </div>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </fieldset>
             </div>
-            </fieldset>
-            </div>
-            
+
             <!--   monto de la inicial  cuotas quincenales / 20 quincenas / 24 quincenas / 36 quincenas / 48 quincenas-->
-        
+
             <fieldset>
               <label
                 for="default"
@@ -1957,18 +1952,17 @@
               >
               <select
                 id="default"
-                formControlName = "numeroQuincenas"
+                formControlName="numeroQuincenas"
                 class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                
                 <option value="20-quincenas">20 quincenas</option>
                 <option value="24-quincenas">24 quincenas</option>
                 <option value="36-quincenas">36 quincenas</option>
               </select>
             </fieldset>
-        
+
             <!--  monto de la cuota   -->
-        
+
             <fieldset class="max-w-sm mx-auto">
               <label
                 for="number-input"
@@ -1978,7 +1972,7 @@
               <input
                 type="number"
                 id="number-input"
-                formControlName = "montotDeLaCuota"
+                formControlName="montotDeLaCuota"
                 aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Ingrese monto en soles"
@@ -1986,11 +1980,11 @@
               />
             </fieldset>
           </div>
-        
+
           <!--    -->
-        
+
           <!--    tienda -->
-        
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label
@@ -2001,13 +1995,13 @@
               <input
                 type="text"
                 id="first_name"
-                formControlName = "nombreDelVendedor"
+                formControlName="nombreDelVendedor"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="nombre"
                 required
               />
             </div>
-        
+
             <div>
               <label
                 for="last_name"
@@ -2017,16 +2011,16 @@
               <input
                 type="text"
                 id="last_name"
-                formControlName = "puntoDeVenta"
+                formControlName="puntoDeVenta"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="punto de venta"
                 required
               />
             </div>
           </div>
-        
+
           <!--  MENSAJE  -->
-        
+
           <div class="grid grid-cols-1 md:grid-cols- gap-6 mb-6">
             <div>
               <label
@@ -2037,35 +2031,109 @@
               <textarea
                 id="message"
                 rows="4"
-                formControlName = "mensajeOpcional"
+                formControlName="mensajeOpcional"
                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Escribe tu Mensaje aqui  ..."
               ></textarea>
             </div>
           </div>
         </ng-container>
-        
-
+      <div class="flex">
         <button
           type="button"
           (click)="prevSection()"
           class="uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          seccion anterior 
-
-
-
+          seccion anterior
         </button>
-
-        <button
         
-          type="submit"
-          class=" md:mx-20 uppercase font-semibold text-black hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-        >
-          Finalizar 
-        </button>
-       
+          <button
+               
+            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5
+             py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="submit"
+          >
+            FINALIZAR Y ENVIAR EL fORMULARIO
+          </button>
+      </div>
       </div>
     </form>
   </div>
 </section>
+
+<!-- Modal toggle -->
+
+<!-- Main modal -->
+<div
+
+  tabindex="-1"
+  aria-hidden="true"
+  [ngClass]="isModalOpen ? 'block' : 'hiddena'"
+  class=" overflow-y-auto overflow-x-hidden flex fixed inset-0 bg-gray-800 bg-opacity-50 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+>
+  <div class=" p-4 w-full max-w-2xl shadow-lg max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+      >
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          FORMULARIO DE SOLICITUD DE CREDITO
+        </h3>
+        <button
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          (click)="cancelModal()"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">cerrar </span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4">
+        
+        <p class="text-3xl font-semibold leading-relaxed text-gray-500 dark:text-gray-400">
+          Gracias por completar el formulario, por favor revisa que todos los campos esten llenos y correctos,
+           si es asi, presiona el boton de enviar formulario y finalizar,
+            de lo contrario presiona el boton de cancelar envio y regresar al formulario.
+        </p>
+      </div>
+      <!-- Modal footer -->
+      <div
+        class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
+      >
+        <button
+        (click)="formulariCompleto()"
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Enviar formulario y finalizar
+        </button>
+        <button
+          (click)="cancelModal()"
+          type="button"
+          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+        >
+          Cancelar envio  y Regrsar al formulario
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main modal -->

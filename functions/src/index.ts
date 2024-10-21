@@ -27,10 +27,13 @@ export const onClienteCreate = functions.firestore
     // Opciones del correo electrónico
     const mailOptions = {
       from: "resourcegrouphdl@gmail.com",
-      to: "humberto.lizana@gmail.com", // Correo del administrador
+      to: "humberto.lizana@gmail.com,contenidomotoya@gmail.com",
       subject: ` ${nombre} ${apellido}`,
       text: `Se ha registrado un nuevo cliente con ID:
-       http://localhost:4200/formato/${clienteId}\n\nDatos del cliente:\n${JSON.stringify(
+
+      click aqui para obtener una version para imprimir
+
+       https://motoya-form.web.app//formato/${clienteId}\n\nDatos del cliente:\n${JSON.stringify(
   newValue,
   null,
   2

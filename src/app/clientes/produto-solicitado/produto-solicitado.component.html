@@ -1,7 +1,197 @@
-<body>
-  
+<body class="container m-auto">
+  <h1 class="text-center mt-1 uppercase font-bold">
+    Solicitud De Financiamiento
+  </h1>
+  <h1 class="text-center uppercase font-bold">
+    {{ data.formTitular.nombre }} , {{ data.formTitular.apellido }}
+  </h1>
 
-  <h1 class="text-center mt-10 uppercase font-bold"> Solicitud De Financiamiento  </h1>
-  <h2 class="text-center mt-5 uppercase font-bold"> {{nombre}} </h2>
+  <h4 class="text-center">
+    {{ data.formTitular.documentType }} : Numero
+    {{ data.formTitular.documentNumber }}
+  </h4>
 
+  <h4 class="text-center">
+    Fecha de Nacimiento : {{ data.formTitular.fechaNacimiento }}
+  </h4>
+
+  <h4 class="text-center">Estado Civil : {{ data.formTitular.estadoCivil }}</h4>
+
+  <h4 class="text-center mt-1">Email : {{ data.formTitular.email }}</h4>
+
+  <div>
+    <h4>Provincia : {{ data.formTitular.provincia }}</h4>
+    <h4>Departamento : {{ data.formTitular.departamento }}</h4>
+    <h4>Distrito : {{ data.formTitular.distrito }}</h4>
+    <h4>Direccion : {{ data.formTitular.direccion }}</h4>
+  </div>
+
+  <div>
+    <h4>Celular : {{ data.formTitular.telefono1 }}</h4>
+    <h4>telefono 2 : {{ data.formTitular.telefono2 }}</h4>
+  </div>
+  <div>
+    <h4>Tiene LIcensia de conducir :{{ data.formTitular.licenciaStatus }}</h4>
+    <h4>Numero de conducir : {{ data.formTitular.licenciaConducir }}</h4>
+  </div>
+
+  <div>
+    <h1 class="bg-slate-300  uppercase  mb-3">
+      DATOS DEL FIADOR PARA EL CLIENTE {{ data.formTitular.apellido }}
+    </h1>
+
+    <h4>
+      Nombre : {{ data.formularioFiador.nombreFiador }} ,
+      {{ data.formularioFiador.apellidoFiador }}
+    </h4>
+    <h4>
+      Documento : {{ data.formularioFiador.documentTypeFiador }} : Numero
+      {{ data.formularioFiador.documentNumberFiador }}
+    </h4>
+    <h4>
+      Fecha de Nacimiento : {{ data.formularioFiador.fechaNacimientoFiador }}
+    </h4>
+    <h4>Estado Civil : {{ data.formularioFiador.estadoCivilFiador }}</h4>
+    <h4>Email : {{ data.formularioFiador.emailFiador }}</h4>
+    <h4>Provincia : {{ data.formularioFiador.provinciaFiador }}</h4>
+    <h4>Departamento : {{ data.formularioFiador.departamentoFiador }}</h4>
+    <h4>Distrito : {{ data.formularioFiador.distritoFiador }}</h4>
+    <h4>Direccion : {{ data.formularioFiador.direccionFiador }}</h4>
+    <h4>Celular : {{ data.formularioFiador.telefonoPriFiador }}</h4>
+    <h4>Fijo : {{ data.formularioFiador.telefonoSegFiador }}</h4>
+
+    <div>
+      <h1 class="bg-slate-300  uppercase  mb-3">
+        REFERENCIAS DEL TITULAR
+      </h1>
+      <div class="border p-2 flex justify-between m-1">
+        <h4>
+          Nombre : {{ data.formularioVehiculo.priNombreReferenciaTitular }} ,
+          {{ data.formularioVehiculo.priApellidoReferenciaTitular }}
+        </h4>
+        <h4>
+          Telefono : {{ data.formularioVehiculo.priTelefonoReferenciaTitular }}
+        </h4>
+        <h4>
+          parentesco :{{
+            data.formularioVehiculo.priParentescoReferenciaTitular
+          }}
+        </h4>
+      </div>
+
+    
+
+      <div class="border flex  p-2 justify-between m-1">
+        <h4>
+          Nombre : {{ data.formularioVehiculo.segNombreReferenciaTitular }} ,
+          {{ data.formularioVehiculo.segApellidoReferenciaTitular }}
+        </h4>
+        <h4>
+          Telefono : {{ data.formularioVehiculo.segTelefonoReferenciaTitular }}
+        </h4>
+        <h4>
+          parentesco :{{
+            data.formularioVehiculo.segParentescoReferenciaTitular
+          }}
+        </h4>
+      </div>
+
+      <div class="border p-2 flex justify-between m-1">
+        <h4>
+        Nombre : {{ data.formularioVehiculo.terNombreReferenciaTitular }} ,
+        {{ data.formularioVehiculo.terApellidoReferenciaTitular }}
+      </h4>
+      <h4>
+        Telefono : {{ data.formularioVehiculo.terTelefonoReferenciaTitular }}
+      </h4>
+      <h4>
+        parentesco :{{ data.formularioVehiculo.terParentescoReferenciaTitular }}
+      </h4>
+      </div>
+     
+      <h1 class="bg-slate-300 font-semibold uppercase  m-4">
+        DATOS DEL VEHICULO
+      </h1>
+      <div class="border p2 m-2 flex justify-between">
+        <h4>Marca : {{ data.formularioVehiculo.marcaVehiculo }}</h4>
+        <h4>Modelo : {{ data.formularioVehiculo.modeloVehiculo }}</h4>
+        <h4>Placa : {{ data.formularioVehiculo.colorVehiculo }}</h4>
+      </div>
+      
+
+      <h1 class="bg-slate-300 font-semibold uppercase  m-4">
+        DATOS DE FINANCIAMIENTO
+      </h1>
+
+      <h4>
+        Inicial del Vehiculo : {{ data.formularioVehiculo.inicialVehiculo }}
+      </h4>
+      <h4>Plazo : {{ data.formularioVehiculo.numeroQuincenas }}</h4>
+      <h4>
+        Valor de la Quincena : {{ data.formularioVehiculo.montotDeLaCuota }}
+      </h4>
+
+      <h1 class="bg-slate-300 font-semibold uppercase  m-4">
+        DATOS DEL PUNTO DE VENTA
+      </h1>
+      <div class="flex p-2 m-2 justify-between border">
+            <h4>
+              Punto de Venta : {{ data.formularioVehiculo.puntoDeVenta }}
+            </h4>
+            <h4>
+              Vendedor : {{ data.formularioVehiculo.nombreDelVendedor }}
+            </h4>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+  <!-- seccion de imagenes -->
+  <div>
+    <h4 class="uppercase"> selfie del titular en el lugar de trabajo </h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.serlfieURL }}" alt="" />
+    </div>
+    <h4 class="upercase"> foto del documento  lado frontal</h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.dniFrenteuRL }}" alt="" />
+    </div>
+    <h4 class="upercase"> foto del documento  lado reverso</h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.dniReversoURL }}" alt="" />
+    </div>
+    <h4 class="upercase"> foto de la casa del titular</h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.fotoCasaURL }}" alt="" />
+    </div>
+    <h4 class="upercase"> foto de la lic de conducir , frente</h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.licConducirFrenteURL }}" alt="" />
+    </div>
+    <h4 class="upercase"> foto de la lic de conducir , reverso</h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.licConducirReversoURL }}" alt="" />
+    </div>
+    <h4 class="upercase"> recibo de servico del titular</h4>
+    <div class="print-container">
+      <img src="{{ data.formTitular.reciboDeServicioURL }}" alt="" />
+    </div>
+  </div>
+  <!-- seccion de imagenes fiador -->
+  <div>
+    <h4 class="uppercase"> Foto del documento del fiador frontal </h4>
+    <div class="print-container">
+      <img src="{{ data.formularioFiador.dniFrenteuRLfiador }}" alt="" />
+    </div>
+    <h4 class="uppercase"> Foto del documento del fiador reverso </h4>
+    <div class="print-container">
+      <img src="{{ data.formularioFiador.dniReversoURLfiador }}" alt="" />
+    </div>
+    <h4 class="uppercase"> Foto de la casa del fiador </h4>
+    <div class="print-container">
+      <img src="{{ data.formularioFiador.fotoCasaURLfiador }}" alt="" />
+    </div>
+  </div>
 </body>
