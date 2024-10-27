@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword ,User} from '@angular/fire/auth';
-
-export interface Userdto {
-  email: string;
-  password: string;
-}
+import { UserloginModel } from '../models/userlogin-model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthServiceService {
 
   constructor(private _fire : Auth) { }
 
-  login(userdto: Userdto) {
+
+  login(userdto: UserloginModel) {
     return signInWithEmailAndPassword(this._fire, userdto.email, userdto.password);
 
   }
@@ -30,6 +27,9 @@ export class AuthService {
     });
 
   }
-  
+
+  logaut() {
+    return this._fire.signOut();
+  }
 
 }

@@ -11,6 +11,11 @@ import { GaleriaSegundaComponent } from './tienda/galeria-segunda/galeria-segund
 import { QuienesSomosComponent } from './institucional/quienes-somos/quienes-somos.component';
 import { ContactanosComponent } from './contact/contactanos/contactanos.component';
 import { NoticiasComponent } from './blog/noticias/noticias.component';
+import { SidenavComponent } from './admin/sidenav/sidenav.component';
+import { SignInComponent } from './auth/sign-in1/sign-in.component';
+import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
+import { adminguardGuard } from './guards/adminguard.guard';
+import { SlideAdminComponent } from './admin/slide-admin/slide-admin.component';
 
 
 export const routes: Routes = [
@@ -63,10 +68,37 @@ export const routes: Routes = [
                 path: 'formulario',
                 component: FormularioComponent
 
-            }
-          
+            },
+            
         ]
        
+    },
+    {
+        path: 'admin',
+        component:SignInComponent
+    },
+    {
+        path: 'configpage',
+        component: SidenavComponent,
+        canActivate: [adminguardGuard],
+        children: [
+            {
+                path: '',
+                redirectTo: 'homeadmin',
+                pathMatch: 'full'   
+            },
+            {
+                path: 'homeadmin',
+                component:HomeAdminComponent
+            },
+            {
+                path: 'slider',
+                component: SlideAdminComponent
+            }
+          
+
+        ]
+        
     },
     {
         path: '**',

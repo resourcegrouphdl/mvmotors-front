@@ -1,0 +1,121 @@
+
+
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg container mx-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Marca del fabricante
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Titulo
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    SubTitulo
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Descripcion
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Descripcion Corta
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Imagen
+                <th scope="col" class="px-6 py-3">
+                    <span class="sr-only text-black">editar</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr  *ngFor="let item of slideTable" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{item.author}}
+                </th>
+                <td class="px-6 py-4">
+                    {{item.title}}
+                </td>
+                <td class="px-6 py-4">
+                    {{item.dtopic}}
+                </td>
+                <td class="px-6 py-4">
+                    {{item.description}}
+                </td>
+                <td class="px-6 py-4">
+                    {{item.shortDescription}}
+                </td>
+                <td class="px-6 py-4">
+                   <img [src]="item.imageUrl" alt="imagen" class="w-40 h-40">
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <button class="bg-blue-600 border-red-100" (click)="editar(item)">editar</button>
+                </td>
+            </tr>
+           
+            
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+<!-- formulario     -->
+<form  [formGroup]="sliderAdminForm" (submit)="onSubmit()" >
+
+    
+
+    <fieldset>
+        <legend>fabricante</legend>
+        <div class="form-group">
+            <input type="text" class="form-control" id="titulo" formControlName="author" placeholder="marca del fabricante">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Titulo</legend>
+        <div class="form-group">
+            <input type="text" class="form-control" id="titulo" formControlName="title" placeholder="titulo">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Topico</legend>
+        <div class="form-group">
+            <input type="text" class="form-control" id="titulo" formControlName="dtopic" placeholder="titulo">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>descripcion</legend>
+        <div class="form-group">
+            <input type="text" class="form-control" id="titulo" formControlName="description" placeholder="descripsion del producto">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>descripcion corta</legend>
+        <div class="form-group">
+            <input type="text" class="form-control" id="titulo" formControlName="shortDescription" placeholder="descripcion corta">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>imagen principal y mini</legend>
+        <div class="form-group">
+            <input type="text" class="form-control" id="titulo" formControlName="imageUrl" placeholder="imagen">
+        </div>
+    </fieldset>
+
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">enviar</button>
+
+
+    
+
+
+</form>

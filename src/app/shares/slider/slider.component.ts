@@ -10,6 +10,9 @@ import {
 import { NgFor } from '@angular/common';
 import { toast } from 'ngx-sonner';
 import { RouterLink } from '@angular/router';
+import { ConfiguracionFrontService } from '../../acces-data-services/configuracion-front.service';
+import { catchError, of, tap } from 'rxjs';
+import { SlidesModel } from '../../models/slides-model';
 
 @Component({
   selector: 'app-slider',
@@ -18,57 +21,46 @@ import { RouterLink } from '@angular/router';
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
 })
-export class SliderComponent implements AfterViewInit {
+export class SliderComponent implements  OnInit , OnDestroy {
+
+ public slides:SlidesModel[] = []
+
+ thumbnails:any[]=[];
+
+  constructor(private _config: ConfiguracionFrontService) {}
+
+  ngOnInit(): void {
+    this._config
+      .getSlides()
+      .pipe(
+        tap((slides) => {
+          if (slides && slides.length > 0) {
+           
+            this.slides = slides;
+            this.thumbnails = [...slides]; // Copia de las imágenes para los thumbnails
+
+          //  this.sliderAdminForm.setValue(slides); // Asignamos directamente si el formato es correcto
+          } else {
+            console.log('No slides data available');
+          }
+        }),
+        catchError((error) => {
+          console.error('Error CARGANDO SLIDES:', error);
+          // this.showErrorMessage('No se pudieron cargar los slides. Por favor, inténtelo de nuevo más tarde.');
+          return of([]); // Devuelve un array vacío si hay un error
+        })
+      )
+      .subscribe();
+  }
   
   
   
   
 
-  public slides = [
-    {
-      imageUrl:
-        'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/slider%2FKTM-RC-200b.jpg?alt=media&token=664f738c-1eae-4744-87ed-d738af19a66d',
-      author: 'Indian',
-      title: 'Moto Custom',
-      dtopic: 'Otra moto chevere',
-      description:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?',
-      shortDescription: 'Breve reseña de la imagen',
-    },
-    {
-      imageUrl:
-        'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/slider%2Fduke-200.webp?alt=media&token=53202855-353f-4c0c-be15-33914ad93b06',
-      author: 'KTM Motos',
-      title: 'Duke 200',
-      dtopic: 'Está bien chevere',
-      description:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?',
-      shortDescription: 'Breve reseña de la imagen',
-    },
-    {
-      imageUrl:
-        'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/slider%2FMoto_JCH_Volt_150.jpg?alt=media&token=9657c224-4dc9-4c60-9cfb-7d7e233f82d4',
-      author: 'KTM',
-      title: 'Otra KTM',
-      dtopic: 'Otra moto chevere',
-      description:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium',
-      shortDescription: 'Breve reseña de la imagen',
-    },
-    {
-      imageUrl:
-        'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/slider%2Fmoto-custom-3.webp?alt=media&token=ac7929f0-8519-42a7-9332-4c447c17acb5',
-      author: 'Indian',
-      title: 'Moto Custom',
-      dtopic: 'Para viajar',
-      description:
-        'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo, laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum aperiam illo illum laudantium?',
-      shortDescription: 'Breve reseña de la imagen',
-    },
-  ];
-
-
-  thumbnails = [...this.slides];  // Copia de las imágenes para los thumbnails
+ 
+    
+  
+    // Copia de las imágenes para los thumbnails
   // Métodos de control del carrusel (ya definidos en la lógica original)
 
   slidecontrol: string = '';

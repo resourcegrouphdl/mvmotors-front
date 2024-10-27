@@ -1,1 +1,49 @@
-<p>sign-in works!</p>
+<div class="bg-sky-100 flex justify-center items-center h-screen">
+  <!-- Left: Image -->
+  <div class="w-1/2 h-full hidden lg:block">
+    <img
+      src="https://i.pinimg.com/564x/f2/1b/e6/f21be6f06416c95452d0b6462940708e.jpg"
+      alt="Placeholder Image"
+      class="object-cover w-full h-full"
+    />
+  </div>
+  <!-- Right: Login Form -->
+  <div class="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
+    <h1 class="text-2xl font-semibold mb-4">Login</h1>
+    <form [formGroup]="loginForm" (submit)="onLogin()">
+      <!-- Username Input -->
+      <div class="mb-4 bg-sky-100">
+        <label for="username" class="block text-gray-600">email</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="email"
+          class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+          autocomplete="off"
+        />
+      </div>
+      <!-- Password Input -->
+      <div class="mb-4">
+        <label for="password" class="block text-gray-800">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+          autocomplete="off"
+        />
+      </div>
+     
+      
+      
+      <!-- Login Button -->
+      <button
+        type="submit"
+        class="bg-red-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+      >
+        Login
+      </button>
+    </form>
+   
+  </div>
+</div>
