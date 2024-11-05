@@ -73,6 +73,10 @@ export class ConfiguracionFrontService {
     }
   }
 
+
+ 
+
 }
+
 
 

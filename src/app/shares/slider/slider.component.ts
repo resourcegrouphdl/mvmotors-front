@@ -126,4 +126,6 @@ export class SliderComponent implements  OnInit , OnDestroy {
     clearTimeout(this.runTimeOut);
   }
 
+  
+
 }

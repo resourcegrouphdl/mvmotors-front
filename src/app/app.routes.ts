@@ -3,7 +3,6 @@ import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './shares/notfound/notfound.component';
 import { ClienteComponent } from './clientes/cliente/cliente.component';
 import { FormularioComponent } from './clientes/formulario/formulario.component';
-import { TablaclientesComponent } from './shares/tablaclientes/tablaclientes.component';
 import { ProdutoSolicitadoComponent } from './clientes/produto-solicitado/produto-solicitado.component';
 import { InicioComponent } from './inicio/inicio/inicio.component';
 import { GaleriaNuevasComponent } from './tienda/galeria-nuevas/galeria-nuevas.component';
@@ -94,6 +93,10 @@ export const routes: Routes = [
             {
                 path: 'slider',
                 component: SlideAdminComponent
+            },
+            {
+                path: 'productos',
+                component: ClienteComponent
             }
           
 
