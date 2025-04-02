@@ -73,10 +73,6 @@ export const routes: Routes = [
        
     },
     {
-        path: 'admin',
-        component:SignInComponent
-    },
-    {
         path: '**',
         component:NotfoundComponent,
        

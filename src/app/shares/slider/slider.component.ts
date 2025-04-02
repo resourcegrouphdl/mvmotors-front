@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { ConfiguracionFrontService } from '../../acces-data-services/configuracion-front.service';
 import { catchError, of, tap } from 'rxjs';
 import { CarrucelModel, SlidesModel } from '../../models/slides-model';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-slider',
   standalone: true,
-  imports: [NgFor,RouterLink],
+  imports: [NgFor, NgIf],
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.css',
 })
@@ -41,4 +40,27 @@ export class SliderComponent implements OnInit {
 
   // Copia de las imágenes para los thumbnails
   // Métodos de control del carrusel (ya definidos en la lógica original)
+
+
+
+  currentIndex = 0;
+  isLoading = true;
+
+  trackByIndex(index: number, item: any) {
+    return index;
+  }
+
+  hideLoader() {
+    this.isLoading = false;
+  }
+
+  nextSlide() {
+    this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+  }
+
+  prevSlide() {
+    this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+  }
+  
+
 }

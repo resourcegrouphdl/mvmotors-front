@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideClientHydration(),
+    //provideClientHydration(),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'motoya-form',
