@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { BaraInfoSupComponent } from '../../shares/bara-info-sup/bara-info-sup.component';
-import { NavbarComponent } from '../../shares/navbar/navbar.component';
+
 import { SliderComponent } from '../../shares/slider/slider.component';
+import { SliderCardComponent } from '../slider-card/slider-card.component';
+import { BaraInfoSupComponent } from "../../shares/bara-info-sup/bara-info-sup.component";
 
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [BaraInfoSupComponent, NavbarComponent,SliderComponent],
+  imports: [SliderComponent, SliderCardComponent],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './shares/notfound/notfound.component';
 import { ClienteComponent } from './clientes/cliente/cliente.component';
 import { FormularioComponent } from './clientes/formulario/formulario.component';
@@ -10,11 +9,6 @@ import { GaleriaSegundaComponent } from './tienda/galeria-segunda/galeria-segund
 import { QuienesSomosComponent } from './institucional/quienes-somos/quienes-somos.component';
 import { ContactanosComponent } from './contact/contactanos/contactanos.component';
 import { NoticiasComponent } from './blog/noticias/noticias.component';
-import { SidenavComponent } from './admin/sidenav/sidenav.component';
-import { SignInComponent } from './auth/sign-in1/sign-in.component';
-import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
-import { adminguardGuard } from './guards/adminguard.guard';
-
 
 
 export const routes: Routes = [
@@ -22,8 +16,7 @@ export const routes: Routes = [
         path:'',
         redirectTo : 'home',
         pathMatch: 'full'
-        
-       
+               
     },
     {
         path: 'home',

@@ -1,0 +1,54 @@
+<section class="py-4">
+  <!-- moto-carousel.component.html -->
+  <div class="p-6 bg-gray-100 text-center">
+    <h2 class="text-6xl uppercase font-bold text-gray-900">
+      Encuentra tu moto deseada
+    </h2>
+    <p class="text-4xl my-4 text-gray-700">
+      ¡Tarjeta, placa, SOAT 1 año y transferencia notarial gratis!
+    </p>
+
+    <div class="relative flex items-center justify-center mt-6">
+      <button
+        (click)="prevSlide()"
+        class="absolute left-0 text-3xl rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-white shadow-lg transition duration-300"
+      >
+        ⬅
+      </button>
+
+      <div
+        class="w-96 h-96 bg-white rounded-2xl shadow-md p-4 text-center transition-transform duration-500"
+      >
+        <img
+          [src]="motos[currentIndex].imagen"
+          class="w-full h-60 object-cover rounded-md"
+          alt="Moto"
+        />
+
+        <h3 class="font-semibold text-lg mt-3 text-gray-900">
+          {{ motos[currentIndex].nombre }}
+        </h3>
+        <p class="text-gray-700 text-sm">
+          Precio inicial: <strong>S/ {{ motos[currentIndex].precio }}</strong>
+        </p>
+        <ul class="text-gray-600 text-sm mt-2">
+          <li>SOAT 1 año gratis</li>
+          <li>Transferencia notarial gratis</li>
+        </ul>
+      </div>
+
+      <button
+        (click)="nextSlide()"
+        class="absolute right-4 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300"
+      >
+        ➜
+      </button>
+    </div>
+
+    <button
+      class="bg-sky-500 hover:bg-sky-700 py-5 px-20 text-white font-semibold uppercase text-4xl rounded-2xl mt-6"
+    >
+      Ver catálogo
+    </button>
+  </div>
+</section>
