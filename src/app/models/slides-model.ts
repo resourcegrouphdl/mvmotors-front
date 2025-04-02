@@ -1,3 +1,5 @@
+import { Interface } from "node:readline";
+
 export interface SlidesModel {
     id?:string,
     imageUrl: string;
@@ -7,4 +9,9 @@ export interface SlidesModel {
     description: string;
     shortDescription: string;
     
+}
+
+export interface CarrucelModel {
+    id?:string,
+    inicio: string;
 }

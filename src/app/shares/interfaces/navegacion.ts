@@ -9,13 +9,11 @@ export interface Inavegacion {
 }
 
 export const RUTASNAVBAR = [
-  
-    { path: 'motos-nuevas', title: 'motos nuevas',foco:false },
-    { path: 'motos-seminuevas', title: 'motos semi nuevas',foco:false },
     { path: 'cliente/formulario', title: 'financiamiento',foco:true },
-    { path: 'quienes-somos', title: 'quienes somos',foco:false },
-    { path: 'contacto', title: 'contacto',foco:false },
-    { path: 'blog', title: 'blog',foco:false },
+    { path: 'motos-nuevas', title: 'sorteos',foco:false },
+    { path: 'motos-seminuevas', title: 'como financiamos ?',foco:false },
+    { path: 'quienes-somos', title: 'aliado comercial',foco:false },
+    { path: 'formulario', title: 'formulario',foco:false },
   
     
 ]
