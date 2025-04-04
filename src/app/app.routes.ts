@@ -29,11 +29,11 @@ export const routes: Routes = [
     },
     {
         path: 'motos-nuevas',
-        component: GaleriaNuevasComponent
+        component: GaleriaSegundaComponent
     },
     {
         path: 'motos-seminuevas',
-        component: GaleriaSegundaComponent
+        component: GaleriaNuevasComponent
     },
     {
         path: 'quienes-somos',

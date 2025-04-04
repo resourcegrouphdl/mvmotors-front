@@ -1,1 +1,85 @@
-<p>galeria-nuevas works!</p>
+<section class="border container  mx-auto">
+    <div class="w-full h-72 bg-sky-300 my-10">
+        <h1 class="text-center text-4xl font-bold pt-10">publicidad</h1>
+    </div>
+
+    <article class="flex  my-10">
+        <aside class="w-1/4   rounded-xl shadow-2xl border-2 border-gray-400">
+
+            <h1 class="text-center text-4xl font-bold pt-5">FILTROS</h1>
+            <h2 class="ml-4 uppercase font-semibold mt-5" > PRECIO </h2>
+            <div class="flex  justify-around gap-2  my-6 mx-3">
+
+                <input type="text" class="w-40 h-14 border-2 border-gray-400 rounded-lg shadow-lg" placeholder="S/. Desde">
+                <input type="text" class="w-2/4 h-14 border-2 border-gray-400 rounded-lg shadow-lg" placeholder="S/. Hasta">
+
+            </div>
+
+            <h2 class="ml-4 my-5 uppercase font-semibold mt-5"  > Marcas </h2>
+
+            <div class=" mx-6  flex flex-wrap gap-3  ">
+                @for (item of marcas; track $index) {
+                  <button type="button"
+                    class="w-40 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    {{ item }}
+                  </button>
+                }
+              </div>
+              <h2 class="ml-4 uppercase font-semibold my-5"  > categoria </h2>
+
+              <div class=" mx-6  flex flex-wrap gap-3 mb-10 ">
+
+                @for (item of categorias; track $index) {
+                  <button type="button"
+                    class="w-40 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                    {{ item }}
+                  </button>
+                }
+              </div>
+           
+
+           
+
+        </aside>
+        <div>
+
+            <div class="flex flex-wrap gap-5 m-8 ">
+                @for (item of motos ; track $index) {
+
+                    <div
+                      class="w-[300px]  0px]  bg-white rounded-2xl shadow-xl border-black border-2 p-4 text-center transition-transform duration-500 flex flex-col items-center justify-between snap-start "
+                    >
+                      <div class="flex flex-col  h-full justify-center items-center">
+                        <img
+                        [src]="item.imagen"
+                        class="w-full  aspect-auto rounded-md"
+                        alt="Moto"
+                      />
+                      </div>
+                      
+            
+                      <div>
+                        <h3 class="font-semibold text-lg mt-3 text-gray-900">
+                        {{ item.nombre}}
+                      </h3>
+                      <p class="text-gray-700 text-sm">
+                        Precio inicial: <strong>S/ {{item.precio }}</strong>
+                      </p>
+                      <ul class="text-gray-600 text-sm mt-2">
+                        <li>SOAT 1 año gratis</li>
+                        <li>Transferencia notarial GRATIS</li>
+                      </ul>
+                      </div>
+                      
+                    </div>
+            
+                    }
+            </div>
+
+        </div>
+    </article>
+
+
+
+
+</section>
