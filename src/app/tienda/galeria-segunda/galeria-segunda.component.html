@@ -9,35 +9,62 @@
     [ngClass]="{'opacity-100 translate-x-0': isImageVisible}">>
         </div>
         
-        <div class="w-1/2 transform opacity-0  transition-all duration-1000 ease-in-out  "
-        [ngClass]="{'opacity-100 translate-x-0': isImageVisible}">
-            <div class="border-2 border-gray-600 p-4 shadow-2xl  uppercase text-4xl font-semibold m-5 rounded-xl order-2 ">
-                <h2 class="m-4 text-gray-500">JHC</h2>
-                <h2 class="m-4">workman 150</h2>
-
-                <div class="ml-10 my-12 text-sky-500">
-                    <h2 class="text-2xl m-3 font-semibold flex justify-around"> <span> inicial 1 : </span><span> S/. 1 300.00</span></h2>
-                    <h2 class="text-2xl m-3 font-semibold flex justify-around"> <span> inicial 2 : </span><span> S/. 1 500.00</span></h2>
-                    <h2 class="text-2xl m-3 font-semibold flex justify-around"> <span> inicial 3 : </span><span> S/. 1 700.00</span></h2>
-                </div>
-
-                <h4 class="text-orange-400 ml-3 my-4 text-3xl"> mas inicial = cuotas mas bajas</h4>
-                 
-                <h3 class="ml-12 text-3xl mt-8"> soat  1 año  <span class="text-orange-400">gratis</span></h3>
-
-                <h3 class="ml-12 text-3xl my-3"> transferencia notarial <span class="text-orange-400">gratis</span> </h3>
-
-                <div class="flex justify-center mt-10 mb-5">
-                    <button>
-                    <a href="" 
-                    class="border-gray-200 text-white  bg-sky-400 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-3xl uppercase px-5 py-2.5 text-center mr-2 mb-2 dark:bg-sky-500 dark:hover:bg-sky-700 dark:focus:ring-sky-800">Comprar</a>
-                </button>
-                </div>
-                
-
+        <div
+        class="w-1/2 transform opacity-0 transition-all duration-1000 ease-in-out"
+        [ngClass]="{ 'opacity-100 translate-x-0': isImageVisible }"
+      >
+        <div
+          class="border border-gray-300 p-6 shadow-xl bg-white rounded-2xl m-5 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl"
+        >
+          <!-- Marca y modelo -->
+          <div class="text-center mb-6">
+            <h2 class="text-gray-400 uppercase text-2xl tracking-widest">JHC</h2>
+            <h2 class="text-4xl font-bold text-gray-800">Workman 150</h2>
+          </div>
+      
+          <!-- Precios -->
+          <div class="text-sky-600 text-xl font-medium space-y-3 mb-6">
+            <div class="flex justify-between px-8">
+              <span>Inicial 1:</span>
+              <span>S/. 1,300.00</span>
             </div>
-
+            <div class="flex justify-between px-8">
+              <span>Inicial 2:</span>
+              <span>S/. 1,500.00</span>
+            </div>
+            <div class="flex justify-between px-8">
+              <span>Inicial 3:</span>
+              <span>S/. 1,700.00</span>
+            </div>
+          </div>
+      
+          <!-- Mensaje clave -->
+          <p class="text-orange-500 text-center text-xl font-semibold mb-4">
+            Más inicial = cuotas más bajas
+          </p>
+      
+          <!-- Beneficios -->
+          <ul class="text-gray-800 text-lg font-medium space-y-2 mb-8">
+            <li class="ml-10">
+              ✅ SOAT 1 año <span class="text-orange-500 font-bold">GRATIS</span>
+            </li>
+            <li class="ml-10">
+              ✅ Transferencia notarial <span class="text-orange-500 font-bold">GRATIS</span>
+            </li>
+          </ul>
+      
+          <!-- Botón Comprar -->
+          <div class="flex justify-center">
+            <a
+              href=""
+              class="text-white bg-sky-500 hover:bg-sky-600 transition-colors duration-300 focus:ring-4 focus:outline-none focus:ring-sky-300 font-semibold rounded-full text-xl uppercase px-6 py-3 shadow-md"
+            >
+              Comprar
+            </a>
+          </div>
         </div>
+      </div>
+      
 
     </div>
 
@@ -72,14 +99,22 @@
         @for (item of submenu; track $index ) {
             <div
             [ngClass]="{
-                'bg-stone-600 text-white': activeIndex === $index,
-                'bg-gray-200 text-black': activeIndex !== $index
-              }"
-            (click)="setActive($index)" class="w-1/6 border-2 border-gray-600 flex justify-center items-center h-20  hover:bg-stone-600 shadow-lg hover:cursor-pointer ">
-              
-            <img src={{item.icono}} alt="" class="w-10 mr-3" >
-                <span class="uppercase font-semibold" >{{item.nombre}}</span>
-            </div>
+              'bg-stone-600 text-white': activeIndex === $index,
+              'bg-gray-100 text-gray-800': activeIndex !== $index
+            }"
+            (click)="setActive($index)"
+            class="w-1/6 h-20 border border-gray-400 flex items-center justify-center gap-2 rounded-md transition-all duration-300 ease-in-out cursor-pointer hover:shadow-xl hover:scale-105 hover:border-stone-600 active:scale-95"
+          >
+            <img
+              [src]="item.icono"
+              alt=""
+              class="w-10 transition-transform duration-300 group-hover:scale-110"
+            />
+            <span class="uppercase font-semibold tracking-wide text-sm">
+              {{ item.nombre }}
+            </span>
+          </div>
+          
         }
     </div>
 
