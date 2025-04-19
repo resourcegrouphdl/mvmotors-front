@@ -1,6 +1,7 @@
 import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-slider-card',
@@ -15,6 +16,11 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy {
   private intervalId: any;
   private touchStartX = 0;
   private touchEndX = 0;
+
+
+  constructor(private router:Router) { 
+
+  }
 
   ngAfterViewInit(): void {
     this.startAutoScroll();
@@ -70,7 +76,11 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy {
     this.currentIndex = (this.currentIndex + 1) % this.motos.length;
   }
 
-
+  goToCatalogo(): void {
+    // Lógica para redirigir al catálogo de motos
+    console.log('Ir al catálogo de motos');
+    this.router.navigate (['/motos-seminuevas']);
+  }
 
   
 
