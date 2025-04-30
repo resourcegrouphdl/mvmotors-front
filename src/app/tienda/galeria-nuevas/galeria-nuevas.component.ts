@@ -54,7 +54,8 @@ export class GaleriaNuevasComponent implements OnInit {
   ] 
 
 
-  goToDetail(){
+  goToDetail(producto: MotocicletaProduct) {
+    this.productService.setProducto(producto); // Almacena el producto seleccionado en el servicio
     this.router.navigate(['/motos-nuevas']);
   }
 

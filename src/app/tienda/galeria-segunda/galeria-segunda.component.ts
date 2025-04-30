@@ -1,5 +1,7 @@
 import { NgClass, NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ProductosService } from '../../services/productos.service';
+import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
 
 export interface subMenu {
 
@@ -21,11 +23,7 @@ export class GaleriaSegundaComponent implements OnInit {
 
   isImageVisible: boolean = false;
 
-  motos = [
-    { nombre: 'JCH WORKMAN 150', precio: 1300, imagen: 'https://carsaperupoc.vtexassets.com/arquivos/ids/162749/moto-ssenda-viper-200-dkr-016001126_1.png?v=638769150636370000' },
-    { nombre: 'KTM DUKE 200', precio: 7500, imagen: 'https://www.motocorp.pe/wp-content/uploads/2024/04/MATE-AZUL-SF250-sf-e1712851653377.png' },
-    { nombre: 'HERO IGNITOR 125', precio: 1300, imagen: 'https://api-motos.daytonamotos.com/files/images/full-X6bISv3KcH-1719258315.png?width=450' }
-  ];
+  productoMotocicleta: MotocicletaProduct | null = null; // Variable para almacenar el producto seleccionado
 
   moto1:string = 'https://carsaperupoc.vtexassets.com/arquivos/ids/162749/moto-ssenda-viper-200-dkr-016001126_1.png?v=638769150636370000'
 
@@ -40,8 +38,10 @@ export class GaleriaSegundaComponent implements OnInit {
     { nombre: 'Frenos', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FFRENOS.png?alt=media&token=98ab6089-b9ec-48f3-8534-2b0eec7b9029' }
   ]
 
+  constructor(private productoService: ProductosService) { }
 
   ngOnInit(): void {
+    this.recuperarProducto()
     // Activa la animación después de un breve retraso
     setTimeout(() => {
       this.isImageVisible = true;
@@ -64,5 +64,16 @@ export class GaleriaSegundaComponent implements OnInit {
 
   setActive(index: number) {
     this.activeIndex = index;
+  }
+
+  recuperarProducto() {
+    const producto = this.productoService.getProducto(); // Obtener el producto desde el servicio
+    if (producto) {
+      this.productoMotocicleta = producto; // Asignar el producto a la variable local
+      console.log('Producto recuperado:', producto);
+      // Aquí puedes hacer lo que necesites con el producto recuperado
+    } else {
+      console.log('No hay producto seleccionado.');
+    }
   }
 }
