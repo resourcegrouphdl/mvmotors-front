@@ -10,7 +10,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZoneChangeDetection({ eventCoalescing: true }), //esto es para que no se rompa la app al hacer click en el boton de enviar
     provideRouter(routes),
     //provideClientHydration(),
     provideFirebaseApp(() =>

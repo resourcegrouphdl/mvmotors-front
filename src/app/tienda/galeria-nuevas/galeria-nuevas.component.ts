@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductosService } from '../../services/productos.service';
+import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
 
 @Component({
   selector: 'app-galeria-nuevas',
@@ -14,7 +16,7 @@ export class GaleriaNuevasComponent implements OnInit {
   intervalId: any;
   isImageVisible: boolean = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private productService: ProductosService) { }
 
   ngOnInit(): void {
     this.intervalId = setInterval(() => {
@@ -24,6 +26,9 @@ export class GaleriaNuevasComponent implements OnInit {
         this.isImageVisible = true; // Muestra la nueva imagen
       }, 1500); // Tiempo para la transición de opacidad
     }, 4000); // Cambia la imagen cada 5 segundos
+
+
+    this.llenarCards(); // Llama a la función para llenar las tarjetas
   }
   ngOnDestroy(): void {
     // Limpiar el intervalo cuando el componente se destruya
@@ -39,11 +44,7 @@ export class GaleriaNuevasComponent implements OnInit {
   marcas: string[] = ['JHC', 'DUCONDA', 'LIFAN', 'BERA', 'SSENDA', 'POLUX', 'HERO', 'KTM' ];
   categorias: string[] = ['Pistera', 'Naked', 'Custom', 'Scooter', 'Cafe Racer', 'Cub', 'Utilitaria', 'Urbana', 'Enduro', 'Touring'];
 
-  motos = [
-    { nombre: 'JCH WORKMAN 150', precio: 1300, imagen: 'https://carsaperupoc.vtexassets.com/arquivos/ids/162749/moto-ssenda-viper-200-dkr-016001126_1.png?v=638769150636370000' },
-    { nombre: 'KTM DUKE 200', precio: 7500, imagen: 'https://www.motocorp.pe/wp-content/uploads/2024/04/MATE-AZUL-SF250-sf-e1712851653377.png' },
-    { nombre: 'HERO IGNITOR 125', precio: 1300, imagen: 'https://api-motos.daytonamotos.com/files/images/full-X6bISv3KcH-1719258315.png?width=450' }
-  ];
+  motos: MotocicletaProduct[] = [];
 
  
 
@@ -55,6 +56,13 @@ export class GaleriaNuevasComponent implements OnInit {
 
   goToDetail(){
     this.router.navigate(['/motos-nuevas']);
+  }
+
+  llenarCards(){
+    this.productService.getAllProducts().subscribe((data) => {
+      this.motos = data;
+      console.log(this.motos);
+    });
   }
 
 }
