@@ -5,7 +5,7 @@ export interface MotocicletaProduct {
   modelo?: string;
   categoria?: string;
   descripcion?: string;
-  fichaTecnica: string; //id de la ficha técnica en tra tabla
+  fichaTecnica: fichaTecnica; //id de la ficha técnica en tra tabla
   imagen_principal?: string;
   imagenes?: string[];
   precioWeb?: string; //id del precio en la tabla de precios

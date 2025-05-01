@@ -18,8 +18,12 @@
       >
         <!-- Marca y modelo -->
         <div class="text-center mb-6">
-          <h2 class="text-gray-800 uppercase text-2xl tracking-widest ">{{productoMotocicleta?.marca}}</h2>
-          <h2 class="text-4xl font-bold text-gray-800 uppercase">{{productoMotocicleta?.modelo}}</h2>
+          <h2 class="text-gray-800 uppercase text-2xl tracking-widest">
+            {{ productoMotocicleta?.marca }}
+          </h2>
+          <h2 class="text-4xl font-bold text-gray-800 uppercase">
+            {{ productoMotocicleta?.modelo }}
+          </h2>
         </div>
 
         <!-- Precios -->
@@ -142,13 +146,35 @@
       class="flex transition-transform duration-500 ease-in-out"
       [style.transform]="'translateX(-' + activeIndex * 100 + '%)'"
     >
-      <div
-        *ngFor="let content of secciones"
-        class="min-w-full p-6 bg-white shadow-md"
-      >
-        <h2 class="text-xl font-bold mb-2">Contenido</h2>
-        <p>{{ content }}</p>
+      @for(sudSecciones of secciones ; track $index ) {
+
+      <div class="min-w-full p-6 bg-white shadow-md">
+        <div class="flex flex-wrap justify-around">
+          @for (carcteristicas of sudSecciones; track $index) {
+
+          <div
+            class="flex items-center bg-white border rounded-sm overflow-hidden shadow-xl"
+          >
+            <div class="p-4 ">
+              <img
+                [src]="carcteristicas.icono"
+                alt=""
+                class="w-full h-ful object-cover"
+              />
+            </div>
+            <div class="px-4 text-gray-700">
+              <h3 class="text-sm tracking-wider">
+                {{ carcteristicas.nombre }}
+              </h3>
+              <p class="text-3xl">{{ carcteristicas.contenido }}</p>
+            </div>
+          </div>
+
+          }
+        </div>
       </div>
+
+      }
     </div>
   </div>
 </section>

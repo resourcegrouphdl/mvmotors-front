@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductosService } from '../../services/productos.service';
 import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
+import { BanerPublicitarioComponent } from '../../shares/baner-publicitario/baner-publicitario.component';
 
 @Component({
   selector: 'app-galeria-nuevas',
   standalone: true,
-  imports: [],
+  imports: [BanerPublicitarioComponent],
   templateUrl: './galeria-nuevas.component.html',
   styleUrl: './galeria-nuevas.component.css'
 })
@@ -56,7 +57,7 @@ export class GaleriaNuevasComponent implements OnInit {
 
   goToDetail(producto: MotocicletaProduct) {
     this.productService.setProducto(producto); // Almacena el producto seleccionado en el servicio
-    this.router.navigate(['/motos-nuevas']);
+    this.router.navigate(['/detalles-tecnicos']);
   }
 
   llenarCards(){

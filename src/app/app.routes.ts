@@ -9,66 +9,68 @@ import { GaleriaSegundaComponent } from './tienda/galeria-segunda/galeria-segund
 import { QuienesSomosComponent } from './institucional/quienes-somos/quienes-somos.component';
 import { ContactanosComponent } from './contact/contactanos/contactanos.component';
 import { NoticiasComponent } from './blog/noticias/noticias.component';
-
+import { SorteoComponent } from './sorteo/sorteo/sorteo.component';
 
 export const routes: Routes = [
-    {
-        path:'',
-        redirectTo : 'home',
-        pathMatch: 'full'
-               
-    },
-    {
-        path: 'home',
-        component:InicioComponent
-    },
-    {
-        path: 'formato/:id',
-        component: ProdutoSolicitadoComponent
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    component: InicioComponent,
+  },
+  {
+    path: 'formato/:id',
+    component: ProdutoSolicitadoComponent,
+  },
+  {
+    path: 'motos-nuevas',
+    component: SorteoComponent,
+    
+  },
+  {
+    path: 'motos-seminuevas',
+    component: GaleriaNuevasComponent,
+    
+    
+  },
+  {
+    path: 'quienes-somos',
+    component: QuienesSomosComponent,
+  },
+  {
+    path: 'contacto',
+    component: ContactanosComponent,
+  },
+  {
+    path: 'blog',
+    component: NoticiasComponent,
+  },
+  {
+    path: 'cliente',
+    component: ClienteComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'formulario',
+        pathMatch: 'full',
+      },
+      {
+        path: 'formulario',
+        component: FormularioComponent,
+      },
+    ],
+  },
 
-    },
-    {
-        path: 'motos-nuevas',
-        component: GaleriaSegundaComponent
-    },
-    {
-        path: 'motos-seminuevas',
-        component: GaleriaNuevasComponent
-    },
-    {
-        path: 'quienes-somos',
-        component:QuienesSomosComponent
-    },
-    {
-        path: 'contacto',
-        component:ContactanosComponent
-    },
-    {
-        path: 'blog',
-        component: NoticiasComponent
-    },
-    {
-        path: 'cliente',
-        component: ClienteComponent,
-        children: [
-            {
-                path: '',
-                redirectTo: 'formulario',
-                pathMatch: 'full'
-            },
-            {
-                path: 'formulario',
-                component: FormularioComponent
-
-            },
-            
-        ]
-       
-    },
-    {
-        path: '**',
-        component:NotfoundComponent,
-       
-    }
-
+  {
+    path: 'detalles-tecnicos',
+    component: GaleriaSegundaComponent,
+  },
+  {
+    path: '**',
+    component: NotfoundComponent,
+  },
+  
 ];
