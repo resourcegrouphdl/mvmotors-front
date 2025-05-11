@@ -8,7 +8,6 @@ import { GaleriaNuevasComponent } from './tienda/galeria-nuevas/galeria-nuevas.c
 import { GaleriaSegundaComponent } from './tienda/galeria-segunda/galeria-segunda.component';
 import { QuienesSomosComponent } from './institucional/quienes-somos/quienes-somos.component';
 import { ContactanosComponent } from './contact/contactanos/contactanos.component';
-import { NoticiasComponent } from './blog/noticias/noticias.component';
 import { SorteoComponent } from './sorteo/sorteo/sorteo.component';
 
 export const routes: Routes = [
@@ -43,10 +42,6 @@ export const routes: Routes = [
   {
     path: 'contacto',
     component: ContactanosComponent,
-  },
-  {
-    path: 'blog',
-    component: NoticiasComponent,
   },
   {
     path: 'cliente',
