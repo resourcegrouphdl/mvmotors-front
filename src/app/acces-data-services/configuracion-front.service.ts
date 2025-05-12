@@ -16,6 +16,8 @@ export class ConfiguracionFrontService {
  private _collection2 = collection(this._firestore, environment.PATH_FIREBASE_CARRUCEL);
 
  private _cachedSlides: CarrucelModel[] | null = null;
+  private _cacheBikes: any[] | null = null;
+
   constructor() { }
 
  // getSlides = signal(collectionData(this._collection2,{ idField: 'id'})as Observable<CarrucelModel[]> );
@@ -32,6 +34,13 @@ export class ConfiguracionFrontService {
       );
     }
   }
+
+  //getBikes():Observable <any[]> {
+
+
+
+
+  //}
 
  
 

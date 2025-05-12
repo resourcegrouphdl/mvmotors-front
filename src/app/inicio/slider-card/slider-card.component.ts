@@ -1,7 +1,8 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfiguracionFrontService } from '../../acces-data-services/configuracion-front.service';
 
 @Component({
   selector: 'app-slider-card',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './slider-card.component.html',
   styleUrl: './slider-card.component.css'
 })
-export class SliderCardComponent implements AfterViewInit, OnDestroy {
+export class SliderCardComponent implements AfterViewInit, OnDestroy,OnInit {
 
   @ViewChild('carousel') carousel!: ElementRef;
   private intervalId: any;
@@ -18,8 +19,11 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy {
   private touchEndX = 0;
 
 
-  constructor(private router:Router) { 
+  constructor(private router:Router ,private _config:ConfiguracionFrontService) { 
 
+  }
+  ngOnInit(): void {
+   
   }
 
   ngAfterViewInit(): void {
