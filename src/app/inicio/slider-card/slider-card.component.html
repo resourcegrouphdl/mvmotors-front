@@ -17,66 +17,63 @@
 <!-- opcion mAS CHEVERE  -->
 
 <section >
-  <div class="relative w-full max-w-7xl mx-auto ">
-    <!-- Botón Izquierda -->
-    <button
-      (click)="scroll('left')"
-      class=" rotate-180 absolute left-4 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300"
+<div class="relative w-full max-w-7xl mx-auto h-[400px]">
+  <!-- Botón Izquierda -->
+  <button
+    (click)="scroll('left')"
+    class="rotate-180 absolute left-4 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300 z-10"
+  >
+    ➜
+  </button>
+
+  <!-- Contenedor del Carrusel -->
+  <div class="max-w-4xl mx-auto h-full">
+    <div
+      #carousel
+      class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory space-x-4 p-4 h-full"
+      (touchstart)="handleTouchStart($event)"
+      (touchend)="handleTouchEnd($event)"
     >
-      ➜
-    </button>
-
-    <div class=" max-w-4xl mx-auto">
-      <div
-        #carousel
-        class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory space-x-4 p-4"
-        (touchstart)="handleTouchStart($event)"
-        (touchend)="handleTouchEnd($event)"
-      >
-        @for (item of motos ; track $index) {
-
+      @for (item of motos; track $index) {
         <div
-          class="w-[450px]  bg-white rounded-2xl shadow-xl border-black border-2 p-4 text-center transition-transform duration-500 flex flex-col items-center justify-between snap-start "
+          class="min-w-[250px]  bg-white rounded-2xl shadow-xl border-black border-2 p-4 text-center flex flex-col items-center justify-between snap-start transition-transform duration-500 h-full"
         >
-          <div class="flex flex-col  h-full justify-center items-center">
+          <!-- Imagen (90% del alto del contenedor) -->
+          <div class="flex items-center justify-center h-[90%]">
             <img
-            [src]="item.imagen"
-            class="w-full  aspect-auto rounded-md"
-            alt="Moto"
-          />
+              [src]="item.imagen_principal"
+              alt="Moto"
+              class="h-full w-auto object-contain rounded-md"
+            />
           </div>
-          
 
-          <div>
-            <h3 class="font-semibold text-lg mt-3 text-gray-900">
-            {{ item.nombre}}
-          </h3>
-          <p class="text-gray-700 text-sm">
-            Precio inicial: <strong>S/ {{item.precio }}</strong>
-          </p>
-          <ul class="text-gray-600 text-sm mt-2">
-            <li>SOAT 1 año gratis</li>
-            <li>Transferencia notarial GRATIS</li>
-          </ul>
+          <!-- Info -->
+          <div class="mt-2">
+            <h3 class="font-semibold text-lg text-gray-900">
+              {{ item.modelo }}
+            </h3>
+            <p class="text-gray-700 text-sm">
+              Precio inicial: <strong>S/ {{ item.precioWeb }}</strong>
+            </p>
+            <ul class="text-gray-600 text-sm mt-2">
+              <li>SOAT 1 año gratis</li>
+              <li>Transferencia notarial GRATIS</li>
+            </ul>
           </div>
-          
         </div>
-
-        }
-      </div>
+      }
     </div>
-    <!-- Carrusel -->
-
-    <!-- Botón Derecha -->
-    <button
-      (click)="scroll('right')"
-      class="absolute right-4 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300"
-    >
-      ➜
-    </button>
-
-
   </div>
+
+  <!-- Botón Derecha -->
+  <button
+    (click)="scroll('right')"
+    class="absolute right-4 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300 z-10"
+  >
+    ➜
+  </button>
+</div>
+
 
   <div class="flex justify-center mt-8">
      <button (click)="goToCatalogo()"

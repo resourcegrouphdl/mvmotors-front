@@ -20,15 +20,7 @@ export class GaleriaNuevasComponent implements OnInit {
   constructor(private router: Router, private productService: ProductosService) { }
 
   ngOnInit(): void {
-    this.intervalId = setInterval(() => {
-      this.isImageVisible = false; // Oculta la imagen actual
-      setTimeout(() => {
-        this.currentImageIndex = (this.currentImageIndex + 1) % this.publicidad.length;
-        this.isImageVisible = true; // Muestra la nueva imagen
-      }, 1500); // Tiempo para la transición de opacidad
-    }, 4000); // Cambia la imagen cada 5 segundos
-
-
+    
     this.llenarCards(); // Llama a la función para llenar las tarjetas
   }
   ngOnDestroy(): void {
@@ -38,9 +30,7 @@ export class GaleriaNuevasComponent implements OnInit {
     }
   }
 
-  get currentImage(): string {
-    return this.publicidad[this.currentImageIndex];
-  }
+  
 
   marcas: string[] = ['JHC', 'DUCONDA', 'LIFAN', 'BERA', 'SSENDA', 'POLUX', 'HERO', 'KTM' ];
   categorias: string[] = ['Pistera', 'Naked', 'Custom', 'Scooter', 'Cafe Racer', 'Cub', 'Utilitaria', 'Urbana', 'Enduro', 'Touring'];
@@ -49,10 +39,6 @@ export class GaleriaNuevasComponent implements OnInit {
 
  
 
-
-  publicidad:string[] = ["https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/publicidad%2FPUBLICIDAD%201-100.jpg?alt=media&token=4c158e47-41a1-4f08-bf3d-9d5918f67a03",
-    "https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/publicidad%2FPUBLICIDAD%202-100.jpg?alt=media&token=c2819ed1-dc7f-4281-9bdf-c9e123cea72f"
-  ] 
 
 
   goToDetail(producto: MotocicletaProduct) {

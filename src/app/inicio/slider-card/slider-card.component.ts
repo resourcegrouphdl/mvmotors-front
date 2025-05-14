@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfiguracionFrontService } from '../../acces-data-services/configuracion-front.service';
+import { ProductosService } from '../../services/productos.service';
+import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
 
 @Component({
   selector: 'app-slider-card',
@@ -18,12 +20,27 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy,OnInit {
   private touchStartX = 0;
   private touchEndX = 0;
 
+  motos : MotocicletaProduct[] =[];
 
-  constructor(private router:Router ,private _config:ConfiguracionFrontService) { 
+
+
+  constructor(private router:Router ,private productoService:ProductosService) { 
 
   }
   ngOnInit(): void {
+   this.llenarCards();
+  }
+
+
+  
    
+  
+
+  llenarCards(){
+    this.productoService.getAllProducts().subscribe((data) => {
+      this.motos = data;
+      console.log(this.motos);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -64,11 +81,7 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy,OnInit {
     this.stopAutoScroll();
   }
 
-  motos = [
-    { nombre: 'JCH WORKMAN 150', precio: 1300, imagen: 'https://carsaperupoc.vtexassets.com/arquivos/ids/162749/moto-ssenda-viper-200-dkr-016001126_1.png?v=638769150636370000' },
-    { nombre: 'KTM DUKE 200', precio: 7500, imagen: 'https://www.motocorp.pe/wp-content/uploads/2024/04/MATE-AZUL-SF250-sf-e1712851653377.png' },
-    { nombre: 'HERO IGNITOR 125', precio: 1300, imagen: 'https://api-motos.daytonamotos.com/files/images/full-X6bISv3KcH-1719258315.png?width=450' }
-  ];
+  
 
   
 
