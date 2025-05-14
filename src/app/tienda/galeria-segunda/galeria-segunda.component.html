@@ -71,51 +71,57 @@
     </div>
   </div>
 
-  <div class="flex justify-between w-full h-60 bg-stone-600">
-    <div class="w-1/6 flex justify-center items-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="block w-8 font-bold h-8"
+
+  <!--  carrucel central   -->
+
+<section class="h-[300px] border bg-stone-600">
+  <div class="relative w-full max-w-7xl mx-auto h-full">
+
+    <!-- Botón Izquierda -->
+    <button
+      (click)="scroll('left')"
+      class="rotate-180 absolute left-2 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300 z-10"
+    >
+      ➜
+    </button>
+
+    <!-- Carrusel -->
+    <div class="max-w-6xl  mx-auto h-full">
+      <div
+        #carousel
+        class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory space-x-4 p-4 h-full"
+        (touchstart)="handleTouchStart($event)"
+        (touchend)="handleTouchEnd($event)"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 19.5L8.25 12l7.5-7.5"
-        />
-      </svg>
-    </div>
-    <div class="w-4/6 flex justify-center p-3 items-center">
-      <div class="h-full bg-gray-300 rounded-xl m-3 shadow-lg">
-        <img [src]="moto1" alt="" class="h-full" />
-      </div>
-      <div class="h-full bg-gray-300 rounded-xl shadow-lg mx-3">
-        <img [src]="moto1" alt="" class="h-full" />
-      </div>
-      <div class="h-full bg-gray-300 rounded-xl shadow-lg mx-3">
-        <img [src]="moto1" alt="" class="h-full" />
+        @for (item of productoMotocicleta?.imagenes; track $index) {
+          <div
+            class="min-w-[300px] max-w-[400px] h-full bg-stone-600 rounded-2xl shadow-xl  flex items-center justify-center snap-start transition-transform duration-500"
+          >
+            <img
+              [src]="item"
+              alt="Moto"
+              class="h-[90%] w-auto object-contain rounded-md"
+            />
+          </div>
+        }
       </div>
     </div>
-    <div class="w-1/6 flex justify-center items-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="block w-8 h-8"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M8.25 4.5l7.5 7.5-7.5 7.5"
-        />
-      </svg>
-    </div>
+
+    <!-- Botón Derecha -->
+    <button
+      (click)="scroll('right')"
+      class="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full bg-cyan-500 hover:bg-cyan-600 flex items-center justify-center p-3 text-3xl text-white shadow-lg transition duration-300 z-10"
+    >
+      ➜
+    </button>
+
   </div>
+</section>
+
+
+<!--      carrucel central                    -->
+
+
   <div class="w-full flex justify-between items-center">
     @for (item of submenu; track $index ) {
     <div

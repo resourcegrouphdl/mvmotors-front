@@ -70,15 +70,7 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy,OnInit {
     { nombre: 'HERO IGNITOR 125', precio: 1300, imagen: 'https://api-motos.daytonamotos.com/files/images/full-X6bISv3KcH-1719258315.png?width=450' }
   ];
 
-  currentIndex = 0;
-
-  prevSlide() {
-    this.currentIndex = (this.currentIndex - 1 + this.motos.length) % this.motos.length;
-  }
-
-  nextSlide() {
-    this.currentIndex = (this.currentIndex + 1) % this.motos.length;
-  }
+  
 
   goToCatalogo(): void {
     // Lógica para redirigir al catálogo de motos

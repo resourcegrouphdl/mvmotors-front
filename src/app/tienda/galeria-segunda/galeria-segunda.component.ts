@@ -1,5 +1,5 @@
 import { NgClass, NgFor } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductosService } from '../../services/productos.service';
 import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
 
@@ -54,6 +54,11 @@ export class GaleriaSegundaComponent implements OnInit {
   freno: subMenu2[] = []
 
 
+    @ViewChild('carousel') carousel!: ElementRef;
+    private intervalId: any;
+    private touchStartX = 0;
+    private touchEndX = 0;
+     
 
   constructor(private productoService: ProductosService) { }
 
@@ -121,7 +126,7 @@ export class GaleriaSegundaComponent implements OnInit {
       ]
 
       this.conbustible = [
-        { nombre: 'Combustible', icono: this.urlIconos +'COMBUSTIBLE.png?alt=media&token=4e7873a2-89cb-48eb-99ad-5256ae2b4d41', contenido: fichaTecnica.conbustible },
+        { nombre: 'Combustible', icono: this.urlIconos +'COMBUSTIBLE.png?alt=media&token=4e7873a2-89cb-48eb-99ad-5256ae2b4d41', contenido: fichaTecnica.combustible },
         { nombre: 'Tanque', icono: this.urlIconos +'TANQUE.png?alt=media&token=d6bffb63-86e5-4d9b-a1b0-8f5898c9d3ed', contenido: fichaTecnica.tanque },
         { nombre: 'Rendimiento', icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.rendimiento },
         { nombre: 'Autonomía', icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.autonomia }
@@ -157,6 +162,45 @@ export class GaleriaSegundaComponent implements OnInit {
 
       console.log('Características seteadas:', this.secciones);
     
+  }
+
+
+  ngAfterViewInit(): void {
+    this.startAutoScroll();
+  }
+
+  startAutoScroll(): void {
+    this.intervalId = setInterval(() => {
+      this.scroll('right');
+    }, 5000); // Cambia cada 3 segundos
+  }
+
+  stopAutoScroll(): void {
+    clearInterval(this.intervalId);
+  }
+
+  scroll(direction: 'left' | 'right'): void {
+    const container = this.carousel.nativeElement;
+    const scrollAmount = 300;
+    container.scrollBy({ left: direction === 'right' ? scrollAmount : -scrollAmount, behavior: 'smooth' });
+  }
+
+  handleTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.touches[0].clientX;
+  }
+
+  handleTouchEnd(event: TouchEvent): void {
+    this.touchEndX = event.changedTouches[0].clientX;
+    if (this.touchEndX < this.touchStartX) {
+      this.scroll('right');
+    } else if (this.touchEndX > this.touchStartX) {
+      this.scroll('left');
+    }
+  }
+
+
+  ngOnDestroy(): void {
+    this.stopAutoScroll();
   }
 
 }

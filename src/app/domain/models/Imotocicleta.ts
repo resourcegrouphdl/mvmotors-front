@@ -21,7 +21,7 @@ export interface fichaTecnica {
   cilindrada: string;
   potencia: string;
   torque: string;
-  conbustible: string;
+  combustible: string;
   tanque: string;
   rendimiento: string;
   autonomia: string;

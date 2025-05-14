@@ -14,9 +14,11 @@ export class ConfiguracionFrontService {
   private _firestore = inject(Firestore);
 
  private _collection2 = collection(this._firestore, environment.PATH_FIREBASE_CARRUCEL);
+ private _collectionBaners = collection(this._firestore, environment.PATH_FIREBASE_BANERS);
 
  private _cachedSlides: CarrucelModel[] | null = null;
   private _cacheBikes: any[] | null = null;
+  private _cacheBaners: any[] | null = null;
 
   constructor() { }
 
@@ -35,12 +37,16 @@ export class ConfiguracionFrontService {
     }
   }
 
-  //getBikes():Observable <any[]> {
-
-
-
-
-  //}
+  getBaners(): Observable<any[]> {
+  
+    if (this._cacheBaners) {
+      return of(this._cacheBaners);
+    } else {
+      return collectionData(this._collectionBaners, { idField: 'id' }).pipe(
+        tap((baners) => (this._cacheBaners = baners as any[]))
+      );
+    }
+  }  
 
  
 
