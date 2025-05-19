@@ -4,10 +4,11 @@ import { ProductosService } from '../../services/productos.service';
 import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
 import { BanerPublicitarioComponent } from '../../shares/baner-publicitario/baner-publicitario.component';
 
+
 @Component({
   selector: 'app-galeria-nuevas',
   standalone: true,
-  imports: [BanerPublicitarioComponent],
+  imports: [BanerPublicitarioComponent,],
   templateUrl: './galeria-nuevas.component.html',
   styleUrl: './galeria-nuevas.component.css'
 })

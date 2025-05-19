@@ -2,6 +2,7 @@ import { NgClass, NgFor } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductosService } from '../../services/productos.service';
 import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
+import { Route, Router, Routes } from '@angular/router';
 
 export interface subMenu {
 
@@ -41,8 +42,8 @@ export class GaleriaSegundaComponent implements OnInit {
     { nombre: 'Rendimiento', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FRENDIMIENTO.png?alt=media&token=1fd45da9-c0f0-4ff2-9ce0-7c4ff47baf53' },
     { nombre: 'Suspensión', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FSUSPENSI%C3%93N.png?alt=media&token=6391926d-c68e-4051-b029-597e80065573' },
     { nombre: 'Transmisión', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FTRANSMISION.png?alt=media&token=d193fe3a-b6bb-494f-b960-d39475dc5a85' },
-    { nombre: 'Dimensiones', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FDIMENSIONES.png?alt=media&token=51301fbb-c6bf-46c4-af69-f043be7848f0' },
-    { nombre: 'Frenos', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FFRENOS.png?alt=media&token=98ab6089-b9ec-48f3-8534-2b0eec7b9029' }
+    { nombre: 'Dimensiones', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FDIMENSIONESC.png?alt=media&token=3b8d1b06-c0ab-4e76-b160-4a2fe5a500bf' },
+    { nombre: 'Ruedas', icono: 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2FRUEDAS.png?alt=media&token=bcb6b2d0-1fdf-4154-bad6-50243f98e10e' }
   ]
 
 
@@ -60,7 +61,7 @@ export class GaleriaSegundaComponent implements OnInit {
     private touchEndX = 0;
      
 
-  constructor(private productoService: ProductosService) { }
+  constructor(private productoService: ProductosService ,private router: Router) { }
 
   ngOnInit(): void {
 
@@ -95,7 +96,9 @@ export class GaleriaSegundaComponent implements OnInit {
         this.isImageVisible = true;
       }, 100); // Retraso de 100ms para que la animación sea visible
     } else {
+
       console.log('No se pudo recuperar el producto.');
+      this.router.navigate(['/motos-seminuevas']);
     }
   }
 
@@ -120,21 +123,21 @@ export class GaleriaSegundaComponent implements OnInit {
 
     
       this.motor = [
-        { nombre: 'Cilindrada', icono: this.urlIconos +'CILINDRADA.png?alt=media&token=a225ddcd-f7ae-4e2e-9560-ac6338871239', contenido: fichaTecnica.cilindrada },
+        { nombre: 'Motor', icono: this.urlIconos +'CILINDRADA.png?alt=media&token=a225ddcd-f7ae-4e2e-9560-ac6338871239', contenido: fichaTecnica.motor },
         { nombre: 'Potencia',   icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.potencia },
-        { nombre: 'Torque',     icono: this.urlIconos +'TORQUE.png?alt=media&token=19e9ff62-a5ea-40b3-9acd-39de91253173', contenido: fichaTecnica.torque }
+        { nombre: 'Cilindrada',     icono: this.urlIconos +'TORQUE.png?alt=media&token=19e9ff62-a5ea-40b3-9acd-39de91253173', contenido: fichaTecnica.cilindrada }
       ]
 
       this.conbustible = [
-        { nombre: 'Combustible', icono: this.urlIconos +'COMBUSTIBLE.png?alt=media&token=4e7873a2-89cb-48eb-99ad-5256ae2b4d41', contenido: fichaTecnica.combustible },
+      
         { nombre: 'Tanque', icono: this.urlIconos +'TANQUE.png?alt=media&token=d6bffb63-86e5-4d9b-a1b0-8f5898c9d3ed', contenido: fichaTecnica.tanque },
         { nombre: 'Rendimiento', icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.rendimiento },
-        { nombre: 'Autonomía', icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.autonomia }
+        
       ]
 
       this.suspencion = [
         { nombre: 'Suspensión Delantera', icono: this.urlIconos +'SUSPENSIÓN%20DELAN%20Y%20TRASE.png?alt=media&token=2d06e0fd-2219-45e1-aa4e-48336369c190', contenido: fichaTecnica.suspencionDelantera },
-        { nombre: 'Suspensión Trasera',   icono: this.urlIconos +'SUSPENSIÓN%20DELAN%20Y%20TRASE.png?alt=media&token=2d06e0fd-2219-45e1-aa4e-48336369c190', contenido: fichaTecnica.suspencionTrasera }
+        { nombre: 'Suspensión Posterior',   icono: this.urlIconos +'SUSPENSIÓN%20DELAN%20Y%20TRASE.png?alt=media&token=2d06e0fd-2219-45e1-aa4e-48336369c190', contenido: fichaTecnica.suspencionTrasera }
       ]
       this.transmision = [
         { nombre: 'Transmisión', icono: this.urlIconos +'TRANSMISIÓN.png?alt=media&token=19865ff9-3a95-4f51-b857-43b16e1f17a9', contenido: fichaTecnica.transmision },
@@ -148,7 +151,10 @@ export class GaleriaSegundaComponent implements OnInit {
       ]
       this.freno = [
         { nombre: 'Freno Delantero', icono: this.urlIconos +'FRENOS%20DELAN%20Y%20TRASE.png?alt=media&token=bbb75c6e-bd06-4465-9260-7b0bd5ea8ec3', contenido: fichaTecnica.frenoDelantero },
-        { nombre: 'Freno Trasero', icono:this.urlIconos + 'FRENOS%20DELAN%20Y%20TRASE.png?alt=media&token=bbb75c6e-bd06-4465-9260-7b0bd5ea8ec3', contenido: fichaTecnica.frenoTrasero }
+        { nombre: 'Freno Posterior', icono:this.urlIconos + 'FRENOS%20DELAN%20Y%20TRASE.png?alt=media&token=bbb75c6e-bd06-4465-9260-7b0bd5ea8ec3', contenido: fichaTecnica.frenoTrasero },
+        { nombre: 'Rueda Delantera', icono:this.urlIconos + 'RUEDASBLAK.png?alt=media&token=d785050f-b1d9-4eee-a153-ce3996870f99', contenido: fichaTecnica.ruedaDelantera },
+        { nombre: 'Rueda Posterior', icono:this.urlIconos + 'RUEDASBLAK.png?alt=media&token=d785050f-b1d9-4eee-a153-ce3996870f99', contenido: fichaTecnica.ruedaTrasera },
+        
       ]
 
       this.secciones = [

@@ -1,14 +1,43 @@
 <section class="border container mx-auto">
   <app-baner-publicitario></app-baner-publicitario>
 
-  <article class="flex my-10">
-    <aside class="w-1/4 rounded-xl shadow-2xl border-2 border-gray-400">
+  <div class="w-full h-20 border-black border-2 rounded-lg flex justify-center items-center gap-2  sm:hidden md:hidden xl:hidden 2xl:hidden">
+    <h2>FILTROS</h2>
+
+    
+  
+  <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option selected>Elija una  Marca</option>
+    @for (item of marcas; track $index) {
+      <option value="{{ item }}">{{ item }}</option>
+    }
+  </select>
+
+   <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option selected>Elija una  Categoria</option>
+    @for (item of categorias; track $index) {
+      <option value="{{ item }}">{{ item }}</option>
+    }
+  
+  </select>
+
+
+
+
+    
+
+
+    
+  </div>
+
+  <article class="  flex gap-5 my-10">
+    <aside class=" hidden md:block w-2/12 rounded-xl shadow-2xl border-2 border-gray-400">
       <h1 class="text-center text-4xl font-bold pt-5">FILTROS</h1>
       <h2 class="ml-4 uppercase font-semibold mt-5">PRECIO</h2>
       <div class="flex justify-around gap-2 my-6 mx-3">
         <input
           type="text"
-          class="w-40 h-14 border-2 border-gray-400 rounded-lg shadow-lg"
+          class="w-2/4 h-14 border-2 border-gray-400 rounded-lg shadow-lg"
           placeholder="S/. Desde"
         />
         <input
@@ -20,11 +49,11 @@
 
       <h2 class="ml-4 my-5 uppercase font-semibold mt-5">Marcas</h2>
 
-      <div class="mx-4 flex flex-wrap gap-3">
+      <div class="mx-4 flex flex-wrap gap-2">
         @for (item of marcas; track $index) {
         <button
           type="button"
-          class="w-40 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          class="w-full py-2.5 px-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
           {{ item }}
         </button>
@@ -36,7 +65,7 @@
         @for (item of categorias; track $index) {
         <button
           type="button"
-          class="w-40 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          class="w-full py-2.5 px-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-400 hover:bg-gray-100 hover:text-blue-700 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
           {{ item }}
         </button>
@@ -48,7 +77,7 @@
         @for (item of motos ; track $index) {
 
           <div
-          class="w-[300px] flex flex-col justify-between  bg-white rounded-2xl shadow-md border border-gray-200 p-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-sky-400 cursor-pointer snap-start group"
+          class=" w-[200px] md:w-[300px] flex flex-col justify-between  bg-white rounded-2xl shadow-md border border-gray-200 p-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-sky-400 cursor-pointer snap-start group"
           (click)="goToDetail(item)"
         >
           <!-- Imagen -->

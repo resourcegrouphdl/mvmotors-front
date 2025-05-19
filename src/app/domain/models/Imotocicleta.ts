@@ -18,6 +18,7 @@ export interface MotocicletaProduct {
 
 export interface fichaTecnica {
   id?: string;
+  motor: string;
   cilindrada: string;
   potencia: string;
   torque: string;
@@ -25,6 +26,8 @@ export interface fichaTecnica {
   tanque: string;
   rendimiento: string;
   autonomia: string;
+  ruedaDelantera: string;
+  ruedaTrasera: string;
   suspencionDelantera: string;
   suspencionTrasera: string;
   frenoDelantero: string;
