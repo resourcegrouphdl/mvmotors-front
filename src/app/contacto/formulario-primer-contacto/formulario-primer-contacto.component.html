@@ -1,0 +1,80 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-6">
+  <h2 class="text-2xl font-bold text-gray-800">Formulario de Contacto</h2>
+
+  <form class="space-y-4">
+    <!-- Nombre y Apellido -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+      </div>
+      <div>
+        <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido</label>
+        <input type="text" id="apellido" name="apellido" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+      </div>
+    </div>
+
+    <!-- Teléfono -->
+    <div>
+      <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+      <input type="tel" id="telefono" name="telefono" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <!-- Tipo y Número de Documento -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="tipoDocumento" class="block text-sm font-medium text-gray-700">Tipo de Documento</label>
+        <select id="tipoDocumento" name="tipoDocumento" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          <option value="">Seleccione</option>
+          <option value="DNI">DNI</option>
+          <option value="CE">Carné de Extranjería</option>
+        </select>
+      </div>
+      <div>
+        <label for="numeroDocumento" class="block text-sm font-medium text-gray-700">Número de Documento</label>
+        <input type="text" id="numeroDocumento" name="numeroDocumento" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+      </div>
+    </div>
+
+    <!-- Edad y Género -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="edad" class="block text-sm font-medium text-gray-700">Edad</label>
+        <input type="number" id="edad" name="edad" min="0" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+      </div>
+      <div>
+        <label for="genero" class="block text-sm font-medium text-gray-700">Género</label>
+        <select id="genero" name="genero" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          <option value="">Seleccione</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Otro">Otro</option>
+          <option value="Prefiero no decir">Prefiero no decir</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Preferencia de Contacto -->
+    <div>
+      <label for="preferenciaContacto" class="block text-sm font-medium text-gray-700">¿Cómo desea ser contactado?</label>
+      <select id="preferenciaContacto" name="preferenciaContacto" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+        <option value="">Seleccione</option>
+        <option value="Llamada directa">Llamada directa</option>
+        <option value="WhatsApp">WhatsApp</option>
+      </select>
+    </div>
+
+    <!-- Horario de Contacto -->
+    <div>
+      <label for="horarioContacto" class="block text-sm font-medium text-gray-700">¿En qué horario desea ser contactado?</label>
+      <input type="text" id="horarioContacto" name="horarioContacto" placeholder="Ejemplo: 9:00 AM - 12:00 PM" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <!-- Botón de Envío -->
+    <div class="text-right">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-xl transition duration-200">
+        Enviar
+      </button>
+    </div>
+  </form>
+</div>

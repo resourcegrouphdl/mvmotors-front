@@ -1,4 +1,5 @@
-import { Component ,OnInit,Renderer2} from '@angular/core';
+import { Component ,inject,OnInit,Renderer2} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -8,6 +9,7 @@ import { Component ,OnInit,Renderer2} from '@angular/core';
   styleUrl: './footer.component.css'
 })
 export class FooterComponent implements OnInit {
+  _routes = inject(Router);
 
   constructor(private renderer: Renderer2) {
     
@@ -23,5 +25,20 @@ export class FooterComponent implements OnInit {
     this.renderer.appendChild(document.body, script);
   }
   
+
+  
+  
+
+  
+  
+  navegarTerminosYCondiciones() {
+    this._routes.navigate(['terminos-y-condiciones']);
+  }
+  navegarLibroReclamaciones() {
+    this._routes.navigate(['libro-de-reclamaciones']);
+  }
+  navegarPoliticasPrivacidad() {
+    this._routes.navigate(['politicas-de-privacidad']);
+  }
 
 }

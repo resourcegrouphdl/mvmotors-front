@@ -14,6 +14,7 @@ export interface MotocicletaProduct {
   destacado?: string;
   fechaCreacion?: string;
   promociones?: string[]; //id de las promociones en la tabla de promociones
+  precioInicial?: string; //id del precio inicial en la tabla de precios
 }
 
 export interface fichaTecnica {
@@ -36,6 +37,7 @@ export interface fichaTecnica {
   peso: string;
   velocidadMaxima: string;
   dimenciones: string;
+  arranque:string;
 }
 
 export interface Precio {

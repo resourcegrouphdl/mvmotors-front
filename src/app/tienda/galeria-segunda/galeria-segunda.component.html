@@ -14,46 +14,33 @@
       [ngClass]="{ 'opacity-100 translate-x-0': isImageVisible }"
     >
       <div
-        class="border border-gray-300 p-6 shadow-xl bg-white rounded-2xl m-5 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl"
+        class="border border-gray-300 p-6 shadow-xl bg-white rounded-2xl m-5 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-sky-500 h-[500px] flex flex-col justify-between"
       >
         <!-- Marca y modelo -->
-        <div class="text-center mb-6">
-          <h2 class="text-gray-800 uppercase text-2xl tracking-widest">
+        <div class="text-center mb-6  font-bold">
+          <h2 class="text-gray-800 uppercase text-5xl tracking-widest">
             {{ productoMotocicleta?.marca }}
           </h2>
-          <h2 class="text-4xl font-bold text-gray-800 uppercase">
+          <h2 class="text-6xl font-bold text-gray-600 uppercase">
             {{ productoMotocicleta?.modelo }}
           </h2>
         </div>
 
         <!-- Precios -->
-        <div class="text-sky-600 text-xl font-medium space-y-3 mb-6">
-          <div class="flex justify-between px-8">
-            <span>Inicial 1:</span>
-            <span>S/. 1,300.00</span>
-          </div>
-          <div class="flex justify-between px-8">
-            <span>Inicial 2:</span>
-            <span>S/. 1,500.00</span>
-          </div>
-          <div class="flex justify-between px-8">
-            <span>Inicial 3:</span>
-            <span>S/. 1,700.00</span>
-          </div>
-        </div>
+      
 
         <!-- Mensaje clave -->
-        <p class="text-orange-500 text-center text-xl font-semibold mb-4">
-          Más inicial = cuotas más bajas
+        <p class="text-sky-500 text-center text-4xl font-semibold mb-4 uppercase">
+          inicial desde : {{productoMotocicleta?.precioInicial}} S/.
         </p>
 
         <!-- Beneficios -->
         <ul class="text-gray-800 text-lg font-medium space-y-2 mb-8">
-          <li class="ml-10">
-            ✅ SOAT 1 año <span class="text-orange-500 font-bold">GRATIS</span>
+          <li class="ml-10 uppercase text-2xl">
+             SOAT 1 año <span class="text-orange-500 font-bold">GRATIS</span>
           </li>
-          <li class="ml-10">
-            ✅ Transferencia notarial
+          <li class="ml-10 uppercase text-2xl">
+             Transferencia notarial
             <span class="text-orange-500 font-bold">GRATIS</span>
           </li>
         </ul>
@@ -61,10 +48,10 @@
         <!-- Botón Comprar -->
         <div class="flex justify-center">
           <a
-            href=""
-            class="text-white bg-sky-500 hover:bg-sky-600 transition-colors duration-300 focus:ring-4 focus:outline-none focus:ring-sky-300 font-semibold rounded-full text-xl uppercase px-6 py-3 shadow-md"
+            [routerLink]="['/contactenos']"
+            class="text-white bg-sky-500  hover:bg-sky-600 transition-colors duration-300 focus:ring-4 focus:outline-none focus:ring-sky-300 font-semibold rounded-md text-xl uppercase px-6 py-3 shadow-md"
           >
-            Comprar
+            Financiar Moto
           </a>
         </div>
       </div>

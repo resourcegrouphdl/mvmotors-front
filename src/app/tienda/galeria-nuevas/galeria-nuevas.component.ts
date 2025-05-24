@@ -33,7 +33,7 @@ export class GaleriaNuevasComponent implements OnInit {
 
   
 
-  marcas: string[] = ['JHC', 'DUCONDA', 'LIFAN', 'BERA', 'SSENDA', 'POLUX', 'HERO', 'KTM' ];
+  marcas: string[] = ['JCH', 'DUCONDA', 'LIFAN', 'BERA', 'SSENDA', 'POLUX', 'HERO', 'KTM' ];
   categorias: string[] = ['Pistera', 'Naked', 'Custom', 'Scooter', 'Cafe Racer', 'Cub', 'Utilitaria', 'Urbana', 'Enduro', 'Touring'];
 
   motos: MotocicletaProduct[] = [];

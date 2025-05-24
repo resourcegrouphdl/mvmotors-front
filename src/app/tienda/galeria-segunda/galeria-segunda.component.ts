@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductosService } from '../../services/productos.service';
 import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
 import { Route, Router, Routes } from '@angular/router';
-
+import { RouterLink, RouterLinkActive } from '@angular/router';
 export interface subMenu {
 
   nombre: string;
@@ -21,7 +21,7 @@ export interface subMenu2 {
 @Component({
   selector: 'app-galeria-segunda',
   standalone: true,
-  imports: [NgClass,NgFor],
+  imports: [NgClass,NgFor, RouterLink, RouterLinkActive],
   templateUrl: './galeria-segunda.component.html',
   styleUrl: './galeria-segunda.component.css'
 })
@@ -124,6 +124,7 @@ export class GaleriaSegundaComponent implements OnInit {
     
       this.motor = [
         { nombre: 'Motor', icono: this.urlIconos +'CILINDRADA.png?alt=media&token=a225ddcd-f7ae-4e2e-9560-ac6338871239', contenido: fichaTecnica.motor },
+        { nombre: 'Arranque', icono: this.urlIconos +'CILINDRADA.png?alt=media&token=a225ddcd-f7ae-4e2e-9560-ac6338871239', contenido: fichaTecnica.arranque },
         { nombre: 'Potencia',   icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.potencia },
         { nombre: 'Cilindrada',     icono: this.urlIconos +'TORQUE.png?alt=media&token=19e9ff62-a5ea-40b3-9acd-39de91253173', contenido: fichaTecnica.cilindrada }
       ]

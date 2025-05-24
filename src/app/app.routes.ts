@@ -9,6 +9,10 @@ import { GaleriaSegundaComponent } from './tienda/galeria-segunda/galeria-segund
 import { QuienesSomosComponent } from './institucional/quienes-somos/quienes-somos.component';
 import { ContactanosComponent } from './contact/contactanos/contactanos.component';
 import { SorteoComponent } from './sorteo/sorteo/sorteo.component';
+import { TerminosCondicionesComponent } from './shares/terminos-condiciones/terminos-condiciones.component';
+import { LibroDeReclamacionesComponent } from './shares/libro-de-reclamaciones/libro-de-reclamaciones.component';
+import { PoliticasDePrivacidadComponent } from './shares/politicas-de-privacidad/politicas-de-privacidad.component';
+import { FormularioPrimerCOntactoComponent } from './contacto/formulario-primer-contacto/formulario-primer-contacto.component';
 
 export const routes: Routes = [
   {
@@ -32,8 +36,6 @@ export const routes: Routes = [
   {
     path: 'motos-seminuevas',
     component: GaleriaNuevasComponent,
-    
-    
   },
   {
     path: 'quienes-somos',
@@ -42,6 +44,18 @@ export const routes: Routes = [
   {
     path: 'contacto',
     component: ContactanosComponent,
+  },
+  {
+    path: 'terminos-y-condiciones',
+    component: TerminosCondicionesComponent,
+  },
+  {
+    path: 'libro-de-reclamaciones',
+    component: LibroDeReclamacionesComponent,
+  },
+  {
+    path: 'politicas-de-privacidad',
+    component: PoliticasDePrivacidadComponent,
   },
   {
     path: 'cliente',
@@ -57,6 +71,10 @@ export const routes: Routes = [
         component: FormularioComponent,
       },
     ],
+  },
+  {
+    path: 'contactenos',
+    component: FormularioPrimerCOntactoComponent,
   },
 
   {

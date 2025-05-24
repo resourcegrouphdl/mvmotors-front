@@ -6,4 +6,5 @@ export const environment = {
     PATH_FIREBASE_PRODUCTS: 'products',
     PATH_FIREBASE_CARRUCEL: 'carrucel',
     PATH_FIREBASE_BANERS: 'baners',
+    FIREBASE_TABLA_RECLAMACIONES: 'libro-reclamaciones',
 }

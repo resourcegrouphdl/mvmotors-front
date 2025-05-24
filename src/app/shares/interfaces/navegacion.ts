@@ -13,7 +13,7 @@ export const RUTASNAVBAR = [
     { path: 'motos-nuevas', title: 'sorteos',foco:false },
     { path: 'motos-seminuevas', title: 'como financiamos ?',foco:false },
     { path: 'quienes-somos', title: 'aliado comercial',foco:false },
-    { path: 'formulario', title: 'formulario',foco:false },
+    { path: 'contactenos', title: 'contactenos',foco:false },
   
     
 ]
