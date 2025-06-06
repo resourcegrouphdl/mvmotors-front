@@ -1,4 +1,4 @@
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductosService } from '../../services/productos.service';
 import { MotocicletaProduct } from '../../domain/models/Imotocicleta';
@@ -21,7 +21,7 @@ export interface subMenu2 {
 @Component({
   selector: 'app-galeria-segunda',
   standalone: true,
-  imports: [NgClass,NgFor, RouterLink, RouterLinkActive],
+  imports: [NgClass, RouterLink, RouterLinkActive,NgStyle],
   templateUrl: './galeria-segunda.component.html',
   styleUrl: './galeria-segunda.component.css'
 })
@@ -30,6 +30,7 @@ export interface subMenu2 {
 export class GaleriaSegundaComponent implements OnInit {
 
   isImageVisible: boolean = false;
+  colores: string[] = ['#FF5733', '#33FF57', '#3357FF']; // Colores para el fondo de la ruleta
 
   productoMotocicleta: MotocicletaProduct | null = null; // Variable para almacenar el producto seleccionado
   urlIconos: string = 'https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/iconos%2F'; // url de los iconos
