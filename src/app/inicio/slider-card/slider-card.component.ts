@@ -93,4 +93,6 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy,OnInit {
 
   
 
+  
+
 }

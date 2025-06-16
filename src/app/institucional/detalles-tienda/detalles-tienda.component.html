@@ -1,0 +1,52 @@
+<div class="container flex-column mx-auto justify-center items-center">
+
+  <div class="mx-auto border border-gray-300 rounded-lg shadow-lg p-6 mb-6 w-full ">
+    <div class=" flex flex-col justify-center items-center text-4xl font-bold text-center capitalize">
+      <h1>{{datosDeLaTienda.razonSocial}}</h1>
+      <p>{{datosDeLaTienda.direccion}}</p>
+      <p>{{datosDeLaTienda.telefono}}</p>
+    </div>
+  </div>
+
+
+
+  <div class=" border-gray-300 rounded-lg shadow-lg p-6 w-full  mx-auto" >
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h2 class="text-2xl font-bold mb-4">Example Datatable</h2>
+    <table id="example" class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Modelo</th>
+                <th class="px-4 py-2">Marca</th>
+                <th class="px-4 py-2">Precio</th>
+                <th class="px-4 py-2">Numero De cuotas</th>
+                <th class="px-4 py-2">etc</th>
+                <th class="px-4 py-2">etc</th>
+            </tr>
+        </thead>
+        <tbody>
+
+           @for (item of datosDeLaTienda.preciosPorTienda; track $index) {
+            
+
+            <tr>
+                <td class="border px-4 py-2">{{item.modelo}}</td>
+                <td class="border px-4 py-2">{{item.marca}}</td>
+                <td class="border px-4 py-2">{{item.precio}}</td>
+                <td class="border px-4 py-2">por definir</td>
+                <td class="border px-4 py-2">por definir</td>
+                <td class="border px-4 py-2">por definir</td>
+            </tr>
+           }
+
+
+            
+            
+           
+
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+</div>
+
+</div>

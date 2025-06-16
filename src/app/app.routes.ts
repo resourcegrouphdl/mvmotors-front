@@ -13,6 +13,9 @@ import { TerminosCondicionesComponent } from './shares/terminos-condiciones/term
 import { LibroDeReclamacionesComponent } from './shares/libro-de-reclamaciones/libro-de-reclamaciones.component';
 import { PoliticasDePrivacidadComponent } from './shares/politicas-de-privacidad/politicas-de-privacidad.component';
 import { FormularioPrimerCOntactoComponent } from './contacto/formulario-primer-contacto/formulario-primer-contacto.component';
+import { LoginComponentComponent } from './institucional/login-component/login-component.component';
+import { DetallesTiendaComponent } from './institucional/detalles-tienda/detalles-tienda.component';
+import { DetallesAliadoComponent } from './institucional/detalles-aliado/detalles-aliado.component';
 
 export const routes: Routes = [
   {
@@ -39,7 +42,26 @@ export const routes: Routes = [
   },
   {
     path: 'quienes-somos',
-    component: QuienesSomosComponent,
+    component: LoginComponentComponent,
+    children: [
+      {path: "",
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },
+      {
+        path: 'login',
+        component: QuienesSomosComponent,
+      },
+      {
+        path: 'tienda',
+        component: DetallesTiendaComponent,
+      },
+      {
+        path: 'aliado',
+        component: DetallesAliadoComponent,
+      }
+
+    ]
   },
   {
     path: 'contacto',
