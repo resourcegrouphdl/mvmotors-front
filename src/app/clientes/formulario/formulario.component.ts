@@ -251,7 +251,7 @@ export class FormularioComponent implements OnInit {
         colorVehiculo: ['', (Validators.required, Validators.minLength(3))],
 
         // financiamiento
-
+        precioCompraMoto: ['', (Validators.required, Validators.minLength(3))],
         inicialVehiculo: ['', (Validators.required, Validators.minLength(3))],
         numeroQuincenas: ['', (Validators.required, Validators.minLength(3))],
         montotDeLaCuota: ['', (Validators.required, Validators.minLength(3))],

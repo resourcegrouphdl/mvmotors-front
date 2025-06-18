@@ -130,6 +130,7 @@ export interface Titular {
     marcaVehiculo: string;
     modeloVehiculo: string;
     colorVehiculo: string;
+    precioCompraMoto: string;
     inicialVehiculo: string;
     numeroQuincenas: string;
     montotDeLaCuota: string;
