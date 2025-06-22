@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { addDoc, collection, collectionData, Firestore, orderBy, query, Timestamp } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, doc, Firestore, getDoc, orderBy, query, serverTimestamp, setDoc, Timestamp } from '@angular/fire/firestore';
 import { Observable, timestamp } from 'rxjs';
 
 @Injectable({
@@ -19,19 +19,37 @@ export class ChatService {
     return uid_usuario;
   }
 
-  sendMessage(uid_usuario: string, contenido: string): Promise <void> {
-     const chatId =this.getChatId(uid_usuario);
-     const mensajesRef = collection(this._firestore, `chats/${chatId}/mensajes`);
+ sendMessage(uid_usuario: string, contenido: string): Promise<void> {
+  const chatId = this.getChatId(uid_usuario);
+  const chatRef = doc(this._firestore, `chats/${chatId}`);
+  const mensajesRef = collection(this._firestore, `chats/${chatId}/mensajes`);
 
-     const mensaje = {
-      renitenteID: this._auth.currentUser?.uid,
-      contenido,
-      timestamp: Timestamp.now(),
-      leido: false
+  const remitenteID = this._auth.currentUser?.uid;
+  if (!remitenteID) return Promise.reject('Usuario no autenticado');
 
-     };
-     return addDoc(mensajesRef, mensaje).then(() => {});
-  }
+  const mensaje = {
+    remitenteID,
+    contenido,
+    timestamp: serverTimestamp(),
+    leido: false
+  };
+
+  return getDoc(chatRef).then(chatSnap => {
+    if (!chatSnap.exists()) {
+      // Crear el chat con los participantes
+      return setDoc(chatRef, {
+        participantes: [remitenteID, uid_usuario]
+      });
+    }
+    return;
+  }).then(() => {
+    // Agregar el mensaje a la subcolección
+    return addDoc(mensajesRef, mensaje);
+  }).then(() => {
+    // Garantiza que la promesa devuelva void
+    return;
+  });
+}
 
   listenToMessages(uidUsuario: string): Observable<any[]> {
     const chatId = this.getChatId(uidUsuario);
@@ -42,10 +60,6 @@ export class ChatService {
   }
 
 
-  //------ obtener lista de contactos del chat------
-
-  
-  
 
 }
 
