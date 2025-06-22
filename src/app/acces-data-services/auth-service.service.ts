@@ -77,7 +77,7 @@ export class AuthServiceService {
 
 export interface UserRole {
 
-  id?: string;
+  uidFirebase: string;
   correo: string;
   direccion: string;
   imagen: string;

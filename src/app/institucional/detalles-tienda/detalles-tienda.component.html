@@ -6,6 +6,11 @@
       <p>{{datosDeLaTienda.direccion}}</p>
       <p>{{datosDeLaTienda.telefono}}</p>
     </div>
+
+    <button (click)="toggleChat()"
+        class=" bg-blue-500 text-white rounded-full shadow-lg z-50 hover:bg-blue-600 transition">
+      Chat con el administrado 💬
+      </button>
   </div>
 
 
@@ -48,5 +53,66 @@
         </tbody>
     </table>
 </div>
+
+
+
+<!-- Caja del chat -->
+<div [ngClass]="{
+        'opacity-100 scale-100 pointer-events-auto border-black': isVisible,
+        'opacity-0 scale-95 pointer-events-none border-black': !isVisible
+     }"
+     class="fixed bottom-20 right-4 w-full max-w-md bg-gray-100 border-black border-2 dark:bg-gray-800 rounded-2xl neo-shadow p-6 space-y-6 transition-all duration-300 z-40">
+
+    
+    <!-- Chat header -->
+    <div class="flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-full neo-shadow flex items-center justify-center border-2 border-blue-500">
+            <span class="text-xl font-semibold text-gray-700 dark:text-gray-300">{{usuarioActivo}}</span>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">chat con Moto-ya.com</h1>
+    </div>
+
+    <!-- Chat messages area -->
+    <div class="h-96 overflow-y-auto neo-inset p-4 rounded-xl space-y-4">
+        
+  <div *ngFor="let msg of mensajes" [ngClass]="{'justify-end': msg.remitenteId === uidFirebase}" class="flex items-start space-x-2" [class.justify-end]="msg.remitenteId === uidFirebase">
+
+    <!-- Si es recibido -->
+    <ng-container *ngIf="msg.remitenteId !== uidFirebase">
+      <div class="w-8 h-8 rounded-full neo-shadow flex-shrink-0 flex items-center justify-center">
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ usuarioActivo }}</span>
+      </div>
+      <div class="bg-white dark:bg-gray-700 p-3 rounded-lg neo-shadow max-w-xs">
+        <p class="text-sm text-gray-700 dark:text-gray-300">{{ msg.contenido }}</p>
+      </div>
+    </ng-container>
+
+    <!-- Si es enviado -->
+    <ng-container *ngIf="msg.remitenteId === uidFirebase">
+      <div class="bg-blue-500 p-3 rounded-lg neo-shadow max-w-xs">
+        <p class="text-sm text-white">{{ msg.contenido }}</p>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
+
+
+    <!-- Message input -->
+    <div class="flex items-center space-x-4">
+        <div class="flex-grow">
+            <input type="text" placeholder="Type your message..."
+            [(ngModel)]="newMessage"
+           (keydown.enter)="sendMessage()"
+                class="w-full p-4 rounded-xl neo-inset bg-transparent text-gray-700 dark:text-gray-300 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none">
+        </div>
+        <button class="p-4 rounded-xl neo-shadow neo-button focus:outline-none" (click)="sendMessage()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+        </button>
+    </div>
+</div>
+
 
 </div>

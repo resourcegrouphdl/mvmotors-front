@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserRole } from './auth-service.service';
+import { Observable } from 'rxjs';
+import { Mensaje } from '../services/chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +9,7 @@ import { UserRole } from './auth-service.service';
 export class SesseionStorageService {
 
   usuarioActual: UserRole = {} as UserRole;
+ 
 
   setUsuarioActual(usuario: UserRole) {
     this.usuarioActual = usuario;
