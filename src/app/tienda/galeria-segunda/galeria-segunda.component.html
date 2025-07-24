@@ -10,18 +10,18 @@
     </div>
 
     <div
-      class="w-1/2 transform opacity-0 transition-all duration-1000 ease-in-out"
+      class="w-1/2  aspect-auto transform opacity-0 transition-all duration-1000 ease-in-out"
       [ngClass]="{ 'opacity-100 translate-x-0': isImageVisible }"
     >
       <div
-        class="border border-gray-300 p-6 shadow-xl bg-white rounded-2xl m-5 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-sky-500 h-[550px] flex flex-col justify-between"
+        class="border border-gray-300 p-1 md:p-6 shadow-xl bg-white rounded-2xl m-5 transition-transform duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-sky-500 h-[300px] md:h-[550px] flex flex-col justify-between"
       >
         <!-- Marca y modelo -->
-        <div class="text-center mb-6  font-bold">
-          <h2 class="text-gray-500  uppercase text-7xl font-bold text-center tracking-widest">
+        <div class="text-center md:mb-6 mb-2  font-bold">
+          <h2 class="text-gray-500  uppercase md:text-7xl text-3xl font-bold md:text-center tracking-widest ">
             {{ productoMotocicleta?.marca }}
           </h2>
-          <h2 class="text-6xl font-bold text-gray-600 uppercase">
+          <h2 class="text-xl md:text-6xl font-bold text-gray-600 uppercase">
             {{ productoMotocicleta?.modelo }}
           </h2>
         </div>
@@ -30,33 +30,25 @@
       
 
         <!-- Mensaje clave -->
-         <p class="text-gray-800 text-center text-4xl font-semibold mb-4 uppercase">
-          PRECIO CONTADO : {{productoMotocicleta?.precioWeb}} S/.
+         <p class="text-gray-800 text-center  md:text-4xl font-semibold  mb-2 md:mb-4 md:uppercase">
+          PRECIO CONTADO :S/. {{productoMotocicleta?.precioWeb}} 
         </p>
-        <p class="text-sky-500 text-center text-4xl font-semibold mb-4 uppercase">
-          inicial desde : {{productoMotocicleta?.precioInicial}} S/.
+        <p class="text-sky-500 text-center md:text-4xl font-semibold md-1 md:mb-4 uppercase">
+          inicial desde : S/. {{productoMotocicleta?.precioInicial}} 
         </p>
 
         <!-- Beneficios -->
-        <ul class="text-gray-800 text-lg font-medium space-y-2 mb-8">
-          <li class="ml-10 uppercase text-2xl">
-             SOAT 1 año <span class="text-orange-500 font-bold">GRATIS</span>
-          </li>
-          <li class="ml-10 uppercase text-2xl">
-             Transferencia notarial
-            <span class="text-orange-500 font-bold">GRATIS</span>
-          </li>
-        </ul>
+        
 
-        <span class=" mb-4"> Colores disponibles : @for (item of colores; track $index) {
-          <div class="  inline-block w-6 h-6 mx-3 rounded-full" [ngStyle]="{ 'background-color': item }"></div>
+        <span class=" md:mb-4"> Colores disponibles : @for (item of colores; track $index) {
+          <div class="  inline-block w-6 h-6 mx-1 md:mx-3 rounded-full" [ngStyle]="{ 'background-color': item }"></div>
         }</span>
 
         <!-- Botón Comprar -->
         <div class="flex justify-center">
           <a
             [routerLink]="['/contactenos']"
-            class="text-white bg-sky-500  hover:bg-sky-600 transition-colors duration-300 focus:ring-4 focus:outline-none focus:ring-sky-300 font-semibold rounded-md text-xl uppercase px-6 py-3 shadow-md"
+            class="text-white bg-sky-500  hover:bg-sky-600 transition-colors duration-300 focus:ring-4 focus:outline-none focus:ring-sky-300 font-semibold rounded-md md:text-xl uppercase md:px-6 py-3 shadow-md"
           >
             LO QUIERO
           </a>

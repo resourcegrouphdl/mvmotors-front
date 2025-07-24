@@ -16,6 +16,7 @@ import { FormularioPrimerCOntactoComponent } from './contacto/formulario-primer-
 import { LoginComponentComponent } from './institucional/login-component/login-component.component';
 import { DetallesTiendaComponent } from './institucional/detalles-tienda/detalles-tienda.component';
 import { DetallesAliadoComponent } from './institucional/detalles-aliado/detalles-aliado.component';
+import { ChangePasswordComponent } from './institucional/change-password/change-password.component';
 
 export const routes: Routes = [
   {
@@ -53,12 +54,17 @@ export const routes: Routes = [
         component: QuienesSomosComponent,
       },
       {
-        path: 'tienda',
-        component: DetallesTiendaComponent,
+        path: 'change-password',
+        component: ChangePasswordComponent,
       },
       {
-        path: 'aliado',
-        component: DetallesAliadoComponent,
+        path: 'store',
+        component: FormularioComponent,
+      },
+      {
+        path: 'vendor',
+        component: FormularioComponent,
+        
       }
 
     ]

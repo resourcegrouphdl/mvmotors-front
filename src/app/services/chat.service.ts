@@ -20,11 +20,15 @@ export class ChatService {
   }
 
  sendMessage(uid_usuario: string, contenido: string): Promise<void> {
-  const chatId = this.getChatId(uid_usuario);
-  const chatRef = doc(this._firestore, `chats/${chatId}`);
-  const mensajesRef = collection(this._firestore, `chats/${chatId}/mensajes`);
 
   const remitenteID = this._auth.currentUser?.uid;
+  if (!remitenteID) {
+    return Promise.reject('Usuario no autenticado');
+  }
+  const chatRef = doc(this._firestore, `chats/${remitenteID}`);
+  const mensajesRef = collection(this._firestore, `chats/${remitenteID}/mensajes`);
+
+  
   if (!remitenteID) return Promise.reject('Usuario no autenticado');
 
   const mensaje = {
@@ -38,7 +42,7 @@ export class ChatService {
     if (!chatSnap.exists()) {
       // Crear el chat con los participantes
       return setDoc(chatRef, {
-        participantes: [remitenteID, uid_usuario]
+        participantes: [uid_usuario, remitenteID ]
       });
     }
     return;
@@ -67,7 +71,7 @@ export class ChatService {
 
 export interface Mensaje {
   id?: string; // opcional, se asigna al obtener datos de Firestore
-  remitenteId: string; // UID del que envía el mensaje
+  remitenteID: string; // UID del que envía el mensaje
   contenido: string;
   timestamp: any; // puede ser `Timestamp` de Firestore
   leido: boolean;

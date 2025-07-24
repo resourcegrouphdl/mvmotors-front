@@ -17,6 +17,6 @@ import { NgFor } from '@angular/common';
 export class NavbarComponent {
 
   rutas: Inavegacion[] = RUTASNAVBAR;
-  
+  menuAbierto: boolean = false;
 
 }

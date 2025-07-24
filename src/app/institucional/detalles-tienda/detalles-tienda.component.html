@@ -1,118 +1,147 @@
-<div class="container flex-column mx-auto justify-center items-center">
-
-  <div class="mx-auto border border-gray-300 rounded-lg shadow-lg p-6 mb-6 w-full ">
-    <div class=" flex flex-col justify-center items-center text-4xl font-bold text-center capitalize">
-      <h1>{{datosDeLaTienda.razonSocial}}</h1>
-      <p>{{datosDeLaTienda.direccion}}</p>
-      <p>{{datosDeLaTienda.telefono}}</p>
-    </div>
-
-    <button (click)="toggleChat()"
-        class=" bg-blue-500 text-white rounded-full shadow-lg z-50 hover:bg-blue-600 transition">
-      Chat con el administrado 💬
-      </button>
-  </div>
-
-
-
-  <div class=" border-gray-300 rounded-lg shadow-lg p-6 w-full  mx-auto" >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h2 class="text-2xl font-bold mb-4">Example Datatable</h2>
-    <table id="example" class="table-auto w-full">
-        <thead>
-            <tr>
-                <th class="px-4 py-2">Modelo</th>
-                <th class="px-4 py-2">Marca</th>
-                <th class="px-4 py-2">Precio</th>
-                <th class="px-4 py-2">Numero De cuotas</th>
-                <th class="px-4 py-2">etc</th>
-                <th class="px-4 py-2">etc</th>
-            </tr>
-        </thead>
-        <tbody>
-
-           @for (item of datosDeLaTienda.preciosPorTienda; track $index) {
-            
-
-            <tr>
-                <td class="border px-4 py-2">{{item.modelo}}</td>
-                <td class="border px-4 py-2">{{item.marca}}</td>
-                <td class="border px-4 py-2">{{item.precio}}</td>
-                <td class="border px-4 py-2">por definir</td>
-                <td class="border px-4 py-2">por definir</td>
-                <td class="border px-4 py-2">por definir</td>
-            </tr>
-           }
-
-
-            
-            
-           
-
-            <!-- Add more rows as needed -->
-        </tbody>
-    </table>
-</div>
-
-
-
-<!-- Caja del chat -->
-<div [ngClass]="{
-        'opacity-100 scale-100 pointer-events-auto border-black': isVisible,
-        'opacity-0 scale-95 pointer-events-none border-black': !isVisible
-     }"
-     class="fixed bottom-20 right-4 w-full max-w-md bg-gray-100 border-black border-2 dark:bg-gray-800 rounded-2xl neo-shadow p-6 space-y-6 transition-all duration-300 z-40">
-
-    
-    <!-- Chat header -->
-    <div class="flex items-center space-x-4">
-        <div class="w-12 h-12 rounded-full neo-shadow flex items-center justify-center border-2 border-blue-500">
-            <span class="text-xl font-semibold text-gray-700 dark:text-gray-300">{{usuarioActivo}}</span>
+<div>
+    <div class="min-h-screen bg-gray-100">
+      <!-- Header -->
+      <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-900">
+              Dashboard - Vendedor
+            </h1>
+            <div class="flex items-center space-x-4">
+              <span class="text-sm text-gray-500">
+                Bienvenido, {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+              </span>
+              <button
+                (click)="logout()"
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
         </div>
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">chat con Moto-ya.com</h1>
-    </div>
+      </header>
 
-    <!-- Chat messages area -->
-    <div class="h-96 overflow-y-auto neo-inset p-4 rounded-xl space-y-4">
-        
-  <div *ngFor="let msg of mensajes" [ngClass]="{'justify-end': msg.remitenteId === uidFirebase}" class="flex items-start space-x-2" [class.justify-end]="msg.remitenteId === uidFirebase">
+      <!-- Main Content -->
+      <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0 space-y-6">
+          
+          <!-- Vendor Info Cards -->
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+              <div class="p-5">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt class="text-sm font-medium text-gray-500 truncate">Clientes Activos</dt>
+                      <dd class="text-lg font-medium text-gray-900">{{ getTotalActiveClients() }}</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <!-- Si es recibido -->
-    <ng-container *ngIf="msg.remitenteId !== uidFirebase">
-      <div class="w-8 h-8 rounded-full neo-shadow flex-shrink-0 flex items-center justify-center">
-        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ usuarioActivo }}</span>
-      </div>
-      <div class="bg-white dark:bg-gray-700 p-3 rounded-lg neo-shadow max-w-xs">
-        <p class="text-sm text-gray-700 dark:text-gray-300">{{ msg.contenido }}</p>
-      </div>
-    </ng-container>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+              <div class="p-5">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt class="text-sm font-medium text-gray-500 truncate">En Evaluación</dt>
+                      <dd class="text-lg font-medium text-gray-900">{{ getClientsInEvaluation() }}</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <!-- Si es enviado -->
-    <ng-container *ngIf="msg.remitenteId === uidFirebase">
-      <div class="bg-blue-500 p-3 rounded-lg neo-shadow max-w-xs">
-        <p class="text-sm text-white">{{ msg.contenido }}</p>
-      </div>
-    </ng-container>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+              <div class="p-5">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt class="text-sm font-medium text-gray-500 truncate">Completados</dt>
+                      <dd class="text-lg font-medium text-gray-900">{{ getCompletedClients() }}</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  </div>
-</div>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+              <div class="p-5">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt class="text-sm font-medium text-gray-500 truncate">Chat  Motoya</dt>
+                      <dd class="text-lg font-medium text-gray-900">Motoya.com</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <!-- Clients List -->
+          <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+              <div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Clientes en Evaluación</h3>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">Lista de clientes potenciales y su estado actual</p>
+              </div>
+              <button
+                
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Nuevo Cliente
+              </button>
+            </div>
 
-    <!-- Message input -->
-    <div class="flex items-center space-x-4">
-        <div class="flex-grow">
-            <input type="text" placeholder="Type your message..."
-            [(ngModel)]="newMessage"
-           (keydown.enter)="sendMessage()"
-                class="w-full p-4 rounded-xl neo-inset bg-transparent text-gray-700 dark:text-gray-300 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none">
+            <!-- Filters -->
+                       
+            
+          </div>
+
+          <!-- New Client Form -->
+          <div *ngIf="showNewClientForm" class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Registrar Nuevo Cliente Potencial</h3>
+              
+              
+            </div>
+          </div>
+
         </div>
-        <button class="p-4 rounded-xl neo-shadow neo-button focus:outline-none" (click)="sendMessage()">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-        </button>
+      </main>
     </div>
-</div>
-
-
 </div>

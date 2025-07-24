@@ -8,20 +8,19 @@
     />
   </a>
   <div class="flex md:hidden">
-    <button id="hamburger">
-      <img
-        class="toggle block"
-        src="https://img.icons8.com/fluent-systems-regular/2x/menu-squared-2.png"
-        width="40"
-        height="40"
-      />
-      <img
-        class="toggle hidden"
-        src="https://img.icons8.com/fluent-systems-regular/2x/close-window.png"
-        width="40"
-        height="40"
-      />
-    </button>
+    <button
+  class="md:hidden text-blue-500 px-4 py-2"
+  (click)="menuAbierto = !menuAbierto"
+>
+   <!-- ícono hamburguesa -->
+ <div
+    class="group flex h-20 w-20 cursor-pointer items-center justify-center rounded-3xl bg-white p-2 hover:bg-slate-200">
+    <div class="space-y-2">
+        <span class="block h-1 w-10 origin-center rounded-full bg-slate-500 transition-transform ease-in-out group-hover:translate-y-1.5 group-hover:rotate-45"></span>
+        <span class="block h-1 w-8 origin-center rounded-full bg-orange-500 transition-transform ease-in-out group-hover:w-10 group-hover:-translate-y-1.5 group-hover:-rotate-45"></span>
+    </div>
+</div>
+</button>
   </div>
   <div
     class="toggle hidden w-full md:w-auto md:flex text-right text-bold mt-5 md:mt-0 md:border-none"
@@ -70,11 +69,23 @@
   </div>
 </nav>
 
-<script>
-  document.getElementById("hamburger").onclick = function toggleMenu() {
-    const navToggle = document.getElementsByClassName("toggle");
-    for (let i = 0; i < navToggle.length; i++) {
-      navToggle.item(i).classList.toggle("hidden");
-    }
-  };
-</script>
+@if (menuAbierto) {
+  <div
+  class="w-full flex flex-col text-right text-bold mt-5 md:hidden"
+>
+  <ng-container *ngFor="let ruta of rutas">
+    <a
+      [ngClass]="{
+        'animate-bounce text-blue-500': ruta.foco,
+        'hover:text-blue-500': !ruta.foco
+      }"
+      [routerLinkActive]="['router-link-active']"
+      [routerLink]="ruta.path"
+      (click)="menuAbierto = !menuAbierto"
+      class="block hover:text-blue-500 px-3 py-3 uppercase font-semibold"
+    >
+      {{ ruta.title }}
+    </a>
+  </ng-container>
+</div>
+}
