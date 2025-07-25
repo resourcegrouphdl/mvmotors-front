@@ -10,7 +10,7 @@ export interface BanersModel {
 @Component({
   selector: 'app-baner-publicitario',
   standalone: true,
-  imports: [NgClass],
+  imports: [],
   templateUrl: './baner-publicitario.component.html',
   styleUrl: './baner-publicitario.component.css',
 })

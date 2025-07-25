@@ -19,4 +19,7 @@ export class NavbarComponent {
   rutas: Inavegacion[] = RUTASNAVBAR;
   menuAbierto: boolean = false;
 
+  trackByPath(index: number, ruta: any): string {
+  return ruta.path;
+}
 }

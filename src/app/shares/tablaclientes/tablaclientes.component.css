@@ -1,16 +1,32 @@
-
-
-@keyframes scroll {
-    from {
-      transform: translateX(100%);
+ /* Animación de scroll infinito verdadero */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
     }
-    to {
-      transform: translateX(-100%);
+    100% {
+      transform: translateX(-50%);
     }
   }
   
+  /* Aplicar animación */
   .animate-scroll {
-    animation: scroll 40s linear infinite;
+    animation: scroll 20s linear infinite;
+    width: 200%;
   }
   
+  /* Pausa en hover */
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
   
+  /* Optimización de performance */
+  .animate-scroll {
+    will-change: transform;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .animate-scroll {
+      animation-duration: 20s;
+    }
+  }

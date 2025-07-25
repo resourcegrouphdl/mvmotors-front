@@ -21,7 +21,7 @@ export interface subMenu2 {
 @Component({
   selector: 'app-galeria-segunda',
   standalone: true,
-  imports: [NgClass, RouterLink, RouterLinkActive,NgStyle],
+  imports: [NgClass, RouterLink,NgStyle],
   templateUrl: './galeria-segunda.component.html',
   styleUrl: './galeria-segunda.component.css'
 })
