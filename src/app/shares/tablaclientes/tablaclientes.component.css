@@ -1,32 +1,55 @@
- /* Animación de scroll infinito verdadero */
+.body-tablaclientes {
+  position: relative;                 /* relative */
+  overflow: hidden;                       /* w-full */
+
+  background-image: linear-gradient(
+    to right,                          /* bg-gradient-to-r */
+    #0f172a,                            /* from-slate-900 */
+    #1e293b,                            /* via-slate-800 */
+    #0f172a                             /* to-slate-900 */
+  );
+
+  padding-top: 20px;                  /* py-6 → 1.5rem arriba */
+  padding-bottom: 20px;               /* py-6 → 1.5rem abajo */
+}
+
+
+
   @keyframes scroll {
     0% {
-      transform: translateX(0);
+      transform: translateX(100%);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translateX(-100%);
     }
   }
-  
-  /* Aplicar animación */
-  .animate-scroll {
-    animation: scroll 20s linear infinite;
-    width: 200%;
-  }
-  
-  /* Pausa en hover */
-  .animate-scroll:hover {
-    animation-play-state: paused;
-  }
-  
-  /* Optimización de performance */
-  .animate-scroll {
-    will-change: transform;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .animate-scroll {
-      animation-duration: 20s;
-    }
-  }
+
+/* Primera secuencia de logos */
+.logo-sequence {
+  display: flex;
+  flex-wrap: nowrap;
+  animation: scroll 20s linear infinite;
+  gap: clamp(32px, 8vw, 250px);
+  padding: 0 15px;
+
+}
+
+.contenedor {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.contenedor img {
+  width: 60px;
+  height: auto;
+  min-width: 50px;
+  filter: brightness(0) invert(1);
+  opacity: 0.6;
+
+}
+
+
+
+
+
+

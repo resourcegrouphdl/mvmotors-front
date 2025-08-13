@@ -1,16 +1,16 @@
 <section class="py-4">
   <!-- moto-carousel.component.html -->
   <div class="p-6  text-center">
-    <h2 class="text-6xl uppercase font-bold text-gray-900">
+    <h2 class="text-3xl sm:text-4xl md:text-6xl uppercase font-bold text-gray-900">
       Encuentra tu moto deseada
     </h2>
-    <p class="text-4xl my-4 text-gray-700 uppercase">
+    <p class="text-3xl sm:text-4xl md:text-4xl my-4 text-gray-700 uppercase">
       ¡Tarjeta, placa, SOAT <span class="text-orange-500 font-bold">1 año </span> y transferencia notarial <span class="text-orange-500 font-bold">GRATIS</span> !
     </p>
 
-    
 
-    
+
+
   </div>
 </section>
 
@@ -26,8 +26,8 @@
     ➜
   </button>
 
-  <!-- Contenedor del Carrusel -->
-  <div class="max-w-4xl mx-auto h-full">
+  <!-- Contenedor del Carrusel  max-w-4xl mx-auto h-full  -->
+  <div class="w-full max-w-[80vw] sm:max-w-4xl mx-auto px-4 md:px-0 h-[400px]">
     <div
       #carousel
       class="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory space-x-4 p-4 h-full"
@@ -51,7 +51,7 @@
           <!-- Info -->
           <div class="mt-2  text-center ">
             <h3 class="font-semibold text-center text-lg text-gray-800 group-hover:text-sky-600 transition-colors duration-300">
-              {{ item.marca }} 
+              {{ item.marca }}
             </h3>
             <h4 class="text-center text-gray-800 font-bold text-xl group-hover:text-sky-600 transition-colors duration-300">
               {{ item.modelo }}
@@ -62,7 +62,7 @@
             <p class="text-gray-700 text-sm font-semibold">
               INICIAL DESDE: <strong class="text-green-600">S/ {{ item.precioInicial }}</strong>
             </p>
-            
+
           <!-- Sello atractivo -
             <div--
             class="mt-3 inline-block bg-sky-100 text-sky-700 text-xs font-medium px-3 py-1 rounded-full group-hover:bg-sky-200 transition-colors duration-300"
@@ -87,13 +87,18 @@
 
   <div class="flex justify-center mt-8">
      <button (click)="goToCatalogo()"
-      class="bg-sky-500 hover:bg-sky-700 py-5 px-20 text-white font-semibold uppercase text-4xl rounded-2xl  "
+      class="bg-sky-500 hover:bg-sky-700 text-white font-semibold uppercase
+               rounded-xl sm:rounded-2xl
+               text-2xl sm:text-4xl
+               px-6 sm:px-20
+               py-3 sm:py-5
+               w-[88vw] sm:w-auto mx-auto whitespace-nowrap"
     >
-      Ver catálogo
+      Ver&nbsp;catálogo
   </button>
   </div>
 
- 
+
 
 
 </section>
