@@ -1,112 +1,54 @@
-<!-- Banda delgada y elegante de marcas con scroll infinito -->
-<section class="relative w-full bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-6 overflow-hidden">
-  <!-- Líneas de velocidad sutiles -->
-  <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent opacity-30"></div>
-  <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent opacity-30"></div>
-  
-  <!-- Contenedor principal del scroll -->
+<section class="body-tablaclientes">
   <div class="relative w-full overflow-hidden">
-    <!-- Gradientes de fade en los extremos -->
-    <div class="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-slate-900 to-transparent z-10 pointer-events-none"></div>
-    <div class="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-slate-900 to-transparent z-10 pointer-events-none"></div>
-    
+    <div
+      class="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-slate-900 to-transparent z-10 pointer-events-none"></div>
+    <div
+      class="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-slate-900 to-transparent z-10 pointer-events-none"></div>
     <!-- Banda de logos con scroll infinito verdadero -->
-    <div class="flex animate-scroll">
-      <!-- Primera secuencia de logos -->
-      <div class="flex items-center space-x-12 md:space-x-16 px-6 flex-shrink-0">
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FHero-1.png?alt=media&token=beb091cf-71e3-43ca-bb5e-fbb01a6164be" 
-            alt="Hero"
-            loading="lazy"
-          />
-        </div>
 
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-4 md:h-6 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FJCH-1.webp?alt=media&token=18e70411-2fee-43cb-9506-164bbfe12773" 
-            alt="JCH"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FKTM-1.png?alt=media&token=fdb49572-4c5a-41ce-94c4-42552eb040cd" 
-            alt="KTM"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FLIFAN-1.png?alt=media&token=3d80fa48-422b-495b-a7b1-a9508369bedc" 
-            alt="Lifan"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FSSENDA-1.png?alt=media&token=2f1accd0-acbb-4f04-b6ca-691ed81871af" 
-            alt="Ssenda"
-            loading="lazy"
-          />
-        </div>
+    <!-- Primera secuencia de logos -->
+    <div class="logo-sequence">
+      <div class="contenedor">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FHero-1.png?alt=media&token=beb091cf-71e3-43ca-bb5e-fbb01a6164be"
+        />
       </div>
 
-      <!-- Segunda secuencia de logos (duplicado exacto) -->
-      <div class="flex items-center space-x-12 md:space-x-16 px-6 flex-shrink-0">
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FHero-1.png?alt=media&token=beb091cf-71e3-43ca-bb5e-fbb01a6164be" 
-            alt="Hero"
-            loading="lazy"
-          />
-        </div>
+      <div class="contenedor">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FJCH-1.webp?alt=media&token=18e70411-2fee-43cb-9506-164bbfe12773"
 
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-4 md:h-6 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FJCH-1.webp?alt=media&token=18e70411-2fee-43cb-9506-164bbfe12773" 
-            alt="JCH"
-            loading="lazy"
-          />
-        </div>
 
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FKTM-1.png?alt=media&token=fdb49572-4c5a-41ce-94c4-42552eb040cd" 
-            alt="KTM"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FLIFAN-1.png?alt=media&token=3d80fa48-422b-495b-a7b1-a9508369bedc" 
-            alt="Lifan"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="group transform transition-all duration-300 hover:scale-105 cursor-pointer">
-          <img 
-            class="h-6 md:h-8 w-auto filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-all duration-300" 
-            src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FSSENDA-1.png?alt=media&token=2f1accd0-acbb-4f04-b6ca-691ed81871af" 
-            alt="Ssenda"
-            loading="lazy"
-          />
-        </div>
+        />
       </div>
+
+      <div class="contenedor">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FKTM-1.png?alt=media&token=fdb49572-4c5a-41ce-94c4-42552eb040cd"
+
+
+        />
+      </div>
+
+      <div class="contenedor">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FLIFAN-1.png?alt=media&token=3d80fa48-422b-495b-a7b1-a9508369bedc"
+
+
+        />
+      </div>
+
+      <div class="contenedor">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/motoya-form.appspot.com/o/logos%2FSSENDA-1.png?alt=media&token=2f1accd0-acbb-4f04-b6ca-691ed81871af"
+
+
+        />
+      </div>
+
+
     </div>
   </div>
+
+
 </section>
