@@ -38,7 +38,7 @@ export const onClienteCreate = functions.firestore
     const newValue = snap.data(); // Datos del nuevo cliente
     const clienteId = context.params.clienteId; // ID del cliente creado
 
-    
+
 
     const nombre = newValue.formTitular?.nombre || 'Nombre no disponible';
     const apellido = newValue.formTitular?.apellido || 'Apellido no disponible';
@@ -46,7 +46,8 @@ export const onClienteCreate = functions.firestore
     // Opciones del correo electrónico
     const mailOptions1 = {
       from: 'resourcegrouphdl@gmail.com',
-      to: `resourcegrouphdl@gmail.com,contenidomotoya@gmail.com`,
+      //to: `resourcegrouphdl@gmail.com,contenidomotoya@gmail.com`,
+      to:`daniel.lizana01@gmail.com`,
       subject: ` ${nombre} ${apellido}`,
       text: `Se ha registrado un nuevo cliente con ID:
 
@@ -278,14 +279,14 @@ async function sendCredentialsEmail(
     </head>
     <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; line-height: 1.6;">
         <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-            
+
             <!-- Preheader (invisible text for email preview) -->
             <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
                 ${userName}, tus credenciales de acceso al sistema ${companyName} están listas. Usuario: ${
     userData.email
   }
             </div>
-            
+
             <!-- Header con branding -->
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
                 <!-- Logo placeholder - reemplazar con tu logo -->
@@ -299,7 +300,7 @@ async function sendCredentialsEmail(
                     Tu cuenta como <strong>${userTypeLabel}</strong> en ${companyName} está lista
                 </p>
             </div>
-            
+
             <!-- Content -->
             <div style="padding: 30px;">
                 <!-- Mensaje personalizado -->
@@ -309,11 +310,11 @@ async function sendCredentialsEmail(
                         Hemos configurado tu cuenta en nuestro sistema de gestión empresarial.
                     </p>
                 </div>
-                
+
                 <!-- Credentials Box -->
                 <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 2px solid #667eea; border-radius: 12px; padding: 25px; margin: 25px 0; text-align: center;">
                     <h3 style="color: #495057; margin: 0 0 20px 0; font-size: 18px;">🔑 Credenciales de Acceso</h3>
-                    
+
                     <div style="margin-bottom: 20px;">
                         <div style="color: #495057; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
                             👤 USUARIO
@@ -322,7 +323,7 @@ async function sendCredentialsEmail(
                             ${userData.email}
                         </div>
                     </div>
-                    
+
                     <div>
                         <div style="color: #495057; font-weight: 600; margin-bottom: 8px; font-size: 14px;">
                             🔐 CONTRASEÑA TEMPORAL
@@ -335,7 +336,7 @@ async function sendCredentialsEmail(
                         </p>
                     </div>
                 </div>
-                
+
                 <!-- Security Notice -->
                 <div style="background: #fff8e1; border-left: 4px solid #ffb300; padding: 20px; margin: 25px 0; border-radius: 8px;">
                     <h3 style="color: #ef6c00; margin: 0 0 15px 0; font-size: 16px; display: flex; align-items: center;">
@@ -348,12 +349,12 @@ async function sendCredentialsEmail(
                         <div>✅ <strong>Reporta actividad sospechosa</strong> inmediatamente al administrador</div>
                     </div>
                 </div>
-                
+
                 <!-- Action Button -->
                 <div style="text-align: center; margin: 35px 0;">
                     <a href="${
                       functions.config().app?.url || 'https://tu-sistema.com'
-                    }/login" 
+                    }/login"
                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 32px; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
                         🚀 ACCEDER AL SISTEMA AHORA
                     </a>
@@ -364,10 +365,10 @@ async function sendCredentialsEmail(
                         }/login
                     </p>
                 </div>
-                
+
                 <!-- User Type Specific Info -->
                 ${getUserTypeSpecificContent(userData.userType, userData)}
-                
+
                 <!-- Next Steps -->
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 25px 0; border: 1px solid #e9ecef;">
                     <h3 style="color: #495057; margin: 0 0 15px 0; font-size: 16px;">📋 Próximos Pasos</h3>
@@ -379,7 +380,7 @@ async function sendCredentialsEmail(
                         <div>5️⃣ Explorar las funcionalidades de tu rol</div>
                     </div>
                 </div>
-                
+
                 <!-- Support Info -->
                 <div style="background: #e8f4fd; padding: 20px; border-radius: 10px; margin: 25px 0; border: 1px solid #b3d9ff;">
                     <h3 style="color: #1565c0; margin: 0 0 15px 0; font-size: 16px;">💬 Soporte y Ayuda</h3>
@@ -405,7 +406,7 @@ async function sendCredentialsEmail(
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Company Info -->
                 <div style="text-align: center; margin: 30px 0; padding: 20px 0; border-top: 1px solid #e9ecef;">
                     <h4 style="color: #495057; margin: 0 0 10px 0; font-size: 16px;">${companyName}</h4>
@@ -414,7 +415,7 @@ async function sendCredentialsEmail(
                     </p>
                 </div>
             </div>
-            
+
             <!-- Footer -->
             <div style="background: #343a40; color: #adb5bd; text-align: center; padding: 25px; font-size: 12px;">
                 <div style="margin-bottom: 10px;">
@@ -429,15 +430,15 @@ async function sendCredentialsEmail(
                 <div style="margin-bottom: 15px;">
                     &copy; 2025 ${companyName}. Todos los derechos reservados.
                 </div>
-                
+
                 <!-- Unsubscribe and legal -->
                 <div style="font-size: 11px; color: #868e96;">
-                    <a href="#" style="color: #868e96; text-decoration: none;">Política de Privacidad</a> | 
+                    <a href="#" style="color: #868e96; text-decoration: none;">Política de Privacidad</a> |
                     <a href="#" style="color: #868e96; text-decoration: none;">Términos de Uso</a>
                 </div>
             </div>
         </div>
-        
+
         <!-- Tracking pixel (opcional) -->
         <img src="${functions.config().app?.url}/email-tracking/${
     userData.uid
@@ -701,10 +702,10 @@ function getUserTypeSpecificContent(
               ? `
             <p style="margin: 10px 0 5px 0; color: #1565c0;"><strong>Tus Datos:</strong></p>
             <p style="margin: 2px 0; color: #1976d2; font-size: 14px;">
-              ID: ${userData.specificData.vendorInfo.employeeId} | 
+              ID: ${userData.specificData.vendorInfo.employeeId} |
               Comisión: ${(
                 userData.specificData.vendorInfo.commissionRate * 100
-              ).toFixed(1)}% | 
+              ).toFixed(1)}% |
               Territorio: ${userData.specificData.vendorInfo.territory}
             </p>
           `
@@ -728,7 +729,7 @@ function getUserTypeSpecificContent(
               ? `
             <p style="margin: 10px 0 5px 0; color: #2e7d32;"><strong>Tu Tienda:</strong></p>
             <p style="margin: 2px 0; color: #388e3c; font-size: 14px;">
-              ${userData.specificData.storeInfo.storeName} (${userData.specificData.storeInfo.storeCode}) | 
+              ${userData.specificData.storeInfo.storeName} (${userData.specificData.storeInfo.storeCode}) |
               Capacidad: ${userData.specificData.storeInfo.maxInventory}
             </p>
           `
@@ -755,7 +756,7 @@ function getUserTypeSpecificContent(
               Límite de Aprobación: ${new Intl.NumberFormat('es-PE', {
                 style: 'currency',
                 currency: 'PEN',
-              }).format(userData.specificData.financialInfo.approvalLimit)} | 
+              }).format(userData.specificData.financialInfo.approvalLimit)} |
               Nivel de Riesgo: ${userData.specificData.financialInfo.riskLevel}
             </p>
           `

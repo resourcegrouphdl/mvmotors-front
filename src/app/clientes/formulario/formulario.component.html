@@ -1,240 +1,130 @@
-<section class="w-full bg-gray-200 flex flex-col pb-4">
-  <div
-    class="p-6 shadow-xl mx-auto mt-10 container bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-  >
-    <form class="" [formGroup]="formularioCliente" (submit)="onSubmit()">
+<section class="section-custom">
+  <div class="div-custom">
+    <form [formGroup]="formularioCliente" (submit)="onSubmit()">
       <!-- Sección 1: Datos del Usuario -->
-
       <div *ngIf="currentSection === 1">
         <!-- sub-Sección 1: dni consulta -->
-        <h2 class="mx-auto uppercase font-bold text-2xl">Formulario</h2>
-        <h2 class="m-10 uppercase font-bold">Datos Del Titular</h2>
-
+        <h1 class="h2-formulario">Formulario</h1>
+        <h2 class="h2-titular">Datos Del Titular</h2>
         <ng-container formGroupName="formTitular">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <fieldset class="inline-block relative min-w-44 max-w-44">
-              <label for="doc" class="block mb-2 text-gray-900 dark:text-white">
-                Tipo de Documento</label
-              >
-              <select
-                id="doc"
-                formControlName="documentType"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="dni">Doc Nac Identidad</option>
-                <option value="CA">Carnet De Extranjeria</option>
+              <label for="doc" class="block mb-2 text-gray-900 dark:text-white">Tipo de Documento</label>
+              <select id="doc" formControlName="documentType" class="select-custom">
+                @for (t of documentTypes; track t.value) {
+                  <option [value]="t.value">{{ t.label }}</option>
+                }
               </select>
-
               <div
                 *ngIf="
                   formularioCliente.get('formTitular.documentType')?.invalid &&
                   formularioCliente.get('formTitular.documentType')?.touched
-                "
-                class="text-red-500 text-sm p-2 border-red-500"
-              >
-                Este campo es requerido
-              </div>
+                " class="text-red-500 text-sm p-2 border-red-500">Este campo es requerido</div>
             </fieldset>
-
             <fieldset class="mb-6">
-              <label
-                for="default-input"
-                class="block mb-2 text-gray-900 dark:text-white"
-                >Numero Del Documento</label
-              >
+              <label for="default-input-usuario" class="block mb-2 text-gray-900 dark:text-white">Numero Del Documento</label>
               <input
                 type="text"
                 formControlName="documentNumber"
-                id="default-input"
+                id="default-input-usuario"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
-
               @if (!formularioCliente.get('formTitular.documentNumber')?.valid)
               {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Este campo es requerido
-              </div>
+                <div class="text-red-500 text-sm p-2 border-red-500">Este campo es requerido</div>
               }
             </fieldset>
           </div>
-
           <!-- sub-Sección 2: Datos del Usuario -->
-
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="mb-6">
-              <label for="name" class="block mb-2 text-gray-900 dark:text-white"
-                >Nombre</label
-              >
+              <label for="nameUsuario" class="block mb-2 text-gray-900 dark:text-white">Nombre</label>
               <div class="flex">
-                <span
-                  class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  <svg
-                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"
-                    />
+                <span class="input-prefix">
+                  <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
                   </svg>
                 </span>
                 <input
                   type="text"
                   formControlName="nombre"
-                  id="name"
+                  id="nameUsuario"
                   class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="nombre"
                 />
               </div>
-
               @if (!formularioCliente.get('formTitular.nombre')?.valid ) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Ingrese su nombre
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">Ingrese su nombre</div>
               }
             </div>
-
             <fieldset class="mb-6">
-              <label for="name" class="block mb-2 text-gray-900 dark:text-white"
-                >Apellido</label
-              >
+              <label for="apellidoUsuario" class="block mb-2 text-gray-900 dark:text-white">Apellido</label>
               <div class="flex">
-                <span
-                  class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  <svg
-                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"
-                    />
+                <span class="input-prefix">
+                  <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
                   </svg>
                 </span>
                 <input
                   type="text"
                   formControlName="apellido"
-                  id="name"
+                  id="apellidoUsuario"
                   class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="musk"
                 />
               </div>
-
               @if (!formularioCliente.get('formTitular.apellido')?.valid ) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Ingrese su nombre
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">Ingrese su nombre</div>
               }
             </fieldset>
-
             <fieldset class="inline-block relative min-w-44 w-full">
-              <label
-                for="estado"
-                class="block mb-2 text-gray-900 dark:text-white"
-              >
-                Estado Civil</label
-              >
-              <select
-                id="estado"
-                formControlName="estadoCivil"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="casado">Casado</option>
-                <option value="soltero">Soltero</option>
+              <label for="estado1" class="block mb-2 text-gray-900 dark:text-white">Estado Civil</label>
+              <select id="estado1" formControlName="estadoCivil" class="select-custom">
+                @for (t of stadoCivil; track t.value) {
+                  <option [value]="t.value">{{ t.label }}</option>
+                }
               </select>
-
               @if (!formularioCliente.get('formTitular.estadoCivil')?.valid ||
               !formularioCliente.get('formTitular.estadoCivil')?.touched) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Elija La Opcion ,Requerido
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">Elija La Opcion ,Requerido</div>
               }
             </fieldset>
           </div>
-
-          <!-- sub-Sección 2: Datos del Usuario -->
-
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="inline-block w-full">
-              <label
-                for="input"
-                class="block mb-2 text-gray-900 dark:text-white"
-                >Correo electronico</label
-              >
+              <label for="emailTitular" class="block mb-2 text-gray-900 dark:text-white">Correo electronico</label>
               <div class="relative mb-1">
-                <div
-                  class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none"
-                >
-                  <svg
-                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 16"
-                  >
-                    <path
-                      d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"
-                    />
-                    <path
-                      d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"
-                    />
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                  <svg class="icon icon--sm" viewBox="0 0 20 16" aria-hidden="true">
+                    <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
+                    <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
                   </svg>
                 </div>
                 <input
                   type="email"
                   formControlName="email"
-                  id="input"
+                  id="emailTitular"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="nombre @ mail .com"
                 />
               </div>
               @if (!formularioCliente.get('formTitular.email')?.valid) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Ingrese su correo electronico
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">Ingrese su correo electronico</div>
               }
             </div>
 
             <fieldset class="inline-block w-full">
               <div class="mb-6 relative">
-                <label
-                  for="default-input"
-                  class="block mb-2 text-gray-900 dark:text-white"
-                  >Fecha de Nacimiento</label
-                >
-                <div
-                  class="absolute inset-y-0 end-3 flex items-center ps-3.5 pointer-events-none"
-                >
-                  <svg
-                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                    />
+                <label for="input-date" class="block mb-2 text-gray-900 dark:text-white">Fecha de Nacimiento</label>
+                <div class="absolute inset-y-0 end-3 flex items-center ps-3.5 pointer-events-none">
+                  <svg class="icon icon--muted" aria-hidden="true" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                   </svg>
                 </div>
-                <input
-                  type="date"
-                  formControlName="fechaNacimiento"
-                  id="default-input"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                />
-
+                <input  type="date"  formControlName="fechaNacimiento"  id="input-date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                 @if
                 (!formularioCliente.get('formTitular.fechaNacimiento')?.valid) {
-                <div class="text-red-500 text-sm p-2 border-red-500">
-                  Este campo es requerido
-                </div>
+                <div class="text-red-500 text-sm p-2 border-red-500">Este campo es requerido</div>
                 }
               </div>
             </fieldset>
@@ -242,14 +132,10 @@
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div class="relative inline-block min-w-44 w-full">
-              <label
-                for="departamento"
-                class="block mb-2 text-gray-900 dark:text-white"
-                >Departamento del Perú</label
-              >
+              <label for="departamento_titular" class="block mb-2 text-gray-900 dark:text-white">Departamento del Perú</label>
               <select
                 formControlName="departamento"
-                id="departamento"
+                id="departamento_titular"
                 [(ngModel)]="selectedDepartamento"
                 (change)="onDepartamentoChange(selectedDepartamento)"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -264,21 +150,16 @@
 
               @if (!formularioCliente.get('formTitular.departamento')?.valid ||
               !formularioCliente.get('formTitular.departamento')?.touched) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                ELija el Departamento
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">ELija el Departamento</div>
               }
             </div>
 
             <div class="relative inline-block min-w-44 w-full">
-              <label
-                for="provincia"
-                class="block mb-2 text-gray-900 dark:text-white"
-                >Provincia</label
+              <label for="provincia-titular" class="block mb-2 text-gray-900 dark:text-white">Provincia</label
               >
               <select
                 formControlName="provincia"
-                id="provincia"
+                id="provincia-titular"
                 [(ngModel)]="selectedProvincia"
                 (change)="onProvinciaChange(selectedProvincia)"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -293,21 +174,15 @@
 
               @if (!formularioCliente.get('formTitular.provincia')?.valid ||
               !formularioCliente.get('formTitular.provincia')?.touched) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Elija la provincia
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">Elija la provincia</div>
               }
             </div>
 
             <div class="relative inline-block min-w-44 w-full">
-              <label
-                for="distrito"
-                class="block mb-2 text-gray-900 dark:text-white"
-                >Distrito</label
-              >
+              <label for="distrito-titular" class="block mb-2 text-gray-900 dark:text-white">Distrito</label>
               <select
                 formControlName="distrito"
-                id="distrito"
+                id="distrito-titular"
                 [(ngModel)]="selectedDistrito"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
@@ -318,37 +193,26 @@
               </select>
               @if (!formularioCliente.get('formTitular.distrito')?.valid ||
               !formularioCliente.get('formTitular.distrito')?.touched) {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Elija el distrito
-              </div>
+              <div class="text-red-500 text-sm p-2 border-red-500">Elija el distrito</div>
               }
             </div>
           </div>
-
-          <!--seccion del telefonos -->
-
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div class="mb-6">
-              <label
-                for="direccion"
-                class="block mb-2 text-gray-900 dark:text-white"
-                >Direccion</label
+              <label for="direction-titular"  class="block mb-2 text-gray-900 dark:text-white">Direccion</label
               >
               <input
                 type="text"
                 formControlName="direccion"
-                id="direccion"
+                id="direction-titular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
-
               @if (!formularioCliente.get('formTitular.direccion')?.valid) {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Ingrese su direccion
               </div>
               }
             </div>
-
-            <!-- telefono 1-->
 
             <div class="inline-block w-full">
               <label>Telefono 1</label>
@@ -357,51 +221,30 @@
                   class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                 >
                   <svg
-                    width="20px"
-                    height="20px"
-                    viewBox="0 0 64 64"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    class="icon icon--twotone"
                     aria-hidden="true"
                     role="img"
-                    class="iconify iconify--emojione"
+                    viewBox="0 0 64 64"
                     preserveAspectRatio="xMidYMid meet"
-                    fill="#000000"
                   >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <g fill="#ed4c5c">
-                        <path
-                          d="M62 32c0-13.1-8.3-24.2-20-28.3v56.6C53.7 56.2 62 45.1 62 32"
-                        ></path>
-                        <path
-                          d="M2 32c0 13.1 8.4 24.2 20 28.3V3.7C10.4 7.8 2 18.9 2 32z"
-                        ></path>
-                      </g>
-                      <path
-                        d="M42 3.7C38.9 2.6 35.5 2 32 2s-6.9.6-10 1.7v56.6c3.1 1.1 6.5 1.7 10 1.7s6.9-.6 10-1.7V3.7z"
-                        fill="#f9f9f9"
-                      ></path>
+                    <g class="icon-primary">
+                      <path d="M62 32c0-13.1-8.3-24.2-20-28.3v56.6C53.7 56.2 62 45.1 62 32"></path>
+                      <path d="M2 32c0 13.1 8.4 24.2 20 28.3V3.7C10.4 7.8 2 18.9 2 32z"></path>
                     </g>
+                    <path
+                      class="icon-secondary"
+                      d="M42 3.7C38.9 2.6 35.5 2 32 2s-6.9.6-10 1.7v56.6c3.1 1.1 6.5 1.7 10 1.7s6.9-.6 10-1.7V3.7z"
+                    ></path>
                   </svg>
                   +51
                 </div>
-
-                <label
-                  for="phone-input1"
-                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                  >Phone number:</label
+                <label for="phone-input11" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Phone number:</label
                 >
                 <div class="relative w-full">
                   <input
                     formControlName="telefono1"
                     type="phone"
-                    id="phone-input1"
+                    id="phone-input11"
                     class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     placeholder="123 456 789"
                     required
@@ -461,7 +304,7 @@
                 </div>
 
                 <label
-                  for="phone-input2"
+                  for="phone-input22"
                   class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                   >Phone number:</label
                 >
@@ -469,7 +312,7 @@
                   <input
                     formControlName="telefono2"
                     type="phone"
-                    id="phone-input2"
+                    id="phone-input22"
                     class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     placeholder="123 456 789"
                     required
@@ -488,23 +331,17 @@
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               >
-                <li
-                  class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
-                >
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                   <div class="flex items-center ps-3">
                     <input
-                      id="horizontal-list"
+                      id="horizontal-list1"
                       formControlName="licenciaStatus"
                       type="radio"
                       value="si"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                     />
-                    <label
-                      for="horizontal-list"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Si Tengo</label
-                    >
+                    <label for="horizontal-list1" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      Si Tengo</label>
                   </div>
                 </li>
 
@@ -534,14 +371,14 @@
               class="inline-block w-full"
             >
               <label
-                for="default-input"
+                for="default-input1"
                 class="block mb-2 text-gray-900 dark:text-white"
                 >Numero Del Documento</label
               >
               <input
                 type="text"
                 formControlName="licenciaConducir"
-                id="default-input"
+                id="default-input1"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
@@ -828,42 +665,34 @@
       <!-- Sección 2 -->
 
       <div *ngIf="currentSection === 2">
-        <h2 class="mb-12 font-bold uppercase">Datos Personales del Fiador</h2>
+        <h2 class="h2-titular">Datos Personales del Fiador</h2>
 
         <ng-container formGroupName="formularioFiador">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <fieldset class="inline-block relative min-w-44 max-w-44">
-              <label for="doc" class="block mb-2 text-gray-900 dark:text-white">
-                Tipo de Documento</label
-              >
-              <select
-                id="doc"
-                formControlName="documentTypeFiador"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="dni">Doc Nac Identidad</option>
-                <option value="CA">Carnet De Extranjeria</option>
+              <label for="docFiador" class="block mb-2 text-gray-900 dark:text-white">Tipo de Documento</label>
+              <select id="docFiador" formControlName="documentTypeFiador" class="select-custom">
+                @for (t of documentTypes; track t.value) {
+                  <option [value]="t.value">{{ t.label }}</option>
+                }
               </select>
-
-              @if
-              (!formularioCliente.get('formularioFiador.documentTypeFiador')?.valid)
-              {
-              <div class="text-red-500 text-sm p-2 border-red-500">
-                Este campo es requerido
-              </div>
-              }
+              <div
+                *ngIf="
+                  formularioCliente.get('formTitular.documentTypeFiador')?.invalid &&
+                  formularioCliente.get('formTitular.documentTypeFiador')?.touched
+                " class="text-red-500 text-sm p-2 border-red-500">Este campo es requerido</div>
             </fieldset>
 
             <fieldset class="mb-6">
               <label
-                for="default-input"
+                for="default-input2"
                 class="block mb-2 text-gray-900 dark:text-white"
                 >Numero Del Documento</label
               >
               <input
                 type="text"
                 formControlName="documentNumberFiador"
-                id="default-input"
+                id="default-input2"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
 
@@ -881,29 +710,18 @@
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="mb-6">
-              <label for="name" class="block mb-2 text-gray-900 dark:text-white"
-                >Nombre</label
+              <label for="name45" class="block mb-2 text-gray-900 dark:text-white">Nombre</label
               >
               <div class="flex">
-                <span
-                  class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
-                >
-                  <svg
-                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"
-                    />
+                <span class="input-prefix">
+                  <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
                   </svg>
                 </span>
                 <input
                   type="text"
                   formControlName="nombreFiador"
-                  id="name"
+                  id="name45"
                   class="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="elon"
                 />
@@ -1125,7 +943,7 @@
               @if
               (!formularioCliente.get('formularioFiador.provinciaFiador')?.valid
               ||
-              !formularioCliente.get('formularioFiador.provincia.fiador')?.touched)
+              !formularioCliente.get('formularioFiador.provinciaFiador')?.touched)
               {
               <div class="text-red-500 text-sm p-2 border-red-500">
                 Elija la provincia
@@ -1141,7 +959,7 @@
               >
               <select
                 formControlName="distritoFiador"
-                id="distrito"
+                id="distritoFiador"
                 [(ngModel)]="selectedDistrito"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
@@ -1465,19 +1283,19 @@
       </div>
 
       <div *ngIf="currentSection === 3">
-        <h3 class="m-10 uppercase font-semibold">REFERENCIAS</h3>
+        <h3 class="h2-titular">REFERENCIAS</h3>
 
         <ng-container formGroupName="formularioVehiculo">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label
-                for="first_name"
+                for="first_name12"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Nombre</label
               >
               <input
                 type="text"
-                id="first_name"
+                id="first_name12"
                 formControlName="priNombreReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1487,13 +1305,13 @@
 
             <div>
               <label
-                for="last_name"
+                for="last_name12"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Apellido</label
               >
               <input
                 type="text"
-                id="last_name"
+                id="last_name12"
                 formControlName="priApellidoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1503,13 +1321,13 @@
 
             <div>
               <label
-                for="phone"
+                for="phone23"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Telefono</label
               >
               <input
                 type="tel"
-                id="phone"
+                id="phone23"
                 formControlName="priTelefonoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="123-45-678"
@@ -1520,13 +1338,13 @@
 
             <div>
               <label
-                for="Parentesco"
+                for="Parentesco23"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Grado de Parentesco</label
               >
               <input
                 type="text"
-                id="Parentesco"
+                id="Parentesco23"
                 formControlName="priParentescoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1540,13 +1358,13 @@
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label
-                for="first_name"
+                for="first_name23"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >nombre</label
               >
               <input
                 type="text"
-                id="first_name"
+                id="first_name23"
                 formControlName="segNombreReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1556,13 +1374,13 @@
 
             <div>
               <label
-                for="last_name"
+                for="last_name23"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Apellido</label
               >
               <input
                 type="text"
-                id="last_name"
+                id="last_name23"
                 formControlName="segApellidoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1572,13 +1390,13 @@
 
             <div>
               <label
-                for="phone"
+                for="phone34"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Telefono</label
               >
               <input
                 type="tel"
-                id="phone"
+                id="phone34"
                 formControlName="segTelefonoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="123-45-678"
@@ -1589,13 +1407,13 @@
 
             <div>
               <label
-                for="Parentesco"
+                for="Parentesco45"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Grado de Parentesco</label
               >
               <input
                 type="text"
-                id="Parentesco"
+                id="Parentesco45"
                 formControlName="segParentescoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1609,13 +1427,13 @@
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div>
               <label
-                for="first_name"
+                for="first_name56"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Nombre</label
               >
               <input
                 type="text"
-                id="first_name"
+                id="first_name56"
                 formControlName="terNombreReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="nombre"
@@ -1625,13 +1443,13 @@
 
             <div>
               <label
-                for="last_name"
+                for="last_name67"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Apellido</label
               >
               <input
                 type="text"
-                id="last_name"
+                id="last_name67"
                 formControlName="terApellidoReferenciaTitular"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="apellido"
@@ -1673,19 +1491,19 @@
             </div>
           </div>
 
-          <h3 class="m-10 uppercase font-semibold">DATOS DEL VEHICULO</h3>
+          <h3 class="h2-titular">DATOS DEL VEHICULO</h3>
           <!-- dato del vehiculo -->
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
               <label
-                for="first_name"
+                for="first_name78"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Marca del vehiculo</label
               >
               <input
                 type="text"
-                id="first_name"
+                id="first_name78"
                 formControlName="marcaVehiculo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="marca"
@@ -1695,13 +1513,13 @@
 
             <div>
               <label
-                for="first_name"
+                for="first_name89"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Modelo del vehiculo</label
               >
               <input
                 type="text"
-                id="first_name"
+                id="first_name89"
                 formControlName="modeloVehiculo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="modelo"
@@ -1711,13 +1529,13 @@
 
             <div>
               <label
-                for="first_name"
+                for="first_name14"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Color del vehiculo</label
               >
               <input
                 type="text"
-                id="first_name"
+                id="first_name14"
                 formControlName="colorVehiculo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder=""
@@ -1728,17 +1546,17 @@
 
           <!--                   -->
 
-          <h3 class="m-10 uppercase font-semibold">DATOS DE LA FINANCIACION</h3>
+          <h3 class="h2-titular">DATOS DE LA FINANCIACION</h3>
 
           <fieldset class="max-w-sm mx-auto">
               <label
-                for="number-input"
+                for="number-input96"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Precio de compra de la moto:</label
               >
               <input
                 type="number"
-                id="number-input"
+                id="number-input96"
                 formControlName="precioCompraMoto"
                 aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -2063,9 +1881,9 @@
         >
           seccion anterior
         </button>
-        
+
           <button
-               
+
             class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5
              py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="submit"
@@ -2123,34 +1941,16 @@
       </div>
       <!-- Modal body -->
       <div class="p-4 md:p-5 space-y-4">
-        
         <p class="text-3xl font-semibold leading-relaxed text-gray-500 dark:text-gray-400">
           Gracias por completar el formulario, por favor revisa que todos los campos esten llenos y correctos,
            si es asi, presiona el boton de enviar formulario y finalizar,
             de lo contrario presiona el boton de cancelar envio y regresar al formulario.
         </p>
       </div>
-      <!-- Modal footer -->
-      <div
-        class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
-      >
-        <button
-        (click)="formulariCompleto()"
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Enviar formulario y finalizar
-        </button>
-        <button
-          (click)="cancelModal()"
-          type="button"
-          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-        >
-          Cancelar envio  y Regrsar al formulario
-        </button>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" (click)="formulariCompleto()">Enviar formulario y finalizar</button>
+        <button type="button" class="btn btn-outline" (click)="cancelModal()">Cancelar envio y Regresar al formulario</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Main modal -->

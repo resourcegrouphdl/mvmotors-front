@@ -60,7 +60,7 @@ export class GaleriaSegundaComponent implements OnInit {
     private intervalId: any;
     private touchStartX = 0;
     private touchEndX = 0;
-     
+
 
   constructor(private productoService: ProductosService ,private router: Router) { }
 
@@ -70,14 +70,14 @@ export class GaleriaSegundaComponent implements OnInit {
   }
 
 
-  
+
 
   activeIndex = 0;
 
   secciones: any[] = [
   ];
 
-  
+
 
   setActive(index: number) {
     this.activeIndex = index;
@@ -86,12 +86,13 @@ export class GaleriaSegundaComponent implements OnInit {
   async inicializarComponente() {
     // Esperar a que se recupere el producto
     await this.recuperarProducto();
-  
+
+
     // Verificar si productoMotocicleta tiene contenido
     if (this.productoMotocicleta) {
       // Ejecutar settearCaracteristicas solo si productoMotocicleta tiene datos
       await this.settearCaracteristicas();
-  
+
       // Activar la animación después de un breve retraso
       setTimeout(() => {
         this.isImageVisible = true;
@@ -122,7 +123,7 @@ export class GaleriaSegundaComponent implements OnInit {
       return;
     }
 
-    
+
       this.motor = [
         { nombre: 'Motor', icono: this.urlIconos +'CILINDRADA.png?alt=media&token=a225ddcd-f7ae-4e2e-9560-ac6338871239', contenido: fichaTecnica.motor },
         { nombre: 'Arranque', icono: this.urlIconos +'CILINDRADA.png?alt=media&token=a225ddcd-f7ae-4e2e-9560-ac6338871239', contenido: fichaTecnica.arranque },
@@ -131,10 +132,10 @@ export class GaleriaSegundaComponent implements OnInit {
       ]
 
       this.conbustible = [
-      
+
         { nombre: 'Tanque', icono: this.urlIconos +'TANQUE.png?alt=media&token=d6bffb63-86e5-4d9b-a1b0-8f5898c9d3ed', contenido: fichaTecnica.tanque },
         { nombre: 'Rendimiento', icono: this.urlIconos +'VELOCIDAD%20-%20RENDIMIENTO%20-%20POTENCIA%20-%20AUTONOMIA.png?alt=media&token=d4d3c59c-ed80-4332-8aa8-f0acb8cbfbef', contenido: fichaTecnica.rendimiento },
-        
+
       ]
 
       this.suspencion = [
@@ -156,7 +157,7 @@ export class GaleriaSegundaComponent implements OnInit {
         { nombre: 'Freno Posterior', icono:this.urlIconos + 'FRENOS%20DELAN%20Y%20TRASE.png?alt=media&token=bbb75c6e-bd06-4465-9260-7b0bd5ea8ec3', contenido: fichaTecnica.frenoTrasero },
         { nombre: 'Rueda Delantera', icono:this.urlIconos + 'RUEDASBLAK.png?alt=media&token=d785050f-b1d9-4eee-a153-ce3996870f99', contenido: fichaTecnica.ruedaDelantera },
         { nombre: 'Rueda Posterior', icono:this.urlIconos + 'RUEDASBLAK.png?alt=media&token=d785050f-b1d9-4eee-a153-ce3996870f99', contenido: fichaTecnica.ruedaTrasera },
-        
+
       ]
 
       this.secciones = [
@@ -169,7 +170,7 @@ export class GaleriaSegundaComponent implements OnInit {
       ];
 
       console.log('Características seteadas:', this.secciones);
-    
+
   }
 
 
