@@ -33,18 +33,26 @@ import 'flowbite';
   ],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
-  
+
 })
 export class FormularioComponent implements OnInit {
   currentSection: number = 1;
   isModalOpen : boolean = false;
-  
 
+  documentTypes = [
+    { value: 'dni', label: 'Doc Nac Identidad' },
+    { value: 'CA',  label: 'Carnet De Extranjeria' },
+  ];
+
+  stadoCivil = [
+    { value: 'soltero', label: 'soltero' },
+    { value: 'casado',  label: 'casado' },
+  ];
 
   isUploading = false;
   isUploaded = false;
   uploadProgress: Observable<number> = of(0);
-  private storage :Storage = inject( Storage); 
+  private storage :Storage = inject( Storage);
   formularioCliente: FormGroup;
 
   peruRegions: Iregiones[] = PERU;
@@ -181,7 +189,7 @@ export class FormularioComponent implements OnInit {
           Validators.pattern('^[0-9]*$')),
         ],
         telefonoSegFiador: ['', Validators.minLength(9)],
-        
+
 
         //-- seccion de fotografias
 
@@ -193,7 +201,7 @@ export class FormularioComponent implements OnInit {
           '',
           (Validators.required, Validators.minLength(3)),
         ],
-        
+
         fotoCasaURLfiador: ['', (Validators.required, Validators.minLength(3))],
       }),
 
@@ -298,8 +306,8 @@ export class FormularioComponent implements OnInit {
     }catch{
       console.log('error al guardar el formulario')
     }
-    
-    
+
+
 
   }
 
@@ -314,8 +322,8 @@ export class FormularioComponent implements OnInit {
 
     this.openMOdal();
 
-   
-    
+
+
   }
 
   formulariCompleto(){
@@ -329,7 +337,7 @@ export class FormularioComponent implements OnInit {
     // Aquí puedes manejar el envío del formulario
     } catch{
       console.log('error al guardar el formulario');
-     
+
     }
   }
 
@@ -451,7 +459,7 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  
+
   onLicFrenteRevereso(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
@@ -468,7 +476,7 @@ export class FormularioComponent implements OnInit {
 
     }
 
-    
+
   }
 
 
@@ -482,14 +490,14 @@ export class FormularioComponent implements OnInit {
   async uploadImage(file: File, campo: string) {
       this.isUploading = true;
       const filePath = `images/${Date.now()}_${file}`; // Ruta en el storage
-      
+
 
       const storageRef = ref(this.storage, filePath);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on('state_changed',(onSnapshot)=>{
         this.uploadProgress = of((onSnapshot.bytesTransferred / onSnapshot.totalBytes) * 100);
-       
+
         switch (onSnapshot.state) {
           case 'paused':
             console.log('Upload is paused');
@@ -499,7 +507,7 @@ export class FormularioComponent implements OnInit {
             break;
         }
 
-      
+
 
       }
       ,(error)=>{
@@ -518,7 +526,7 @@ export class FormularioComponent implements OnInit {
   }
 
 
-  // secion del fiador 
+  // secion del fiador
 
   onDniFiadorSelected(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
@@ -580,5 +588,5 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  
+
 }

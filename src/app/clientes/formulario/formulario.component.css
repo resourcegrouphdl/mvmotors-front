@@ -2,7 +2,7 @@
     position: relative;
     margin-bottom: 1rem;
   }
-  
+
   .user-label {
     position: absolute;
     top: -1.5rem;
@@ -10,7 +10,7 @@
     font-size: 0.875rem;
     color: #6b7280;
   }
-  
+
   .user-label-select {
     position: absolute;
     top: -1.5rem;
@@ -18,23 +18,23 @@
     font-size: 0.875rem;
     color: #6b7280;
   }
-  
+
   .btn {
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     font-size: 1rem;
   }
-  
+
   .btn-primary {
     background-color: #3b82f6;
     color: white;
   }
-  
+
   .btn-secondary {
     background-color: #6b7280;
     color: white;
   }
-  
+
   .btn-success {
     background-color: #10b981;
     color: white;
@@ -42,5 +42,266 @@
   .hiddena {
     display: none;
   }
+/* w-full */
+.section-custom {
+  width: 100%;
+  background-color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+}
+.div-custom {
+  padding: 1.5rem;                  /* p-6 → 24px */
+  margin-top: 2.5rem;               /* mt-10 → 40px */
+  margin-left: auto;                /* mx-auto → centrado */
+  margin-right: auto;
+  max-width: 100%;                  /* container → ocupa el ancho contenedor */
+  background-color: #ffffff;        /* bg-white */
+  border: 1px solid #e5e7eb;        /* border border-gray-200 */
+  border-radius: 0.5rem;            /* rounded-lg → 8px */
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1),
+  0 10px 10px -5px rgba(0,0,0,0.04); /* shadow-xl */
+}
 
-  
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .div-custom {
+    background-color: #1f2937;   /* dark:bg-gray-800 */
+    border-color: #374151;       /* dark:border-gray-700 */
+  }
+}
+
+/* Mobile: ocupa todo el ancho */
+@media (max-width: 768px) {
+  .div-custom {
+    width: 100%;      /* fuerza el 100% en pantallas pequeñas */
+    max-width: none;  /* elimina límite de container */
+  }
+}
+
+.h2-formulario {
+  margin-left: auto;         /* mx-auto → centra horizontal */
+  margin-right: auto;
+  text-transform: uppercase; /* uppercase */
+  font-weight: 700;          /* font-bold */
+  font-size: 1.5rem;         /* text-2xl → 24px */
+  line-height: 2rem;         /* line-height de 32px aprox en Tailwind */
+}
+
+.h2-titular {
+  margin-top: 1rem;
+  margin-bottom: 2rem;            /* m-10 → 40px en todos los lados */
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1rem;           /* default <h2> sin clase text-2xl → 16px */
+  line-height: 1.5rem;
+}
+
+
+.select-custom {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  color: #111827;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  display: block;
+  padding: 0.625rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;   /* quita el estilo nativo en Chrome/Firefox */
+  -webkit-appearance: none; /* Safari */
+  -moz-appearance: none;
+}
+
+/* Focus */
+.select-custom:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* Opciones */
+.select-custom option {
+  background: #ffffff; /* fondo claro */
+  color: #111827;      /* texto oscuro */
+  font-size: 0.875rem;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .select-custom {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #ffffff;
+  }
+  .select-custom option {
+    background: #1f2937; /* fondo oscuro */
+    color: #ffffff;
+  }
+}
+
+.input-prefix{
+  display: inline-flex;                /* inline-flex */
+  align-items: center;                 /* items-center */
+  padding-inline: 0.75rem;             /* px-3 */
+  font-size: 0.875rem;                 /* text-sm */
+  line-height: 1.25rem;
+  color: #111827;                      /* text-gray-900 */
+  background-color: #E5E7EB;           /* bg-gray-200 */
+  border: 1px solid #D1D5DB;           /* border + border-gray-300 */
+
+  /* “rounded-e-0” + “rounded-s-md” y sin borde en el extremo derecho */
+  border-inline-end-width: 0;          /* border-e-0 */
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-start-start-radius: 0.375rem; /* rounded-s-md */
+  border-end-start-radius: 0.375rem;
+}
+
+.input-prefix svg{
+  width: 1rem;                         /* w-4 */
+  height: 1rem;                        /* h-4 */
+  color: #6B7280;                      /* text-gray-500 */
+}
+
+/* Modo oscuro: usa .dark en <html> o <body> como hace Tailwind */
+.dark .input-prefix{
+  background-color: #4B5563;           /* dark:bg-gray-600 */
+  color: #9CA3AF;                      /* dark:text-gray-400 */
+  border-color: #4B5563;               /* dark:border-gray-600 */
+}
+.dark .input-prefix svg{
+  color: #9CA3AF;                      /* dark:text-gray-400 */
+}
+
+/* Utilidades para SVGs */
+.icon{
+  display: inline-block;
+  width: 1.25rem;   /* 20px */
+  height: 1.25rem;  /* 20px */
+  color: #6B7280;   /* gris 500 por defecto */
+  fill: currentColor;   /* el <path> toma el color del elemento */
+  flex-shrink: 0;
+}
+
+/* Tamaño pequeño */
+.icon--sm{
+  width: 1rem;   /* 16px */
+  height: 1rem;  /* 16px */
+}
+
+/* (Opcional) Dark mode si usas .dark en <html> o <body> */
+.dark .icon{
+  color: #9CA3AF; /* gris 400 */
+}
+
+/* Base para todos los botones */
+.btn{
+  font-weight: 500;              /* font-medium */
+  border-radius: 0.5rem;         /* rounded-lg */
+  font-size: 0.875rem;           /* text-sm */
+  line-height: 1.25rem;
+  padding: 0.625rem 1.25rem;     /* py-2.5 px-5 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  transition: background-color .2s ease, box-shadow .2s ease, color .2s ease, border-color .2s ease;
+}
+
+/* Primario (azul) – ya lo tienes si usas .btn-primary */
+.btn-primary{
+  color:#fff;
+  background:#1D4ED8;
+}
+.btn-primary:hover{ background:#1E40AF; }
+.btn-primary:focus-visible{ box-shadow:0 0 0 4px #93C5FD; }
+.dark .btn-primary{ background:#2563EB; }
+.dark .btn-primary:hover{ background:#1D4ED8; }
+.dark .btn-primary:focus-visible{ box-shadow:0 0 0 4px #1E40AF; }
+
+/* Secundario (outline/blanco) */
+.btn-outline{
+  color:#111827;                 /* text-gray-900 */
+  background:#ffffff;            /* ¡no transparente! */
+  border:1px solid #e5e7eb;      /* border-gray-200 */
+}
+.btn-outline:hover{
+  background:#f3f4f6;            /* hover:bg-gray-100 */
+  color:#1D4ED8;                 /* hover:text-blue-700 */
+}
+.btn-outline:focus-visible{
+  box-shadow:0 0 0 4px #f3f4f6;  /* focus:ring-gray-100 */
+}
+
+/* Modo oscuro del outline */
+.dark .btn-outline{
+  background:#1f2937;            /* bg-gray-800 */
+  color:#9ca3af;                 /* text-gray-400 */
+  border-color:#4b5563;          /* border-gray-600 */
+}
+.dark .btn-outline:hover{
+  background:#374151;            /* dark:hover:bg-gray-700 */
+  color:#fff;                    /* dark:hover:text-white */
+}
+.dark .btn-outline:focus-visible{
+  box-shadow:0 0 0 4px #374151;  /* dark:focus:ring-gray-700 */
+}
+
+/* Fila de botones y full width en móvil */
+.btn-row{
+  padding-left: 2rem;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+
+  display:flex;
+  gap:0.75rem;
+  flex-wrap:wrap;
+}
+
+@media (max-width:640px){
+  .btn{ width:100%; }
+}
+
+/* Base para cualquier SVG como ícono */
+.icon{
+  width: 1rem;            /* w-4 */
+  height: 1rem;           /* h-4 */
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentColor;     /* usa el color del texto */
+  transition: color .2s ease;
+}
+
+/* Color “gris medio” por defecto */
+.icon--muted{
+  color: #6b7280;         /* text-gray-500 */
+}
+
+/* Equivalente dark:text-gray-400 */
+.dark .icon--muted{
+  color: #9ca3af;
+}
+
+/* Base para cualquier icono SVG */
+.icon {
+  --icon-size: 20px;         /* cambia el tamaño desde aquí si quieres */
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Paleta del icono (bandera bicolor) */
+.icon--twotone .icon-primary { fill: #ed4c5c; }  /* rojo */
+.icon--twotone .icon-secondary { fill: #f9f9f9; }/* blanco */
+
+/* Si usas modo oscuro y quieres ajustar el blanco ligeramente */
+.dark .icon--twotone .icon-secondary { fill: #f3f4f6; }
+
+
+
+
+
