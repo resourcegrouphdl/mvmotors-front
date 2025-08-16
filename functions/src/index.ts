@@ -46,8 +46,7 @@ export const onClienteCreate = functions.firestore
     // Opciones del correo electrónico
     const mailOptions1 = {
       from: 'resourcegrouphdl@gmail.com',
-      //to: `resourcegrouphdl@gmail.com,contenidomotoya@gmail.com`,
-      to:`daniel.lizana01@gmail.com`,
+      to: `resourcegrouphdl@gmail.com,contenidomotoya@gmail.com`,
       subject: ` ${nombre} ${apellido}`,
       text: `Se ha registrado un nuevo cliente con ID:
 
