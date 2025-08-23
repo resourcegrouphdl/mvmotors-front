@@ -5,11 +5,13 @@ import { Titular } from '../data-acces/titular';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable, Subscriber } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-produto-solicitado',
   standalone: true,
-  imports: [ NgFor],
+  imports: [ NgFor,CommonModule],
   templateUrl: './produto-solicitado.component.html',
   styleUrl: './produto-solicitado.component.css',
 })
@@ -39,6 +41,7 @@ export class ProdutoSolicitadoComponent  implements OnInit {
         this.data = data;
         console.log(data);
       });
+      console.log(this.data);
     
   }
 
@@ -47,6 +50,13 @@ export class ProdutoSolicitadoComponent  implements OnInit {
       return this._datosClietne.getById(id);
     }
 
-    
+hasArchivos(): boolean {
+    return !!(this.data?.formularioVehiculo?.archivos?.length);
+  }
+
+  // Función trackBy para optimizar el rendimiento del *ngFor
+  trackByIndex(index: number, item: string): number {
+    return index;
+  }
   
 }

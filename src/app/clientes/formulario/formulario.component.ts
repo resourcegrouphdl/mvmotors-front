@@ -1,35 +1,30 @@
 import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { NgIf,NgClass } from '@angular/common';
+import { NgIf,NgClass,NgFor } from '@angular/common';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from "@angular/fire/storage";
 import {
   ReactiveFormsModule,
   FormBuilder,
   FormGroup,
   Validators,
+  FormArray,
 } from '@angular/forms';
-import { FormTitularComponent } from '../form-titular/form-titular.component';
-import { FormFiadorComponent } from '../form-fiador/form-fiador.component';
 import { IProvincias, Iregiones, PERU } from '../data-acces/peruregions';
-import { ProdutoSolicitadoComponent } from '../produto-solicitado/produto-solicitado.component';
-
 import { initFlowbite } from 'flowbite';
 import { Observable, of } from 'rxjs';
 import { FormserviceService } from '../data-acces/services/formservice.service';
 import { IModelos, IMotos, MOTOS } from '../data-acces/motos';
 import { toast } from 'ngx-sonner';
 import 'flowbite';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-formulario',
   standalone: true,
   imports: [
     NgIf,
+    NgFor,
     NgClass,
     ReactiveFormsModule,
-    FormTitularComponent,
-    FormFiadorComponent,
-    ProdutoSolicitadoComponent,
   ],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
@@ -38,6 +33,8 @@ import 'flowbite';
 export class FormularioComponent implements OnInit {
   currentSection: number = 1;
   isModalOpen : boolean = false;
+  archivosSeleccionados: File[] = [];
+  
 
   documentTypes = [
     { value: 'dni', label: 'Doc Nac Identidad' },
@@ -117,7 +114,7 @@ export class FormularioComponent implements OnInit {
   downloadURLFotoCasaFiador: string | null = null;
 
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private _formService: FormserviceService) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private _formService: FormserviceService, private _storage: StorageService) {
     this.formularioCliente = this.fb.group({
 
       formTitular: this.fb.group({
@@ -263,6 +260,7 @@ export class FormularioComponent implements OnInit {
         inicialVehiculo: ['', (Validators.required, Validators.minLength(3))],
         numeroQuincenas: ['', (Validators.required, Validators.minLength(3))],
         montotDeLaCuota: ['', (Validators.required, Validators.minLength(3))],
+        archivos: this.fb.array(['']),
 
         //vendedor
 
@@ -586,6 +584,84 @@ export class FormularioComponent implements OnInit {
       reader.readAsDataURL(this.slectedImagenFotoCasaFiador);
       this.uploadImage(this.slectedImagenFotoCasaFiador,'formularioFiador.fotoCasaURLfiador');
     }
+  }
+
+  onFilesSelected(event: any): void {
+    const files: FileList = event.target.files;
+    const archivosValidos: File[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      // Validar tipo de archivo
+      if (this.esArchivoValido(file)) {
+        // Validar tamaño (máximo 10MB por archivo)
+        if (file.size <= 10 * 1024 * 1024) {
+          archivosValidos.push(file);
+        } else {
+          alert(`El archivo "${file.name}" es demasiado grande. Máximo 10MB por archivo.`);
+        }
+      } else {
+        alert(`El archivo "${file.name}" no es válido. Solo se permiten PDF y JPG.`);
+      }
+    }
+
+    const uploadPromises = archivosValidos.map(archivo => 
+    this._storage.subirConProgreso(archivo).toPromise()
+  );
+
+  Promise.all(uploadPromises).then(results => {
+    const urls = results.map(result => result?.url).filter(url => url);
+    
+    // Obtener el FormArray
+    const archivosFormArray = this.formularioCliente.get('formularioVehiculo.archivos') as FormArray;
+    
+    // Agregar las nuevas URLs al FormArray
+    urls.forEach(url => {
+      archivosFormArray.push(this.fb.control(url));
+    });
+
+    // Actualizar la lista visual de archivos
+    this.archivosSeleccionados = [
+      ...this.archivosSeleccionados,
+      ...archivosValidos
+    ];
+  }).catch(error => {
+    console.error('Error al subir archivos:', error);
+    toast.error('Error al subir los archivos');
+  });
+
+  // Limpiar el input
+  event.target.value = '';
+}
+
+
+
+  private esArchivoValido(file: File): boolean {
+    const tiposPermitidos = ['application/pdf', 'image/jpeg', 'image/jpg'];
+    return tiposPermitidos.includes(file.type);
+  }
+
+  // Eliminar archivo de la lista
+  eliminarArchivo(index: number): void {
+  const archivosFormArray = this.formularioCliente.get('formularioVehiculo.archivos') as FormArray;
+  
+  // Eliminar del FormArray
+  archivosFormArray.removeAt(index);
+  
+  // Eliminar de la lista visual
+  this.archivosSeleccionados.splice(index, 1);
+}
+
+  // Formatear el tamaño del archivo para mostrar
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
 

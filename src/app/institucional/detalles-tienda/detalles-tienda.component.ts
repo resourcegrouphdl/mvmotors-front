@@ -41,7 +41,7 @@ export enum EvaluationStage {
 @Component({
   selector: 'app-detalles-tienda',
   standalone: true,
-  imports: [NgClass, FormsModule, NgFor, NgIf, CommonModule, ReactiveFormsModule],
+  imports: [ FormsModule, NgIf, CommonModule, ReactiveFormsModule],
   templateUrl: './detalles-tienda.component.html',
   styleUrl: './detalles-tienda.component.css',
 })

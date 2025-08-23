@@ -68,6 +68,7 @@ export interface Titular2{
   PuntoDeVenta: string;
 
   mensajeOpcional: string;
+  archivos: string[];
 }
 
 
@@ -137,5 +138,6 @@ export interface Titular {
     nombreDelVendedor: string;
     puntoDeVenta: string;
     mensajeOpcional: string;
+    archivos: string[];
   };
 }
