@@ -88,7 +88,7 @@ export class SliderCardComponent implements AfterViewInit, OnDestroy,OnInit {
   goToCatalogo(): void {
     // Lógica para redirigir al catálogo de motos
     console.log('Ir al catálogo de motos');
-    this.router.navigate (['/motos-seminuevas']);
+    this.router.navigate (['/galeria']);
   }
 
   

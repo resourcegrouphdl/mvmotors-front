@@ -11,7 +11,7 @@ export interface Inavegacion {
 export const RUTASNAVBAR = [
     { path: 'cliente/formulario', title: 'financiamiento',foco:true },
     { path: 'motos-nuevas', title: 'sorteos',foco:false },
-    { path: 'motos-seminuevas', title: 'Galeria',foco:false },
+    { path: 'galeria', title: 'Galeria',foco:false },
     { path: 'quienes-somos', title: 'aliado comercial',foco:false },
     { path: 'contactenos', title: 'contactenos',foco:false },
   

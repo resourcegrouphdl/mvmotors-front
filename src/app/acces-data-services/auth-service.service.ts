@@ -102,6 +102,7 @@ async changePassword(newPassword: string): Promise<{ success: boolean; error?: s
 
       // Dirigir según tipo de usuario
       const currentUser = this.currentUserSubject.value;
+      console.log('Usuario actual después de cambiar contraseña:', currentUser);
       if (currentUser) {
         this.redirectUserByType(currentUser.userType);
       }
@@ -145,8 +146,10 @@ async changePassword(newPassword: string): Promise<{ success: boolean; error?: s
       
       // Crear instancia específica según tipo de usuario
       if (userData.userType === UserType.STORE) {
+        
         return Object.assign(new StoreUser(), userData);
       } else if (userData.userType === UserType.VENDOR) {
+        
         return Object.assign(new VendorUser(), userData);
       }
       

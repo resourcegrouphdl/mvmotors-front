@@ -38,7 +38,7 @@ export const routes: Routes = [
     
   },
   {
-    path: 'motos-seminuevas',
+    path: 'galeria',
     component: GaleriaNuevasComponent,
   },
   {
@@ -59,7 +59,7 @@ export const routes: Routes = [
       },
       {
         path: 'store',
-        component: FormularioComponent,
+        component: DetallesTiendaComponent,
       },
       {
         path: 'vendor',
