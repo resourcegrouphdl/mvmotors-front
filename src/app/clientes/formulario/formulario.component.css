@@ -63,13 +63,7 @@
   0 10px 10px -5px rgba(0,0,0,0.04); /* shadow-xl */
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  .div-custom {
-    background-color: #1f2937;   /* dark:bg-gray-800 */
-    border-color: #374151;       /* dark:border-gray-700 */
-  }
-}
+
 
 /* Mobile: ocupa todo el ancho */
 @media (max-width: 768px) {
@@ -128,18 +122,6 @@
   font-size: 0.875rem;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  .select-custom {
-    background-color: #374151;
-    border-color: #4b5563;
-    color: #ffffff;
-  }
-  .select-custom option {
-    background: #1f2937; /* fondo oscuro */
-    color: #ffffff;
-  }
-}
 
 .input-prefix{
   display: inline-flex;                /* inline-flex */
