@@ -1,147 +1,446 @@
-<div>
-    <div class="min-h-screen bg-gray-100">
-      <!-- Header -->
-      <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-gray-900">
-              Dashboard - Vendedor
-            </h1>
-            <div class="flex items-center space-x-4">
-              <span class="text-sm text-gray-500">
-                Bienvenido, {{ currentUser?.firstName }} {{ currentUser?.lastName }}
-              </span>
-              <button
-                (click)="logout()"
-                class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Cerrar Sesión
-              </button>
-            </div>
+<div class="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+      Sistema de Financiamiento de Motos
+    </h1>
+    <p class="text-gray-600">
+      Gestiona tus propuestas de financiamiento y consulta tu lista oficial de productos aprobados
+    </p>
+
+    <!-- Estado de carga global -->
+    @if (isLoading) {
+      <div class="mt-4 flex items-center gap-2 text-blue-600">
+        <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm">Actualizando datos...</span>
+      </div>
+    }
+
+    <!-- Manejo de errores -->
+    @if (hasError) {
+      <div class="mt-4 bg-red-50 border border-red-200 rounded-md p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-red-800 font-medium">{{ errorMessage }}</span>
           </div>
+          <button (click)="clearError()" class="text-red-600 hover:text-red-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
         </div>
-      </header>
+      </div>
+    }
+  </div>
 
-      <!-- Main Content -->
-      <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 py-6 sm:px-0 space-y-6">
-          
-          <!-- Vendor Info Cards -->
-          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-              <div class="p-5">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">Clientes Activos</dt>
-                      <dd class="text-lg font-medium text-gray-900">{{ getTotalActiveClients() }}</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-              <div class="p-5">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">En Evaluación</dt>
-                      <dd class="text-lg font-medium text-gray-900">{{ getClientsInEvaluation() }}</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-              <div class="p-5">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">Completados</dt>
-                      <dd class="text-lg font-medium text-gray-900">{{ getCompletedClients() }}</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-              <div class="p-5">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">Chat  Motoya</dt>
-                      <dd class="text-lg font-medium text-gray-900">Motoya.com</dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Clients List -->
-          <div class="bg-white shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
-              <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Clientes en Evaluación</h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">Lista de clientes potenciales y su estado actual</p>
-              </div>
-              <button
-                
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-              >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
-                Nuevo Cliente
-              </button>
-            </div>
-
-            <!-- Filters -->
-                       
-            
-          </div>
-
-          <!-- New Client Form -->
-          <div *ngIf="showNewClientForm" class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Registrar Nuevo Cliente Potencial</h3>
-              
-              
-            </div>
-          </div>
-
-        </div>
-      </main>
+  <!-- Estadísticas en cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <div class="text-2xl font-bold text-gray-900">{{ stats.total }}</div>
+      <div class="text-sm text-gray-600">Total</div>
     </div>
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <div class="text-2xl font-bold text-yellow-600">{{ stats.pendientes }}</div>
+      <div class="text-sm text-gray-600">Pendientes</div>
+    </div>
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <div class="text-2xl font-bold text-green-600">{{ stats.aprobadas }}</div>
+      <div class="text-sm text-gray-600">Aprobadas</div>
+    </div>
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <div class="text-2xl font-bold text-red-600">{{ stats.rechazadas }}</div>
+      <div class="text-sm text-gray-600">Rechazadas</div>
+    </div>
+  </div>
+
+  <!-- Navegación de tabs -->
+  <div class="mb-6">
+    <nav class="flex space-x-1 bg-white rounded-lg p-1 shadow-sm">
+      <button
+        (click)="setActiveTab('aprobadas')"
+        [class]="getTabClass('aprobadas')"
+      >
+        <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Lista Oficial ({{ stats.aprobadas }})
+      </button>
+      
+      <button 
+        (click)="setActiveTab('nueva')" 
+        [class]="getTabClass('nueva')"
+      >
+        <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Nueva Propuesta
+      </button>
+      
+      <button
+        (click)="setActiveTab('pendientes')"
+        [class]="getTabClass('pendientes')"
+      >
+        <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Pendientes ({{ stats.pendientes }})
+      </button>
+      
+      <button
+        (click)="setActiveTab('rechazadas')"
+        [class]="getTabClass('rechazadas')"
+      >
+        <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Rechazadas ({{ stats.rechazadas }})
+      </button>
+    </nav>
+  </div>
+
+  <!-- Formulario para nueva propuesta -->
+  @if (activeTab() === 'nueva') {
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Crear Nueva Propuesta
+      </h2>
+      
+      <form
+        [formGroup]="formularioPropuestas"
+        (ngSubmit)="submitProposal()"
+        class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6"
+      >
+        <!-- Campo Marca -->
+        <div class="space-y-2">
+          <label for="marca" class="block text-sm font-medium text-gray-700">
+            Marca <span class="text-red-500">*</span>
+          </label>
+          <input
+            id="marca"
+            type="text"
+            formControlName="marca"
+            placeholder="Honda, Yamaha, Kawasaki..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            [class.border-red-500]="marcaControl?.invalid && marcaControl?.touched"
+          />
+          @if (getMarcaError()) {
+            <div class="text-red-600 text-sm font-medium flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {{ getMarcaError() }}
+            </div>
+          }
+        </div>
+
+        <!-- Campo Modelo -->
+        <div class="space-y-2">
+          <label for="modelo" class="block text-sm font-medium text-gray-700">
+            Modelo <span class="text-red-500">*</span>
+          </label>
+          <input
+            id="modelo"
+            type="text"
+            formControlName="modelo"
+            placeholder="XTZ 150, CB 125F, Ninja 250..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            [class.border-red-500]="modeloControl?.invalid && modeloControl?.touched"
+          />
+          @if (getModeloError()) {
+            <div class="text-red-600 text-sm font-medium flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {{ getModeloError() }}
+            </div>
+          }
+        </div>
+
+        <!-- Campo Precio -->
+        <div class="space-y-2">
+          <label for="precio" class="block text-sm font-medium text-gray-700">
+            Precio (COP) <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-2 text-gray-500 text-sm">$</span>
+            <input
+              id="precio"
+              type="number"
+              formControlName="precio"
+              placeholder="0"
+              min="1"
+              step="1000"
+              class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              [class.border-red-500]="precioControl?.invalid && precioControl?.touched"
+            />
+          </div>
+          @if (getPrecioError()) {
+            <div class="text-red-600 text-sm font-medium flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              {{ getPrecioError() }}
+            </div>
+          }
+        </div>
+
+        <!-- Botón Submit -->
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+          [disabled]="formularioPropuestas.invalid || isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Enviando...
+          } @else {
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+            Crear Propuesta
+          }
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- Lista de propuestas/productos -->
+  <div class="space-y-4">
+    @if (getCurrentTabData().length === 0 && !isLoading) {
+      <!-- Estados vacíos -->
+      <div class="bg-white rounded-lg shadow-sm p-8 text-center">
+        <div class="text-gray-400 mb-4">
+          @switch (activeTab()) { 
+            @case ('pendientes') {
+              <svg class="w-16 h-16 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">No hay propuestas pendientes</h3>
+              <p class="text-gray-500">Todas las propuestas han sido evaluadas</p>
+            } 
+            @case ('aprobadas') {
+              <svg class="w-16 h-16 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">No hay productos aprobados</h3>
+              <p class="text-gray-500">Crea tu primera propuesta para comenzar</p>
+            } 
+            @case ('rechazadas') {
+              <svg class="w-16 h-16 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">No hay propuestas rechazadas</h3>
+              <p class="text-gray-500">Todas tus propuestas han sido exitosas</p>
+            }
+          }
+        </div>
+        
+        @if (activeTab() !== 'nueva') {
+          <button 
+            (click)="setActiveTab('nueva')"
+            class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Crear Nueva Propuesta
+          </button>
+        }
+      </div>
+    } @else {
+      <!-- Lista de items -->
+      @for (item of getCurrentTabData(); track item.id) {
+        <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+          <!-- Header del item -->
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                {{ item.marca }} {{ item.modelo }}
+              </h3>
+              <p class="text-2xl font-bold text-blue-600">
+                {{ formatPrice(item.precio) }}
+              </p>
+            </div>
+            
+            <!-- Badge de estado -->
+            @if (isProposal(item)) {
+              <div [class]="getStatusClass(item.estado)">
+                @switch (item.estado) { 
+                  @case ('pendiente') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  } 
+                  @case ('rechazado') {
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  }
+                }
+                {{ item.estado | titlecase }}
+              </div>
+            } @else {
+              <div class="px-3 py-1 rounded-full border text-sm font-medium flex items-center gap-2 bg-green-100 text-green-800 border-green-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Aprobado
+              </div>
+            }
+          </div>
+
+          <!-- Información de fechas -->
+          <div class="text-sm text-gray-600 mb-4 space-y-1">
+            @if (isProposal(item)) {
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span>Creada: {{ formatDate(item.fechaCreacion) }}</span>
+              </div>
+            } @else {
+              <div class="flex items-center gap-2 text-green-600">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Aprobada: {{ formatDate(item.fechaAprobacion) }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Motivo de rechazo (solo para propuestas rechazadas) -->
+          @if (isProposal(item) && item.estado === 'rechazado' && item.motivoRechazo) {
+            <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
+              <div class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                  <h4 class="font-medium text-red-800 mb-1">Motivo del rechazo:</h4>
+                  <p class="text-red-700">{{ item.motivoRechazo }}</p>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Historial de negociación (solo para propuestas) -->
+          @if (isProposal(item) && item.negociaciones.length > 0) {
+            <div class="border-t pt-4 mb-4">
+              <h4 class="font-medium text-gray-800 mb-3 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                Negociación ({{ item.negociaciones.length }})
+              </h4>
+              <div class="space-y-3">
+                @for (negotiation of item.negociaciones; track negotiation.id) {
+                  <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+                    <div class="flex justify-between items-start mb-2">
+                      <span class="font-medium text-blue-800 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        {{ negotiation.autor === 'tienda' ? 'Tu mensaje' : 'Financiera' }}:
+                      </span>
+                      <span class="text-sm text-blue-600">{{ formatDate(negotiation.fecha) }}</span>
+                    </div>
+                    <p class="text-blue-700">{{ negotiation.mensaje }}</p>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Acciones -->
+          <div class="flex gap-3 pt-4 border-t">
+            <!-- Negociación para propuestas rechazadas -->
+            @if (isProposal(item) && item.estado === 'rechazado') {
+              <div class="flex-1">
+                @if (showNegotiation() === item.id) {
+                  <div class="space-y-3">
+                    <textarea
+                      [value]="negotiationMessage()"
+                      (input)="onNegotiationMessageChange($event)"
+                      placeholder="Describe tu contrapropuesta detalladamente..."
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
+                      rows="3"
+                    ></textarea>
+                    <div class="flex gap-2">
+                      <button
+                        (click)="sendNegotiation(item.id)"
+                        [disabled]="!negotiationMessage().trim()"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium flex items-center gap-2"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                        Enviar
+                      </button>
+                      <button
+                        (click)="toggleNegotiation(null)"
+                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <button
+                    (click)="toggleNegotiation(item.id)"
+                    class="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors font-medium flex items-center gap-2"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Negociar
+                  </button>
+                }
+              </div>
+            }
+            
+            <!-- Estado para productos aprobados -->
+            @if (!isProposal(item)) {
+              <div class="bg-green-50 border border-green-200 rounded-md p-3 flex-1">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <p class="text-green-700 font-medium">Disponible para tus vendedores</p>
+                </div>
+              </div>
+            }
+            
+            <!-- Estado para propuestas pendientes -->
+            @if (isProposal(item) && item.estado === 'pendiente') {
+              <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3 flex-1">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-yellow-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <p class="text-yellow-700 font-medium">En evaluación</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Footer -->
+  <div class="mt-8 text-center text-sm text-gray-500">
+    <p>Las propuestas son evaluadas por nuestro equipo de financiamiento en tiempo real</p>
+  </div>
 </div>

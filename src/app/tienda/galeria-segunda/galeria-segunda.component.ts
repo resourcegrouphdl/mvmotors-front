@@ -100,7 +100,7 @@ export class GaleriaSegundaComponent implements OnInit {
     } else {
 
       console.log('No se pudo recuperar el producto.');
-      this.router.navigate(['/motos-seminuevas']);
+      this.router.navigate(['/galeria']);
     }
   }
 

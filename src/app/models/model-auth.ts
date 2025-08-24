@@ -1,43 +1,48 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export interface BaseProfile {
-  uid: string;
+   uid: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  documentType: string;
+  documentType: DocumentType;
   documentNumber: string;
   userType: UserType;
+  userCategory: UserCategory;
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | Timestamp;
+  updatedAt: Date | Timestamp;
   createdBy?: string;
   storeIds?: string[];
-  // Flag para controlar primer login
-  isFirstLogin: boolean;
-  lastPasswordChange?: Date;
+  isFirstLogin?: boolean;
+  lastPasswordChange?: Date | Timestamp;
+ 
 }
 
 export enum UserType {
-  STORE = 'store',
-  VENDOR = 'vendor'
+  STORE = 'tienda',
+  VENDOR = 'vendedor'
 }
 
 export abstract class BaseUser implements BaseProfile {
-  uid!: string;
+   uid!: string;
   firstName!: string;
   lastName!: string;
   email!: string;
   phone!: string;
-  documentType!: string;
+  documentType!: DocumentType;
   documentNumber!: string;
   userType!: UserType;
+  userCategory!: UserCategory;
   isActive!: boolean;
-  createdAt!: Date;
-  updatedAt!: Date;
+  createdAt!: Date | Timestamp;
+  updatedAt!: Date | Timestamp;
   createdBy?: string;
   storeIds?: string[];
-  isFirstLogin!: boolean;
-  lastPasswordChange?: Date;
+  isFirstLogin?: boolean;
+  lastPasswordChange?: Date | Timestamp;
+  
 }
 
 export class StoreUser extends BaseUser {
@@ -67,4 +72,34 @@ export class VendorUser extends BaseUser {
     isActive: boolean;
     permissions: string[];
   }[];
+}
+export enum UserCategory {
+  INTERNO = 'interno',     // Usuarios de la organización
+  EXTERNO = 'externo'      // Tiendas y vendedores afiliados
+}
+export enum DocumentType {
+  DNI = 'dni',
+  RUC = 'ruc',
+  CARNET_EXTRANJERIA = 'carnet_extranjeria',
+  PASAPORTE = 'pasaporte'
+}
+
+export interface TiendaProfile extends BaseProfile {
+  businessName: string;           // Nombre comercial
+  businessCategory: string;       // Categoría del negocio
+  address: string;                // Dirección física
+  city: string;                   // Ciudad
+  district: string;               // Distrito
+}
+export interface VendedorProfile extends BaseProfile {
+  tiendaId: string;               // ID de la tienda a la que pertenece
+  employeeId?: string;            // ID de empleado en la tienda
+  position: string;               // Cargo/posición
+  vendedorStatus: VendedorStatus; // Estado del vendedor
+}
+
+export enum VendedorStatus {
+  ACTIVO = 'activo',
+  INACTIVO = 'inactivo',
+  SUSPENDIDO = 'suspendido'
 }
