@@ -1,10 +1,323 @@
-
+/* === CONFIGURACIÓN BASE === */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
+}
+
+/* === CARRUSEL PRINCIPAL === */
+.carousel-container {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+  will-change: scroll-position;
+  transform: translateZ(0);
+}
+
+/* === TARJETAS DE PRODUCTOS === */
+.moto-card {
+  position: relative;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.moto-card:hover {
+  transform: translateY(-16px) scale(1.02);
+  box-shadow: 
+    0 32px 64px -12px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(14, 165, 233, 0.15),
+    0 8px 32px rgba(251, 146, 60, 0.1);
+}
+
+/* === IMÁGENES CON TRANSICIONES === */
+.moto-card img {
+  will-change: transform, filter;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: center center;
+}
+
+.moto-card:hover img {
+  transform: scale(1.1) rotate(2deg) translateZ(20px);
+  filter: brightness(1.1) contrast(1.05) saturate(1.1);
+}
+
+/* === ANIMACIONES DE ENTRADA === */
+.slide-entering {
+  animation: slideEnter 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes slideEnter {
+  0% {
+    transform: scale(0.95) translateY(10px);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.02) translateY(-2px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* === BADGES ANIMADOS === */
+.badge-destacado {
+  animation: float 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(-2deg); 
+  }
+  50% { 
+    transform: translateY(-6px) rotate(2deg); 
+  }
+}
+
+/* === EFECTOS DE PRECIOS === */
+.price-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.price-container::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -100%;
+  width: 100%;
+  height: calc(100% + 4px);
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.moto-card:hover .price-container::before {
+  left: 100%;
+}
+
+/* === RATING CON ANIMACIÓN ESCALONADA === */
+.rating-star {
+  animation: starGlow 2s ease-in-out infinite;
+  animation-fill-mode: both;
+}
+
+.rating-star:nth-child(1) { animation-delay: 0s; }
+.rating-star:nth-child(2) { animation-delay: 0.2s; }
+.rating-star:nth-child(3) { animation-delay: 0.4s; }
+.rating-star:nth-child(4) { animation-delay: 0.6s; }
+.rating-star:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes starGlow {
+  0%, 100% { 
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* === INDICADORES DE PROGRESO === */
+.progress-indicator {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0;
+}
+
+.progress-indicator:hover::before,
+.progress-indicator.active::before {
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+}
+
+.progress-indicator.active {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+}
+
+/* === BOTONES CON EFECTOS === */
+button {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+}
+
+button:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+button:active {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+
+/* === LOADING MEJORADO === */
+.loading-container {
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-spinner {
+  position: relative;
+}
+
+.loading-spinner::after,
+.loading-spinner::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.loading-spinner::before {
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(251, 146, 60, 0.8);
+  animation: spin 1.2s linear infinite;
+}
+
+.loading-spinner::after {
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(14, 165, 233, 0.6);
+  animation: spin 2s linear infinite reverse;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === GARANTÍAS CON ANIMACIONES === */
+.guarantee-section {
+  animation: slideInFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-fill-mode: both;
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === ACCESIBILIDAD === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.3s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.3s !important;
   }
   
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .carousel-container {
+    scroll-behavior: auto;
   }
+  
+  .moto-card:hover {
+    transform: translateY(-8px);
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .moto-card {
+    transition-duration: 0.4s;
+  }
+  
+  .moto-card:hover {
+    transform: translateY(-8px) scale(1.01);
+  }
+  
+  button {
+    transition-duration: 0.3s;
+  }
+}
+
+@media (max-width: 640px) {
+  .carousel-container {
+    scroll-snap-type: x mandatory;
+  }
+  
+  .moto-card {
+    scroll-snap-align: center;
+  }
+}
+
+/* === OPTIMIZACIONES GPU === */
+.carousel-container,
+.moto-card,
+.moto-card img,
+button {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
