@@ -1,5 +1,5 @@
 <!-- Hero Section -->
-<section class="py-8 bg-gradient-to-br from-sky-900 via-sky-800 to-cyan-700 relative overflow-hidden">
+<section class="py-8 bg-gradient-to-br from-sky-900 via-sky-800 to-cyan-700 relative overflow-hidden ">
   <div class="absolute inset-0 opacity-20">
     <div class="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full animate-pulse"></div>
     <div class="absolute top-20 right-20 w-24 h-24 border border-white rotate-45 animate-bounce"></div>
@@ -34,7 +34,7 @@
 </section>
 
 <!-- Carousel Section -->
-<section class="py-12 bg-gradient-to-b from-gray-50 via-white to-gray-100">
+<section class="py-12 bg-gradient-to-b from-gray-50 via-white to-gray-100 ">
   
   <!-- Loading State -->
   <div *ngIf="loading" class="loading-container flex justify-center items-center h-96">
@@ -64,7 +64,7 @@
   </div>
 
   <!-- Slider Principal -->
-  <div *ngIf="!loading && !error" class="relative w-full max-w-7xl mx-auto">
+  <div *ngIf="!loading && !error" class="relative w-full container mx-auto">
     
     <!-- Título -->
     <div class="text-center mb-8">
@@ -80,7 +80,7 @@
 
 
 
-    <div class="flex justify-center items-center ">
+    <div class="flex justify-center items-center w-full">
 
     
     <!-- Botón Izquierda -->
@@ -94,10 +94,10 @@
     </button>
 
     <!-- Contenedor del Carrusel -->
-    <div class="w-full max-w-[85vw] sm:max-w-5xl mx-auto px-2 sm:px-4 md:px-0">
+    <div class="w-full max-w-[85vw] sm:max-w-5xl mx-auto px-2 sm:px-4 md:px-0 ">
       <div
         #carousel
-        class="carousel-container flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-6 p-4 sm:p-6"
+        class="carousel-container flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-6 p-2 sm:p-6"
         (touchstart)="handleTouchStart($event)"
         (touchend)="handleTouchEnd($event)"
         (mouseenter)="onMouseEnter()"
@@ -108,7 +108,7 @@
         <div 
           *ngFor="let producto of motos; trackBy: trackByProductoId" 
           (click)="verDetalleProducto(producto)"
-          class="moto-card flex-shrink-0 w-80 bg-white rounded-3xl border-2 border-gray-200 shadow-xl p-6 transition-all duration-500 hover:shadow-2xl hover:-translate-y-4 hover:border-sky-400 cursor-pointer snap-start group relative overflow-hidden"
+          class="moto-card flex-shrink-0 w-full sm:w-80 bg-white rounded-3xl border-2 border-gray-200 shadow-xl p-2 sm:p-6 transition-all duration-500 hover:shadow-2xl hover:-translate-y-4 hover:border-sky-400 cursor-pointer snap-start group relative overflow-hidden"
         >
           
           <!-- Badge Destacado -->
@@ -171,7 +171,7 @@
             </div>
 
             <!-- Beneficios -->
-            <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-3 border border-orange-200 opacity-0 group-hover:opacity-100 transition-all duration-500">
+            <div class=" hidden sm:block bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-3 border border-orange-200 opacity-0 group-hover:opacity-100 transition-all duration-500">
               <div class="flex justify-center items-center space-x-4 text-xs font-bold text-orange-700">
                 <span>SOAT</span>
                 <span>PLACA</span>
@@ -181,7 +181,7 @@
             </div>
 
             <!-- Rating -->
-            <div class="flex justify-center items-center space-x-1 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+            <div class=" hidden sm:block flex justify-center items-center space-x-1 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
               <div class="flex space-x-1">
                 <span class="rating-star text-yellow-400 text-sm">⭐</span>
                 <span class="rating-star text-yellow-400 text-sm">⭐</span>
