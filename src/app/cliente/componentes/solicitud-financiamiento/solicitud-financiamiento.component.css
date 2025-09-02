@@ -1,0 +1,52 @@
+.animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .5;
+      }
+    }
+
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 300ms;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .file-upload-area {
+      transition: border-color 0.3s ease;
+    }
+
+    .file-upload-area:hover {
+      border-color: #3B82F6;
+    }
+
+    .step-active {
+      background-color: #3B82F6;
+      color: white;
+    }
+
+    .step-completed {
+      background-color: #10B981;
+      color: white;
+    }
+
+    .step-disabled {
+      background-color: #F3F4F6;
+      color: #9CA3AF;
+      cursor: not-allowed;
+    }
+
+    .step-pending {
+      background-color: #E5E7EB;
+      color: #6B7280;
+    }

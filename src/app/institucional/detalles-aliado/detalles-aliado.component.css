@@ -1,0 +1,31 @@
+
+
+ Animaciones para los menús desplegables
+.dropdown-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.dropdown-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.2s ease-out;
+}
+
+.dropdown-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.2s ease-in;
+}
+
+
+@media (max-width: 768px) {
+  .mobile-menu-item {
+    padding: 12px 16px;
+  }
+}

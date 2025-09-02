@@ -1,0 +1,38 @@
+
+
+.status-badge {
+ 
+}
+
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s infinite;
+}
+
+
+.status-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+
+.gradient-badge {
+  background: linear-gradient(135deg, var(--from-color), var(--to-color));
+}
+
+
+@media (max-width: 640px) {
+  .status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}

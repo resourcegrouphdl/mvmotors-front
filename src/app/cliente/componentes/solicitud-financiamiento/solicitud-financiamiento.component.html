@@ -1,0 +1,1836 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">
+        Solicitud de Financiamiento de Moto
+      </h1>
+      <div class="flex items-center space-x-4">
+        <div class="flex-1 bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            [style.width.%]="progreso"
+          ></div>
+        </div>
+        <span class="text-sm font-medium text-gray-700">
+          Paso {{ pasoActual }} de {{ totalPasos }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Navegación de pasos -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <nav class="flex justify-between">
+        <button
+          *ngFor="let paso of pasos; let i = index"
+          (click)="irAPaso(i + 1)"
+          [class]="getClasePaso(i + 1)"
+          [disabled]="!puedeIrAPaso(i + 1)"
+          class="flex-1 text-center py-2 px-4 rounded-lg font-medium transition-colors duration-200 mx-1"
+        >
+          {{ paso }}
+        </button>
+      </nav>
+    </div>
+
+    <!-- Contenido del formulario -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <!-- Loading -->
+      <div *ngIf="cargando" class="text-center py-12">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"
+        ></div>
+        <p class="mt-4 text-gray-600">{{ mensajeCarga }}</p>
+      </div>
+
+      <!-- Paso 1: Datos del Titular -->
+      <div *ngIf="pasoActual === 1 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Datos del Titular
+        </h2>
+
+        <form [formGroup]="formTitular" class="space-y-6">
+          <!-- DNI y búsqueda -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Tipo de Documento *</label
+              >
+              <select
+                formControlName="documentType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="DNI">DNI</option>
+                <option value="CE">Carnet de Extranjería</option>
+                <option value="PASAPORTE">Pasaporte</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Número de Documento *</label
+              >
+              <input
+                type="text"
+                formControlName="documentNumber"
+                (blur)="buscarClienteExistente()"
+                maxlength="12"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div class="flex items-end">
+              <button
+                type="button"
+                (click)="buscarClienteExistente()"
+                class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Buscar Cliente
+              </button>
+            </div>
+          </div>
+
+          <!-- Alerta cliente existente -->
+          <div
+            *ngIf="clienteExistente"
+            class="bg-yellow-50 border border-yellow-200 rounded-lg p-4"
+          >
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg
+                  class="h-5 w-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">
+                  Cliente encontrado
+                </h3>
+                <p class="mt-1 text-sm text-yellow-700">
+                  {{ clienteExistente.nombres }}
+                  {{ clienteExistente.apellidoPaterno }}
+                  ya está registrado. Los datos se han cargado automáticamente.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos personales -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Nombres *</label
+              >
+              <input
+                type="text"
+                formControlName="nombres"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Apellido Paterno *</label
+              >
+              <input
+                type="text"
+                formControlName="apellidoPaterno"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Apellido Materno *</label
+              >
+              <input
+                type="text"
+                formControlName="apellidoMaterno"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Estado Civil *</label
+              >
+              <select
+                formControlName="estadoCivil"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar...</option>
+                <option value="soltero">Soltero(a)</option>
+                <option value="casado">Casado(a)</option>
+                <option value="conviviente">Conviviente</option>
+                <option value="divorciado">Divorciado(a)</option>
+                <option value="viudo">Viudo(a)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Email *</label
+              >
+              <input
+                type="email"
+                formControlName="email"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Fecha de Nacimiento *</label
+              >
+              <input
+                type="date"
+                formControlName="fechaNacimiento"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <!-- Ubicación -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Departamento *</label
+              >
+              <select
+                formControlName="departamento"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar...</option>
+                <option *ngFor="let dep of departamentos" [value]="dep">
+                  {{ dep }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Provincia *</label
+              >
+              <input
+                type="text"
+                formControlName="provincia"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Distrito</label
+              >
+              <input
+                type="text"
+                formControlName="distrito"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Dirección *</label
+            >
+            <input
+              type="text"
+              formControlName="direccion"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          <!-- Contacto -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Teléfono Principal *</label
+              >
+              <input
+                type="tel"
+                formControlName="telefono1"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Teléfono Secundario</label
+              >
+              <input
+                type="tel"
+                formControlName="telefono2"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <!-- Datos laborales -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Ocupación *</label
+              >
+              <select
+                formControlName="ocupacion"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar...</option>
+                <option value="dependiente">Dependiente</option>
+                <option value="independiente">Independiente</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Rango de Ingresos *</label
+              >
+              <select
+                formControlName="rangoIngresos"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar...</option>
+                <option value="1000-1500">S/. 1,000 - S/. 1,500</option>
+                <option value="1500-2000">S/. 1,500 - S/. 2,000</option>
+                <option value="2000+">S/. 2,000 a más</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Tipo de Vivienda *</label
+              >
+              <select
+                formControlName="tipoVivienda"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar...</option>
+                <option value="alquilado">Alquilado</option>
+                <option value="familiar">Familiar</option>
+                <option value="propio">Propio</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Licencia de conducir -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Licencia de Conducir *</label
+              >
+              <select
+                formControlName="licenciaConducir"
+                (change)="onLicenciaChange($event)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar...</option>
+                <option value="vigente">Vigente</option>
+                <option value="vencido">Vencido</option>
+                <option value="noTengo">No tengo</option>
+              </select>
+            </div>
+
+            <div *ngIf="mostrarNumeroLicencia">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Número de Licencia</label
+              >
+              <input
+                type="text"
+                formControlName="numeroLicencia"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Paso 2: Archivos del Titular -->
+      <div *ngIf="pasoActual === 2 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Documentos del Titular
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Selfie -->
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Selfie *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'selfie')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['selfie']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["selfie"].name }}
+            </p>
+          </div>
+
+          <!-- DNI Frente -->
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >DNI Frente *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'dniFrente')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['dniFrente']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["dniFrente"].name }}
+            </p>
+          </div>
+
+          <!-- DNI Reverso -->
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >DNI Reverso *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'dniReverso')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['dniReverso']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["dniReverso"].name }}
+            </p>
+          </div>
+
+          <!-- Recibo de Servicio -->
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Recibo de Servicio *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PDF, PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'reciboServicio')"
+                accept="image/*,application/pdf"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['reciboServicio']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["reciboServicio"].name }}
+            </p>
+          </div>
+
+          <!-- Foto de Fachada -->
+          <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m-46-4v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Foto de Fachada *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'fachada')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['fachada']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["fachada"].name }}
+            </p>
+          </div>
+
+          <!-- Archivos opcionales -->
+          <div
+            *ngIf="mostrarCampoLicencia()"
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Licencia de Conducir</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'fotoLicenciaFrente')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['fotoLicenciaFrente']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["fotoLicenciaFrente"].name }}
+            </p>
+          </div>
+
+          <div
+            *ngIf="mostrarCampoCertificado()"
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Certificado Laboral</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PDF, PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'certificadoLaboral')"
+                accept="image/*,application/pdf"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                Seleccionar archivo
+              </span>
+            </label>
+            <p
+              *ngIf="archivosSeleccionados['certificadoLaboral']"
+              class="mt-2 text-sm text-green-600"
+            >
+              ✓ {{ archivosSeleccionados["certificadoLaboral"].name }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 3: Referencias -->
+      <!-- Paso 3: Referencias -->
+      <div *ngIf="pasoActual === 5 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Referencias Personales
+        </h2>
+
+        <!-- CORRECCIÓN: Agregar [formGroup] padre -->
+        <form [formGroup]="formReferencias">
+          <div formArrayName="referencias">
+            <div
+              *ngFor="
+                let referencia of getReferenciasFormArray().controls;
+                let i = index
+              "
+              [formGroupName]="i"
+              class="bg-gray-50 rounded-lg p-6 mb-4"
+            >
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium text-gray-900">
+                  Referencia {{ i + 1 }}
+                </h3>
+                <button
+                  *ngIf="getReferenciasFormArray().length > 1"
+                  type="button"
+                  (click)="eliminarReferencia(i)"
+                  class="text-red-600 hover:text-red-800 text-sm font-medium"
+                >
+                  Eliminar
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Nombres *</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="nombre"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Apellidos *</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="apellidos"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Teléfono *</label
+                  >
+                  <input
+                    type="tel"
+                    formControlName="telefono"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Parentesco *</label
+                  >
+                  <select
+                    formControlName="parentesco"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="hermano">Hermano(a)</option>
+                    <option value="padre">Padre</option>
+                    <option value="madre">Madre</option>
+                    <option value="tio">Tío(a)</option>
+                    <option value="primo">Primo(a)</option>
+                    <option value="amigo">Amigo(a)</option>
+                    <option value="vecino">Vecino(a)</option>
+                    <option value="compañero_trabajo">
+                      Compañero de trabajo
+                    </option>
+                    <option value="otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            (click)="agregarReferencia()"
+            [disabled]="getReferenciasFormArray().length >= 3"
+            class="w-full mt-4 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            + Agregar otra referencia (máximo 3)
+          </button>
+        </form>
+      </div>
+      <!-- Paso 4: Datos del Fiador -->
+      <div *ngIf="pasoActual === 3 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Datos del Fiador/Aval (Opcional)
+        </h2>
+
+        <!-- Toggle para fiador -->
+        <div class="mb-6">
+          <label class="flex items-center">
+            <input
+              type="checkbox"
+              [(ngModel)]="requiereFiador"
+              (change)="toggleFiador($event)"
+              class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+            />
+            <span class="ml-2 text-sm text-gray-700">¿Requiere fiador?</span>
+          </label>
+        </div>
+
+        <div *ngIf="requiereFiador">
+          <form [formGroup]="formFiador" class="space-y-6">
+            <!-- DNI y búsqueda -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Tipo de Documento *</label
+                >
+                <select
+                  formControlName="documentType"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="DNI">DNI</option>
+                  <option value="CE">Carnet de Extranjería</option>
+                  <option value="PASAPORTE">Pasaporte</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Número de Documento *</label
+                >
+                <input
+                  type="text"
+                  formControlName="documentNumber"
+                  (blur)="buscarFiadorExistente()"
+                  maxlength="12"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div class="flex items-end">
+                <button
+                  type="button"
+                  (click)="buscarFiadorExistente()"
+                  class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Buscar Fiador
+                </button>
+              </div>
+            </div>
+
+            <!-- Datos personales del fiador -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Nombres *</label
+                >
+                <input
+                  type="text"
+                  formControlName="nombres"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Apellido Paterno *</label
+                >
+                <input
+                  type="text"
+                  formControlName="apellidoPaterno"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Apellido Materno *</label
+                >
+                <input
+                  type="text"
+                  formControlName="apellidoMaterno"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Estado Civil *</label
+                >
+                <select
+                  formControlName="estadoCivil"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Seleccionar...</option>
+                  <option value="soltero">Soltero(a)</option>
+                  <option value="casado">Casado(a)</option>
+                  <option value="conviviente">Conviviente</option>
+                  <option value="divorciado">Divorciado(a)</option>
+                  <option value="viudo">Viudo(a)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Email *</label
+                >
+                <input
+                  type="email"
+                  formControlName="email"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Fecha de Nacimiento *</label
+                >
+                <input
+                  type="date"
+                  formControlName="fechaNacimiento"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <!-- Ubicación del fiador -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Departamento *</label
+                >
+                <select
+                  formControlName="departamento"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Seleccionar...</option>
+                  <option *ngFor="let dep of departamentos" [value]="dep">
+                    {{ dep }}
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Provincia *</label
+                >
+                <input
+                  type="text"
+                  formControlName="provincia"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Distrito</label
+                >
+                <input
+                  type="text"
+                  formControlName="distrito"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Dirección *</label
+              >
+              <input
+                type="text"
+                formControlName="direccion"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <!-- Contacto del fiador -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Teléfono Principal *</label
+                >
+                <input
+                  type="tel"
+                  formControlName="telefono1"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Teléfono Secundario</label
+                >
+                <input
+                  type="tel"
+                  formControlName="telefono2"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="!requiereFiador" class="text-center py-12">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 48 48"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <h3 class="mt-4 text-lg font-medium text-gray-900">Sin fiador</h3>
+          <p class="mt-2 text-sm text-gray-500">
+            Esta solicitud no requiere fiador.
+          </p>
+        </div>
+      </div>
+
+      <!-- Paso 4: Archivos del Fiador -->
+      <div *ngIf="pasoActual === 4 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Documentos del Fiador/Aval
+        </h2>
+
+        <!-- Mostrar solo si requiere fiador -->
+        <div *ngIf="requiereFiador">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Selfie del Fiador -->
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+            >
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400 mb-4"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <label class="cursor-pointer">
+                <span class="block text-sm font-medium text-gray-900 mb-1"
+                  >Selfie del Fiador *</span
+                >
+                <span class="block text-xs text-gray-500 mb-4"
+                  >PNG, JPG hasta 5MB</span
+                >
+                <input
+                  type="file"
+                  (change)="onFileSelectedFiador($event, 'fiadorSelfie')"
+                  accept="image/*"
+                  class="sr-only"
+                />
+                <span
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Seleccionar archivo
+                </span>
+              </label>
+              <p
+                *ngIf="archivosFiadorSeleccionados['fiadorSelfie']"
+                class="mt-2 text-sm text-green-600"
+              >
+                ✓ {{ archivosFiadorSeleccionados["fiadorSelfie"].name }}
+              </p>
+            </div>
+
+            <!-- DNI Frente del Fiador -->
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+            >
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400 mb-4"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <label class="cursor-pointer">
+                <span class="block text-sm font-medium text-gray-900 mb-1"
+                  >DNI Frente del Fiador *</span
+                >
+                <span class="block text-xs text-gray-500 mb-4"
+                  >PNG, JPG hasta 5MB</span
+                >
+                <input
+                  type="file"
+                  (change)="onFileSelectedFiador($event, 'fiadorDniFrente')"
+                  accept="image/*"
+                  class="sr-only"
+                />
+                <span
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Seleccionar archivo
+                </span>
+              </label>
+              <p
+                *ngIf="archivosFiadorSeleccionados['fiadorDniFrente']"
+                class="mt-2 text-sm text-green-600"
+              >
+                ✓ {{ archivosFiadorSeleccionados["fiadorDniFrente"].name }}
+              </p>
+            </div>
+
+            <!-- DNI Reverso del Fiador -->
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+            >
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400 mb-4"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <label class="cursor-pointer">
+                <span class="block text-sm font-medium text-gray-900 mb-1"
+                  >DNI Reverso del Fiador *</span
+                >
+                <span class="block text-xs text-gray-500 mb-4"
+                  >PNG, JPG hasta 5MB</span
+                >
+                <input
+                  type="file"
+                  (change)="onFileSelectedFiador($event, 'fiadorDniReverso')"
+                  accept="image/*"
+                  class="sr-only"
+                />
+                <span
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Seleccionar archivo
+                </span>
+              </label>
+              <p
+                *ngIf="archivosFiadorSeleccionados['fiadorDniReverso']"
+                class="mt-2 text-sm text-green-600"
+              >
+                ✓ {{ archivosFiadorSeleccionados["fiadorDniReverso"].name }}
+              </p>
+            </div>
+
+            <!-- Recibo de Servicio del Fiador (Opcional) -->
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+            >
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400 mb-4"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <label class="cursor-pointer">
+                <span class="block text-sm font-medium text-gray-900 mb-1"
+                  >Recibo de Servicio del Fiador</span
+                >
+                <span class="block text-xs text-gray-500 mb-4"
+                  >PDF, PNG, JPG hasta 5MB (Opcional)</span
+                >
+                <input
+                  type="file"
+                  (change)="
+                    onFileSelectedFiador($event, 'fiadorReciboServicio')
+                  "
+                  accept="image/*,application/pdf"
+                  class="sr-only"
+                />
+                <span
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Seleccionar archivo
+                </span>
+              </label>
+              <p
+                *ngIf="archivosFiadorSeleccionados['fiadorReciboServicio']"
+                class="mt-2 text-sm text-green-600"
+              >
+                ✓ {{ archivosFiadorSeleccionados["fiadorReciboServicio"].name }}
+              </p>
+            </div>
+
+            <!-- Foto de Fachada del Fiador (Opcional) -->
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+            >
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400 mb-4"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m-46-4v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <label class="cursor-pointer">
+                <span class="block text-sm font-medium text-gray-900 mb-1"
+                  >Foto de Fachada del Fiador</span
+                >
+                <span class="block text-xs text-gray-500 mb-4"
+                  >PNG, JPG hasta 5MB (Opcional)</span
+                >
+                <input
+                  type="file"
+                  (change)="onFileSelectedFiador($event, 'fiadorFachada')"
+                  accept="image/*"
+                  class="sr-only"
+                />
+                <span
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Seleccionar archivo
+                </span>
+              </label>
+              <p
+                *ngIf="archivosFiadorSeleccionados['fiadorFachada']"
+                class="mt-2 text-sm text-green-600"
+              >
+                ✓ {{ archivosFiadorSeleccionados["fiadorFachada"].name }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Información sobre archivos requeridos -->
+          <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg
+                  class="h-5 w-5 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">
+                  Archivos del Fiador
+                </h3>
+                <p class="mt-1 text-sm text-blue-700">
+                  Los archivos obligatorios son:
+                  <strong>Selfie, DNI Frente y DNI Reverso</strong>. Los demás
+                  documentos son opcionales pero ayudan en la evaluación.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mostrar si no requiere fiador -->
+        <div *ngIf="!requiereFiador" class="text-center py-12">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 48 48"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <h3 class="mt-4 text-lg font-medium text-gray-900">Sin fiador</h3>
+          <p class="mt-2 text-sm text-gray-500">
+            Esta solicitud no requiere fiador, por lo que no se necesitan
+            documentos adicionales.
+          </p>
+        </div>
+      </div>
+
+      <!-- Paso 5: Datos del Vehículo -->
+      <div *ngIf="pasoActual === 6 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Datos del Vehículo
+        </h2>
+
+        <form [formGroup]="formVehiculo" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Marca *</label
+              >
+              <select
+                formControlName="marca"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar marca...</option>
+                <option *ngFor="let marca of marcasMotos" [value]="marca">
+                  {{ marca }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Modelo *</label
+              >
+              <input
+                type="text"
+                formControlName="modelo"
+                placeholder="Ej: CB 110, FZ16, etc."
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Color *</label
+              >
+              <input
+                type="text"
+                formControlName="color"
+                placeholder="Ej: Rojo, Negro, Azul, etc."
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Año *</label
+              >
+              <select
+                formControlName="anio"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar año...</option>
+                <option *ngFor="let year of aniosDisponibles" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Paso 6: Datos del Financiamiento -->
+      <div *ngIf="pasoActual === 7 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Datos del Financiamiento
+        </h2>
+
+        <form [formGroup]="formSolicitud" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Precio de la Moto *</label
+              >
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-gray-500">S/.</span>
+                <input
+                  type="number"
+                  formControlName="precioCompraMoto"
+                  (input)="calcularCuota()"
+                  min="1000"
+                  step="100"
+                  class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Inicial *</label
+              >
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-gray-500">S/.</span>
+                <input
+                  type="number"
+                  formControlName="inicial"
+                  (input)="calcularCuota()"
+                  min="0"
+                  step="100"
+                  class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Plazo en Quincenas *</label
+              >
+              <select
+                formControlName="plazoQuincenas"
+                (change)="calcularCuota()"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Seleccionar plazo...</option>
+                <option value="12">12 quincenas (6 meses)</option>
+                <option value="24">24 quincenas (1 año)</option>
+                <option value="36">36 quincenas (1.5 años)</option>
+                <option value="48">48 quincenas (2 años)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Cuota Quincenal Calculada</label
+              >
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-gray-500">S/.</span>
+                <input
+                  type="text"
+                  [value]="montoCuotaCalculado.toFixed(2)"
+                  readonly
+                  class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Información del vendedor -->
+          <div class="bg-blue-50 rounded-lg p-6">
+            <h3 class="text-lg font-medium text-blue-900 mb-4">
+              Información del Vendedor
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-blue-700 mb-2"
+                  >ID Vendedor *</label
+                >
+                <input
+                  type="text"
+                  formControlName="vendedorId"
+                  class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-blue-700 mb-2"
+                  >Nombre del Vendedor *</label
+                >
+                <input
+                  type="text"
+                  formControlName="vendedorNombre"
+                  class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-blue-700 mb-2"
+                  >Tienda *</label
+                >
+                <input
+                  type="text"
+                  formControlName="vendedorTienda"
+                  class="w-full px-3 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensaje opcional -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Mensaje Opcional</label
+            >
+            <textarea
+              formControlName="mensajeOpcional"
+              rows="3"
+              placeholder="Información adicional sobre la solicitud..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Resumen financiero -->
+          <div *ngIf="mostrarResumen" class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">
+              Resumen del Financiamiento
+            </h3>
+
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div class="flex justify-between py-2 border-b border-gray-200">
+                <span class="text-gray-600">Precio de la moto:</span>
+                <span class="font-medium"
+                  >S/.
+                  {{ formSolicitud.get("precioCompraMoto")?.value || 0 }}</span
+                >
+              </div>
+
+              <div class="flex justify-between py-2 border-b border-gray-200">
+                <span class="text-gray-600">Inicial:</span>
+                <span class="font-medium"
+                  >S/. {{ formSolicitud.get("inicial")?.value || 0 }}</span
+                >
+              </div>
+
+              <div class="flex justify-between py-2 border-b border-gray-200">
+                <span class="text-gray-600">Monto a financiar:</span>
+                <span class="font-medium"
+                  >S/. {{ montoFinanciar.toFixed(2) }}</span
+                >
+              </div>
+
+              <div class="flex justify-between py-2 border-b border-gray-200">
+                <span class="text-gray-600">Plazo:</span>
+                <span class="font-medium"
+                  >{{
+                    formSolicitud.get("plazoQuincenas")?.value || 0
+                  }}
+                  quincenas</span
+                >
+              </div>
+
+              <div
+                class="flex justify-between py-2 font-semibold text-lg col-span-2 border-t-2 border-gray-300 pt-4"
+              >
+                <span class="text-gray-900">Cuota quincenal:</span>
+                <span class="text-blue-600"
+                  >S/. {{ montoCuotaCalculado.toFixed(2) }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Paso 7: Revisión Final -->
+      <div *ngIf="pasoActual === 8 && !cargando">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Revisión Final
+        </h2>
+
+        <!-- Resumen del titular -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            👤 Datos del Titular
+          </h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <strong>Nombre:</strong> {{ formTitular.get("nombres")?.value }}
+              {{ formTitular.get("apellidoPaterno")?.value }}
+            </div>
+            <div>
+              <strong>DNI:</strong>
+              {{ formTitular.get("documentNumber")?.value }}
+            </div>
+            <div>
+              <strong>Email:</strong> {{ formTitular.get("email")?.value }}
+            </div>
+            <div>
+              <strong>Teléfono:</strong>
+              {{ formTitular.get("telefono1")?.value }}
+            </div>
+            <div>
+              <strong>Ocupación:</strong>
+              {{ formTitular.get("ocupacion")?.value }}
+            </div>
+            <div>
+              <strong>Ingresos:</strong>
+              {{ formTitular.get("rangoIngresos")?.value }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Archivos subidos -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            📄 Archivos Subidos
+          </h3>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div
+              *ngFor="let archivo of getArchivosSubidos()"
+              class="flex items-center space-x-2 py-1"
+            >
+              <span class="text-green-600">✓</span>
+              <span>{{ archivo.nombre }}: {{ archivo.archivo.name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fiador si existe -->
+        <div
+          *ngIf="requiereFiador"
+          class="bg-white border border-gray-200 rounded-lg p-6 mb-6"
+        >
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            🤝 Datos del Fiador
+          </h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <strong>Nombre:</strong> {{ formFiador.get("nombres")?.value }}
+              {{ formFiador.get("apellidoPaterno")?.value }}
+            </div>
+            <div>
+              <strong>DNI:</strong>
+              {{ formFiador.get("documentNumber")?.value }}
+            </div>
+            <div>
+              <strong>Email:</strong> {{ formFiador.get("email")?.value }}
+            </div>
+            <div>
+              <strong>Teléfono:</strong>
+              {{ formFiador.get("telefono1")?.value }}
+            </div>
+          </div>
+        </div>
+        <!-- Agregar sección de archivos del fiador en la revisión -->
+        <div
+          *ngIf="requiereFiador && archivosFiadorSeleccionados"
+          class="bg-white border border-gray-200 rounded-lg p-6 mb-6"
+        >
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            📄 Archivos del Fiador
+          </h3>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div
+              *ngFor="let archivo of getArchivosFiadorSubidos()"
+              class="flex items-center space-x-2 py-1"
+            >
+              <span class="text-green-600">✓</span>
+              <span>{{ archivo.nombre }}: {{ archivo.archivo.name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Referencias -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            👥 Referencias
+          </h3>
+          <div
+            *ngFor="
+              let ref of getReferenciasFormArray().controls;
+              let i = index
+            "
+            class="mb-3 p-3 bg-gray-50 rounded text-sm"
+          >
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <strong
+                  >{{ i + 1 }}. {{ ref.get("nombre")?.value }}
+                  {{ ref.get("apellidos")?.value }}</strong
+                >
+              </div>
+              <div>{{ ref.get("parentesco")?.value }}</div>
+              <div>{{ ref.get("telefono")?.value }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehículo -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">🏍️ Vehículo</h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <strong>Marca:</strong> {{ formVehiculo.get("marca")?.value }}
+            </div>
+            <div>
+              <strong>Modelo:</strong> {{ formVehiculo.get("modelo")?.value }}
+            </div>
+            <div>
+              <strong>Color:</strong> {{ formVehiculo.get("color")?.value }}
+            </div>
+            <div>
+              <strong>Año:</strong> {{ formVehiculo.get("anio")?.value }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Financiamiento -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+          <h3 class="text-lg font-semibold text-blue-900 mb-4">
+            💰 Financiamiento
+          </h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <strong>Precio:</strong> S/.
+              {{ formSolicitud.get("precioCompraMoto")?.value || 0 }}
+            </div>
+            <div>
+              <strong>Inicial:</strong> S/.
+              {{ formSolicitud.get("inicial")?.value || 0 }}
+            </div>
+            <div>
+              <strong>Plazo:</strong>
+              {{ formSolicitud.get("plazoQuincenas")?.value || 0 }} quincenas
+            </div>
+            <div>
+              <strong>Cuota:</strong> S/. {{ montoCuotaCalculado.toFixed(2) }}
+            </div>
+            <div class="col-span-2">
+              <strong>Vendedor:</strong>
+              {{ formSolicitud.get("vendedorNombre")?.value }} -
+              {{ formSolicitud.get("vendedorTienda")?.value }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Términos y condiciones -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+          <label class="flex items-start">
+            <input
+              type="checkbox"
+              [(ngModel)]="aceptaTerminos"
+              class="mt-1 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+            />
+            <span class="ml-3 text-sm text-gray-700">
+              <strong>Acepto los términos y condiciones</strong><br />
+              He revisado toda la información ingresada y confirmo que es
+              correcta. Entiendo que esta información será utilizada para
+              evaluar mi solicitud de financiamiento.
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de navegación -->
+    <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+      <div class="flex justify-between">
+        <button
+          type="button"
+          (click)="pasoAnterior()"
+          [disabled]="pasoActual === 1 || cargando"
+          class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          ← Anterior
+        </button>
+
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            (click)="guardarBorrador()"
+            [disabled]="cargando"
+            class="px-6 py-2 border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            💾 Guardar Borrador
+          </button>
+
+          <button
+            type="button"
+            (click)="siguientePaso()"
+            [disabled]="!puedeAvanzar() || cargando"
+            *ngIf="pasoActual < totalPasos"
+            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Siguiente →
+          </button>
+
+          <button
+            type="button"
+            (click)="enviarSolicitud()"
+            [disabled]="!puedeEnviar() || cargando"
+            *ngIf="pasoActual === totalPasos"
+            class="px-8 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            🚀 Enviar Solicitud
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de éxito -->
+    <div
+      *ngIf="mostrarModalExito"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+    >
+      <div
+        class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+      >
+        <div class="mt-3 text-center">
+          <div
+            class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100"
+          >
+            <svg
+              class="h-6 w-6 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">
+            ¡Solicitud Enviada Exitosamente!
+          </h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500">
+              Su solicitud de financiamiento ha sido enviada correctamente.
+              Recibirá un correo de confirmación y le contactaremos pronto.
+            </p>
+            <p class="text-xs text-gray-400 mt-2">
+              Número de solicitud: {{ numeroSolicitud }}
+            </p>
+          </div>
+          <div class="items-center px-4 py-3">
+            <button
+              (click)="cerrarModal()"
+              class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

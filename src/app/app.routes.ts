@@ -17,6 +17,10 @@ import { LoginComponentComponent } from './institucional/login-component/login-c
 import { DetallesTiendaComponent } from './institucional/detalles-tienda/detalles-tienda.component';
 import { DetallesAliadoComponent } from './institucional/detalles-aliado/detalles-aliado.component';
 import { ChangePasswordComponent } from './institucional/change-password/change-password.component';
+import { DashboardOverviewComponentComponent } from './cliente/componentes/dashboard-overview-component/dashboard-overview-component.component';
+import { DashboardCreditosComponent } from './cliente/componentes/dashboard-creditos/dashboard-creditos.component';
+import { SolicitudFinanciamientoComponent } from './cliente/componentes/solicitud-financiamiento/solicitud-financiamiento.component';
+
 
 export const routes: Routes = [
   {
@@ -63,8 +67,23 @@ export const routes: Routes = [
       },
       {
         path: 'vendor',
-        component: FormularioComponent,
-        
+        component: DetallesAliadoComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'info',
+            pathMatch: 'full',
+          },
+          {
+            path: 'info',
+            component: DashboardCreditosComponent,
+          },
+          {
+            path: 'formulario-cliente',
+            component: SolicitudFinanciamientoComponent,
+          },
+        ]
+
       }
 
     ]

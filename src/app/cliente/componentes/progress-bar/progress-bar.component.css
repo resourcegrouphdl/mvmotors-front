@@ -1,0 +1,147 @@
+.progress-container {
+ 
+  width: 100%;
+}
+
+.striped-pattern {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position: 1rem 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+.success-glow {
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+
+.pulse-active {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+
+.interactive-bar {
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+  }
+}
+
+.vertical-progress {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
+
+
+@media (max-width: 640px) {
+  .progress-container {
+    .step-labels {
+      font-size: 0.75rem;
+    }
+    
+    .milestone-markers {
+      display: none;
+    }
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .progress-container {
+    .bg-gray-200 {
+      background-color: #374151;
+    }
+    
+    .text-gray-700 {
+      color: #d1d5db;
+    }
+    
+    .text-gray-500 {
+      color: #9ca3af;
+    }
+  }
+}
+
+
+@media (prefers-contrast: high) {
+  .progress-container {
+    .progress-bar {
+      border: 2px solid currentColor;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-container {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+
+@media print {
+  .progress-container {
+    .shimmer-effect,
+    .striped-pattern {
+      display: none;
+    }
+    
+    .progress-bar {
+      background: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+}

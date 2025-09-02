@@ -1,1 +1,294 @@
-<p>detalles-aliado works!</p>
+<!-- Header Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          
+          <!-- Logo y Título -->
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <div class="relative group">
+                <!-- Logo Container -->
+                <div class="h-10 w-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                     (click)="navigateToHome()">
+                  <!-- Moto Icon -->
+                  <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19.44 9.03L15.41 5H11v2h3.59l2 2H8L8 7H6v2H4l4 2 .21 2H6v8c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-8h-2.21L19.44 9.03zM5 17c-1.66 0-3-1.34-3-3s1.34-3 3-3c.35 0 .69.07 1 .18V9.5c0-.28.22-.5.5-.5H8v2H6.5v1.68c.31-.11.65-.18 1-.18 1.66 0 3 1.34 3 3s-1.34 3-3 3zm14 0c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
+                  </svg>
+                </div>
+                
+                <!-- Hover tooltip -->
+                <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                  Ir al Dashboard
+                </div>
+              </div>
+            </div>
+            
+            <!-- Brand Info -->
+            <div class="hidden md:block">
+              <div class="flex flex-col">
+                <!-- Brand Name -->
+                <div class="flex items-center space-x-2">
+                  <h1 class="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                    Motoya
+                  </h1>
+                  <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-medium">
+                    .com.pe
+                  </span>
+                </div>
+                
+                <!-- Tagline -->
+                <p class="text-xs text-gray-500 font-medium">
+                  Venta & Financiación de Motocicletas
+                </p>
+              </div>
+            </div>
+            
+            <!-- Mobile Brand (Solo en móviles) -->
+            <div class="md:hidden">
+              <div class="flex items-center space-x-1">
+                <span class="text-lg font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                  Motoya
+                </span>
+                <span class="text-xs text-gray-400">.pe</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Menu -->
+          <div class="hidden md:flex items-center space-x-1">
+            @for (item of menuItems(); track item.id) {
+              @if (item.visible) {
+                <button 
+                  type="button"
+                  [class]="getMenuItemClasses(item)"
+                  (click)="navigateToRoute(item.route)"
+                  [attr.aria-current]="item.active ? 'page' : null">
+                  
+                  <!-- Icon (opcional) -->
+                  @if (item.icon) {
+                    <i [class]="item.icon + ' w-4 h-4 mr-2'"></i>
+                  }
+                  
+                  <!-- Label -->
+                  <span>{{ item.label }}</span>
+                  
+                  <!-- Badge de notificaciones -->
+                  @if (item.badge && item.badge > 0) {
+                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
+                      {{ item.badge > 99 ? '99+' : item.badge }}
+                    </span>
+                  }
+                </button>
+              }
+            }
+          </div>
+
+          <!-- User Menu -->
+          <div class="flex items-center space-x-4">
+            
+            <!-- Notifications Bell -->
+            <div class="relative">
+              <button 
+                type="button"
+                class="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                (click)="toggleNotifications()"
+                [attr.aria-expanded]="showNotifications()">
+                <span class="sr-only">Ver notificaciones</span>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M15 17h5l-5-5V9a6 6 0 10-12 0v3l-5 5h5a3 3 0 006 0z"/>
+                </svg>
+                
+                <!-- Notification Badge -->
+                @if (notificationCount() > 0) {
+                  <span class="absolute -top-1 -right-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
+                    {{ notificationCount() > 9 ? '9+' : notificationCount() }}
+                  </span>
+                }
+              </button>
+            </div>
+
+            <!-- User Profile -->
+            <div class="relative">
+              <button 
+                type="button"
+                class="flex items-center space-x-3 text-sm rounded-lg hover:bg-gray-50 p-2 transition-colors duration-200"
+                (click)="toggleUserMenu()"
+                [attr.aria-expanded]="showUserMenu()">
+                
+                <!-- Avatar -->
+                <div class="h-8 w-8 rounded-full bg-gray-300 overflow-hidden">
+                  @if (currentUser()?.avatar) {
+                    <img [src]="currentUser()?.avatar" 
+                         [alt]="currentUser()?.nombre"
+                         class="h-full w-full object-cover">
+                  } @else {
+                    <div class="h-full w-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">
+                      {{ getUserInitials() }}
+                    </div>
+                  }
+                </div>
+                
+                <!-- User Info -->
+                <div class="hidden lg:block text-left">
+                  <div class="text-sm font-medium text-gray-900">
+                    {{ currentUser()?.nombre }}
+                  </div>
+                  <div class="text-xs text-gray-500">
+                    {{ getRolLabel() }}
+                  </div>
+                </div>
+                
+                <!-- Chevron -->
+                <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+
+              <!-- User Dropdown Menu -->
+              @if (showUserMenu()) {
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+                     (click)="$event.stopPropagation()">
+                  <div class="py-1" role="menu">
+                    
+                    <!-- User Info Header -->
+                    <div class="px-4 py-2 border-b border-gray-100">
+                      <div class="text-sm font-medium text-gray-900">{{ currentUser()?.nombre }} {{ currentUser()?.apellidos }}</div>
+                      <div class="text-xs text-gray-500">{{ currentUser()?.email }}</div>
+                      @if (currentUser()?.tienda) {
+                        <div class="text-xs text-blue-600 mt-1">{{ currentUser()?.tienda }}</div>
+                      }
+                    </div>
+                    
+                    <!-- Menu Items -->
+                    <button type="button" 
+                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                            (click)="navigateToProfile()">
+                      <i class="fas fa-user w-4 h-4 mr-3 text-gray-400"></i>
+                      Mi Perfil
+                    </button>
+                    
+                    <button type="button" 
+                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                            (click)="navigateToSettings()">
+                      <i class="fas fa-cog w-4 h-4 mr-3 text-gray-400"></i>
+                      Configuración
+                    </button>
+                    
+                    @if (isAdmin()) {
+                      <div class="border-t border-gray-100"></div>
+                      <button type="button" 
+                              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                              (click)="navigateToAdmin()">
+                        <i class="fas fa-shield-alt w-4 h-4 mr-3 text-gray-400"></i>
+                        Administración
+                      </button>
+                    }
+                    
+                    <!-- Logout -->
+                    <div class="border-t border-gray-100"></div>
+                    <button type="button" 
+                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                            (click)="logout()">
+                      <i class="fas fa-sign-out-alt w-4 h-4 mr-3 text-red-500"></i>
+                      Cerrar Sesión
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+              <button type="button" 
+                      class="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-lg"
+                      (click)="toggleMobileMenu()">
+                <span class="sr-only">Abrir menú</span>
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        @if (showMobileMenu()) {
+          <div class="md:hidden border-t border-gray-200 bg-white">
+            <div class="px-2 py-3 space-y-1">
+              @for (item of menuItems(); track item.id) {
+                @if (item.visible) {
+                  <button type="button"
+                          [class]="getMobileMenuItemClasses(item)"
+                          (click)="navigateToRoute(item.route)">
+                    @if (item.icon) {
+                      <i [class]="item.icon + ' w-4 h-4 mr-3'"></i>
+                    }
+                    <span>{{ item.label }}</span>
+                    @if (item.badge && item.badge > 0) {
+                      <span class="ml-auto inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
+                        {{ item.badge > 99 ? '99+' : item.badge }}
+                      </span>
+                    }
+                  </button>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </nav>
+
+    <!-- Notifications Panel (si está visible) -->
+    @if (showNotifications()) {
+      <div class="fixed inset-0 z-40" (click)="closeNotifications()">
+        <div class="absolute right-4 top-16 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+             (click)="$event.stopPropagation()">
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-gray-900">Notificaciones</h3>
+              @if (notificationCount() > 0) {
+                <button type="button" 
+                        class="text-sm text-blue-600 hover:text-blue-800"
+                        (click)="markAllAsRead()">
+                  Marcar todas como leídas
+                </button>
+              }
+            </div>
+            
+            <!-- Lista de notificaciones -->
+            <div class="space-y-3 max-h-96 overflow-y-auto">
+              @if (notifications().length === 0) {
+                <div class="text-center py-8 text-gray-500">
+                  <svg class="w-12 h-12 mx-auto text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 17h5l-5-5V9a6 6 0 10-12 0v3l-5 5h5a3 3 0 006 0z"/>
+                  </svg>
+                  <p class="text-sm">No hay notificaciones</p>
+                </div>
+              } @else {
+                @for (notification of notifications(); track notification.id) {
+                  <div [class]="getNotificationClasses(notification)"
+                       (click)="handleNotificationClick(notification)">
+                    <div class="flex items-start space-x-3">
+                      <div [class]="getNotificationIconClasses(notification.tipo)">
+                        <i [class]="getNotificationIcon(notification.tipo)"></i>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900">{{ notification.titulo }}</p>
+                        <p class="text-sm text-gray-600">{{ notification.mensaje }}</p>
+                        <p class="text-xs text-gray-400 mt-1">{{ formatNotificationTime(notification.createdAt) }}</p>
+                      </div>
+                      @if (!notification.leido) {
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      }
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <router-outlet></router-outlet>

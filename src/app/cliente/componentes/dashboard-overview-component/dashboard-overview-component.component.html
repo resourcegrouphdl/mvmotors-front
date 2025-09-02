@@ -1,0 +1,98 @@
+<div class="space-y-6 mt-8 mb-8">
+      
+      <!-- KPI Cards Section -->
+      <div class="flex flex-wrap gap-6  container m-auto ">
+        @for (kpi of kpiData(); track kpi.id) {
+          <div class="dashboard-overview bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden  cursor-pointer kpi-card ">
+            <!-- Color Bar -->
+            <div [class]="getColorBarClass(kpi.color)"></div>
+            
+            <!-- Content -->
+            <div class="p-4 lg:p-6">
+              <!-- Header with Icon -->
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-2">
+                  @if (kpi.icono) {
+                    <div [class]="getIconContainerClass(kpi.color)">
+                      <i [class]="kpi.icono + ' text-sm'"></i>
+                    </div>
+                  }
+                  <h3 class="text-xs font-medium text-gray-600 uppercase tracking-wider">
+                    {{ kpi.titulo }}
+                  </h3>
+                </div>
+                
+                @if (kpi.tendencia !== undefined) {
+                  <div [class]="getTendenciaClass(kpi.tendencia)">
+                    <i [class]="getTendenciaIcon(kpi.tendencia) + ' text-xs mr-1'"></i>
+                    <span class="text-xs font-medium">{{ Math.abs(kpi.tendencia) }}%</span>
+                  </div>
+                }
+              </div>
+              
+              <!-- Main Value -->
+              <div class="flex items-baseline justify-between">
+                <div>
+                  <p [class]="'text-2xl lg:text-3xl font-bold ' + getValueColorClass(kpi.color)">
+                    {{ kpi.valor }}
+                  </p>
+                  @if (kpi.descripcion) {
+                    <p class="text-xs text-gray-500 mt-1">{{ kpi.descripcion }}</p>
+                  }
+                </div>
+              </div>
+              
+              <!-- Action Button (opcional) -->
+              <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <button 
+                  type="button"
+                  class="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center"
+                  (click)="onKpiClick(kpi)">
+                  <span>Ver detalles</span>
+                  <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      
+      <!-- Client Detail Section (Opcional - se muestra cuando hay cliente seleccionado) -->
+     
+      
+      <!-- Empty State (cuando no hay cliente seleccionado) -->
+      @if (!clienteSeleccionado()) {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <i class="fas fa-user-plus text-3xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-900 mb-4">
+              Selecciona un cliente para ver los detalles
+            </h3>
+            <p class="text-gray-500 mb-8 max-w-md mx-auto">
+              Haz clic en cualquier cliente de la lista o crea uno nuevo para comenzar el proceso de financiación.
+            </p>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                type="button"
+                class="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white font-medium rounded-lg hover:from-orange-600 hover:to-red-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                (click)="crearClienteRapido()">
+                <i class="fas fa-user-plus mr-2"></i>
+                Cliente Rápido
+              </button>
+              
+              <button
+                type="button"
+                class="px-6 py-3 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors duration-200"
+                (click)="crearClienteCompleto()">
+                <i class="fas fa-user-edit mr-2"></i>
+                Cliente Completo
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>

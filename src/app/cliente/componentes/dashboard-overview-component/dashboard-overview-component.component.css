@@ -1,0 +1,36 @@
+
+
+.dashboard-overview {
+  width: 16%;
+  margin: 0 1rem;
+}
+
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+.kpi-card {
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

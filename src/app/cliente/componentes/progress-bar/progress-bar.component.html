@@ -1,0 +1,111 @@
+<p>progress-bar works!</p>
+# ================================================================
+# 3. progress-bar.component.html
+# ================================================================
+
+<!-- src/app/shared/components/business/progress-bar/progress-bar.component.html -->
+<div class="progress-container" [style.width]="containerWidth">
+  
+  <!-- Label superior (opcional) -->
+  <div *ngIf="showLabel && label" class="flex justify-between items-center mb-2">
+    <span [ngClass]="labelClasses()">{{ label }}</span>
+    <span *ngIf="showPercentage" [ngClass]="percentageClasses()">{{ displayValue() }}{{ unit }}</span>
+  </div>
+  
+  <!-- Progress Bar Principal -->
+  <div [ngClass]="containerClasses()" [style.height.px]="height()">
+    
+    <ng-container [ngSwitch]="type">
+      
+      <!-- Barra simple -->
+      <ng-container *ngSwitchCase="'single'">
+        <div 
+          [ngClass]="barClasses()"
+          [style.width.%]="animatedValue()"
+          [attr.aria-valuenow]="value"
+          [attr.aria-valuemin]="min"
+          [attr.aria-valuemax]="max"
+          role="progressbar">
+          
+          <!-- Shimmer effect -->
+          <div *ngIf="animated" class="absolute inset-0 shimmer-effect"></div>
+          
+          <!-- Texto dentro de la barra -->
+          <span *ngIf="showTextInside && displayValue() >= 15" 
+                class="absolute inset-0 flex items-center justify-center text-white text-xs font-medium">
+            {{ displayValue() }}{{ unit }}
+          </span>
+        </div>
+      </ng-container>
+      
+      <!-- Barra multi-segmento -->
+      <ng-container *ngSwitchCase="'multi'">
+        <div *ngFor="let segment of segments; trackBy: trackBySegmentIndex" 
+             [ngClass]="getSegmentClasses(segment)"
+             [style.width.%]="segment.value"
+             [title]="segment.label || ''"
+             class="h-full relative">
+          
+          <span *ngIf="segment.label && showSegmentLabels" 
+                class="absolute inset-0 flex items-center justify-center text-white text-xs font-medium">
+            {{ segment.value }}%
+          </span>
+        </div>
+      </ng-container>
+      
+      <!-- Barra por pasos -->
+      <ng-container *ngSwitchCase="'stepped'">
+        <div *ngFor="let step of steps; let i = index; trackBy: trackByStepIndex" 
+             class="flex items-center" 
+             [ngClass]="{'mr-2': i < steps.length - 1}">
+          
+          <!-- Círculo del paso -->
+          <div [ngClass]="getStepCircleClasses(step, i)">
+            <svg *ngIf="step.completed" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <span *ngIf="!step.completed" class="text-xs font-medium">{{ i + 1 }}</span>
+          </div>
+          
+          <!-- Línea conectora -->
+          <div *ngIf="i < steps.length - 1" [ngClass]="getStepLineClasses(step, i)"></div>
+        </div>
+      </ng-container>
+      
+    </ng-container>
+    
+    <!-- Indicador de meta (opcional) -->
+    <div *ngIf="showTarget && targetValue > 0" 
+         class="absolute top-0 bottom-0 w-0.5 bg-red-500 z-10"
+         [style.left.%]="(targetValue / max) * 100"
+         [title]="'Meta: ' + targetValue + unit">
+      <div class="absolute -top-1 -left-1 w-2 h-2 bg-red-500 rounded-full"></div>
+    </div>
+  </div>
+  
+  <!-- Label inferior (opcional) -->
+  <div *ngIf="showLabel && labelPosition === 'bottom'" 
+       class="flex justify-between items-center mt-2 text-xs text-gray-500">
+    <span>{{ min }}{{ unit }}</span>
+    <ng-container *ngIf="showMilestones">
+      <span *ngFor="let milestone of milestones">{{ milestone }}{{ unit }}</span>
+    </ng-container>
+    <span>{{ max }}{{ unit }}</span>
+  </div>
+  
+  <!-- Información adicional -->
+  <div *ngIf="showInfo && additionalInfo" class="mt-2 text-xs text-gray-600">
+    {{ additionalInfo }}
+  </div>
+  
+  <!-- Estado de error -->
+  <div *ngIf="hasError && errorMessage" class="mt-2 text-xs text-red-600 flex items-center">
+    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+    </svg>
+    {{ errorMessage }}
+  </div>
+</div>
+
+
+
