@@ -17,6 +17,7 @@ export interface BaseProfile {
   storeIds?: string[];
   isFirstLogin?: boolean;
   lastPasswordChange?: Date | Timestamp;
+  avatar?: string;
  
 }
 
@@ -42,6 +43,7 @@ export abstract class BaseUser implements BaseProfile {
   storeIds?: string[];
   isFirstLogin?: boolean;
   lastPasswordChange?: Date | Timestamp;
+  avatar?: string;
   
 }
 

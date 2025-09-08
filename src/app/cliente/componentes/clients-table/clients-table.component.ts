@@ -447,7 +447,7 @@ export class ClientsTableComponent implements OnInit {
   }
   
   crearClienteRapido(): void {
-    this.router.navigate(['/clientes/nuevo-rapido']);
+    this.router.navigate(['quienes-somos/vendor/formulario-cliente']);
   }
   
   crearClienteCompleto(): void {

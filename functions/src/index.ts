@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions/v1';
 import * as nodemailer from 'nodemailer';
 import * as admin from 'firebase-admin';
+import fetch from "node-fetch";
+
 
 admin.initializeApp();
 
@@ -768,3 +770,4 @@ function getUserTypeSpecificContent(
       return '';
   }
 }
+

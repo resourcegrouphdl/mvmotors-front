@@ -118,9 +118,9 @@
                 
                 <!-- Avatar -->
                 <div class="h-8 w-8 rounded-full bg-gray-300 overflow-hidden">
-                  @if (currentUser()?.avatar) {
-                    <img [src]="currentUser()?.avatar" 
-                         [alt]="currentUser()?.nombre"
+                  @if (userActivo()?.avatar) {
+                    <img [src]="userActivo()?.avatar" 
+                         [alt]="userActivo()?.firstName"
                          class="h-full w-full object-cover">
                   } @else {
                     <div class="h-full w-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">
@@ -132,10 +132,10 @@
                 <!-- User Info -->
                 <div class="hidden lg:block text-left">
                   <div class="text-sm font-medium text-gray-900">
-                    {{ currentUser()?.nombre }}
+                    {{ userActivo()?.firstName }} {{ userActivo()?.lastName }}
                   </div>
                   <div class="text-xs text-gray-500">
-                    {{ getRolLabel() }}
+                    "Aliado comercial"
                   </div>
                 </div>
                 
@@ -153,10 +153,10 @@
                     
                     <!-- User Info Header -->
                     <div class="px-4 py-2 border-b border-gray-100">
-                      <div class="text-sm font-medium text-gray-900">{{ currentUser()?.nombre }} {{ currentUser()?.apellidos }}</div>
-                      <div class="text-xs text-gray-500">{{ currentUser()?.email }}</div>
-                      @if (currentUser()?.tienda) {
-                        <div class="text-xs text-blue-600 mt-1">{{ currentUser()?.tienda }}</div>
+                      <div class="text-sm font-medium text-gray-900">{{ userActivo()?.firstName }} {{ userActivo()?.lastName }}</div>
+                      <div class="text-xs text-gray-500">{{ userActivo()?.email }}</div>
+                      @if (userActivo()?.isActive) {
+                        <div class="text-xs text-blue-600 mt-1">{{ userActivo()?.userCategory }}</div>
                       }
                     </div>
                     
@@ -175,15 +175,7 @@
                       Configuración
                     </button>
                     
-                    @if (isAdmin()) {
-                      <div class="border-t border-gray-100"></div>
-                      <button type="button" 
-                              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                              (click)="navigateToAdmin()">
-                        <i class="fas fa-shield-alt w-4 h-4 mr-3 text-gray-400"></i>
-                        Administración
-                      </button>
-                    }
+                    
                     
                     <!-- Logout -->
                     <div class="border-t border-gray-100"></div>

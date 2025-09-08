@@ -6,13 +6,14 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideHttpClient } from '@angular/common/http';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), //esto es para que no se rompa la app al hacer click en el boton de enviar
     provideRouter(routes),
-    //provideClientHydration(),
+    provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'motoya-form',

@@ -50,7 +50,7 @@
         </h2>
 
         <form [formGroup]="formTitular" class="space-y-6">
-          <!-- DNI y búsqueda -->
+          <!-- DNI y búsqueda con indicadores -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2"
@@ -70,22 +70,88 @@
               <label class="block text-sm font-medium text-gray-700 mb-2"
                 >Número de Documento *</label
               >
-              <input
-                type="text"
-                formControlName="documentNumber"
-                (blur)="buscarClienteExistente()"
-                maxlength="12"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div class="relative">
+                <input
+                  type="text"
+                  formControlName="documentNumber"
+                  (blur)="buscarClienteExistente()"
+                  maxlength="12"
+                  placeholder="Ingrese 8 dígitos"
+                  class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+
+                <!-- Indicador de consulta RENIEC -->
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  <div
+                    *ngIf="consultandoDNI"
+                    class="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full"
+                  ></div>
+                  <svg
+                    *ngIf="
+                      !consultandoDNI &&
+                      ultimaConsultaDNI ===
+                        formTitular.get('documentNumber')?.value &&
+                      ultimaConsultaDNI.length === 8
+                    "
+                    class="h-4 w-4 text-green-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Mensaje de estado DNI -->
+              <div class="mt-1 text-xs">
+                <span *ngIf="consultandoDNI" class="text-blue-600">
+                  🔍 Consultando en RENIEC...
+                </span>
+                <span
+                  *ngIf="
+                    !consultandoDNI &&
+                    ultimaConsultaDNI ===
+                      formTitular.get('documentNumber')?.value &&
+                    ultimaConsultaDNI.length === 8
+                  "
+                  class="text-green-600"
+                >
+                  ✅ Datos obtenidos de RENIEC
+                </span>
+                <span
+                  *ngIf="
+                    !consultandoDNI &&
+                    formTitular.get('documentNumber')?.value?.length === 8 &&
+                    formTitular.get('documentType')?.value !== 'DNI'
+                  "
+                  class="text-gray-500"
+                >
+                  ℹ️ Solo se consulta RENIEC para DNI
+                </span>
+              </div>
             </div>
 
             <div class="flex items-end">
               <button
                 type="button"
-                (click)="buscarClienteExistente()"
-                class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                (click)="consultarDNITitular()"
+                [disabled]="
+                  consultandoDNI ||
+                  formTitular.get('documentNumber')?.value?.length !== 8
+                "
+                class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Buscar Cliente
+                <span *ngIf="!consultandoDNI">🔍 Consultar RENIEC</span>
+                <span *ngIf="consultandoDNI">
+                  <span
+                    class="animate-spin inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                  ></span>
+                  Consultando...
+                </span>
               </button>
             </div>
           </div>
@@ -111,12 +177,46 @@
               </div>
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-yellow-800">
-                  Cliente encontrado
+                  Cliente encontrado en base de datos
                 </h3>
                 <p class="mt-1 text-sm text-yellow-700">
                   {{ clienteExistente.nombres }}
                   {{ clienteExistente.apellidoPaterno }}
                   ya está registrado. Los datos se han cargado automáticamente.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Alerta RENIEC exitoso -->
+          <div
+            *ngIf="
+              !clienteExistente &&
+              ultimaConsultaDNI === formTitular.get('documentNumber')?.value &&
+              ultimaConsultaDNI.length === 8
+            "
+            class="bg-green-50 border border-green-200 rounded-lg p-4"
+          >
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg
+                  class="h-5 w-5 text-green-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-green-800">
+                  Datos consultados en RENIEC
+                </h3>
+                <p class="mt-1 text-sm text-green-700">
+                  Los nombres y apellidos se han completado automáticamente
+                  desde RENIEC.
                 </p>
               </div>
             </div>
@@ -362,10 +462,22 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Selfie -->
+          <!-- Selfie con Preview -->
           <div
             class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
           >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosPreview['selfie']" class="mb-4">
+              <img
+                [src]="archivosPreview['selfie']"
+                alt="Preview Selfie"
+                class="mx-auto h-32 w-32 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
+            </div>
+
+            <!-- Ícono por defecto si no hay preview -->
             <svg
+              *ngIf="!archivosPreview['selfie']"
               class="mx-auto h-12 w-12 text-gray-400 mb-4"
               stroke="currentColor"
               fill="none"
@@ -378,9 +490,10 @@
                 stroke-linejoin="round"
               />
             </svg>
+
             <label class="cursor-pointer">
               <span class="block text-sm font-medium text-gray-900 mb-1"
-                >Selfie *</span
+                >Selfie en lugar de trabajo *</span
               >
               <span class="block text-xs text-gray-500 mb-4"
                 >PNG, JPG hasta 5MB</span
@@ -394,22 +507,61 @@
               <span
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Seleccionar archivo
+                {{
+                  archivosSeleccionados["selfie"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
               </span>
             </label>
-            <p
+
+            <!-- Información del archivo seleccionado -->
+            <div
               *ngIf="archivosSeleccionados['selfie']"
-              class="mt-2 text-sm text-green-600"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
             >
-              ✓ {{ archivosSeleccionados["selfie"].name }}
-            </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosSeleccionados["selfie"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosSeleccionados["selfie"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{ formatFileSize(archivosSeleccionados["selfie"].size) }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivo('selfie')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- DNI Frente -->
+          <!-- DNI Frente con Preview -->
           <div
             class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
           >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosPreview['dniFrente']" class="mb-4">
+              <img
+                [src]="archivosPreview['dniFrente']"
+                alt="Preview DNI Frente"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
+            </div>
+
+            <!-- Ícono por defecto si no hay preview -->
             <svg
+              *ngIf="!archivosPreview['dniFrente']"
               class="mx-auto h-12 w-12 text-gray-400 mb-4"
               stroke="currentColor"
               fill="none"
@@ -422,6 +574,7 @@
                 stroke-linejoin="round"
               />
             </svg>
+
             <label class="cursor-pointer">
               <span class="block text-sm font-medium text-gray-900 mb-1"
                 >DNI Frente *</span
@@ -438,22 +591,63 @@
               <span
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Seleccionar archivo
+                {{
+                  archivosSeleccionados["dniFrente"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
               </span>
             </label>
-            <p
+
+            <!-- Información del archivo seleccionado -->
+            <div
               *ngIf="archivosSeleccionados['dniFrente']"
-              class="mt-2 text-sm text-green-600"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
             >
-              ✓ {{ archivosSeleccionados["dniFrente"].name }}
-            </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosSeleccionados["dniFrente"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosSeleccionados["dniFrente"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{
+                        formatFileSize(archivosSeleccionados["dniFrente"].size)
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivo('dniFrente')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- DNI Reverso -->
+          <!-- DNI Trasera -->
+          <!-- DNI Frente con Preview -->
           <div
             class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
           >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosPreview['dniReverso']" class="mb-4">
+              <img
+                [src]="archivosPreview['dniReverso']"
+                alt="Preview DNI Reverso"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
+            </div>
+
+            <!-- Ícono por defecto si no hay preview -->
             <svg
+              *ngIf="!archivosPreview['dniReverso']"
               class="mx-auto h-12 w-12 text-gray-400 mb-4"
               stroke="currentColor"
               fill="none"
@@ -466,6 +660,7 @@
                 stroke-linejoin="round"
               />
             </svg>
+
             <label class="cursor-pointer">
               <span class="block text-sm font-medium text-gray-900 mb-1"
                 >DNI Reverso *</span
@@ -482,81 +677,164 @@
               <span
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Seleccionar archivo
+                {{
+                  archivosSeleccionados["dniReverso"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
               </span>
             </label>
-            <p
+
+            <!-- Información del archivo seleccionado -->
+            <div
               *ngIf="archivosSeleccionados['dniReverso']"
-              class="mt-2 text-sm text-green-600"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
             >
-              ✓ {{ archivosSeleccionados["dniReverso"].name }}
-            </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosSeleccionados["dniReverso"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosSeleccionados["dniReverso"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{
+                        formatFileSize(archivosSeleccionados["dniReverso"].size)
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivo('dniReverso')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Recibo de Servicio -->
+          <!--  recivo de servicio -->
           <div
             class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
           >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosPreview['reciboServicio']" class="mb-4">
+              <img
+                [src]="archivosPreview['reciboServicio']"
+                alt="Preview Recibo de Servicio"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
+            </div>
+
+            <!-- Ícono por defecto si no hay preview -->
             <svg
+              *ngIf="!archivosPreview['reciboServicio']"
               class="mx-auto h-12 w-12 text-gray-400 mb-4"
               stroke="currentColor"
               fill="none"
               viewBox="0 0 48 48"
             >
               <path
-                d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
             </svg>
+
             <label class="cursor-pointer">
               <span class="block text-sm font-medium text-gray-900 mb-1"
                 >Recibo de Servicio *</span
               >
               <span class="block text-xs text-gray-500 mb-4"
-                >PDF, PNG, JPG hasta 5MB</span
+                >PNG, JPG hasta 5MB</span
               >
               <input
                 type="file"
                 (change)="onFileSelected($event, 'reciboServicio')"
-                accept="image/*,application/pdf"
+                accept="image/*"
                 class="sr-only"
               />
               <span
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Seleccionar archivo
+                {{
+                  archivosSeleccionados["reciboServicio"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
               </span>
             </label>
-            <p
+
+            <!-- Información del archivo seleccionado -->
+            <div
               *ngIf="archivosSeleccionados['reciboServicio']"
-              class="mt-2 text-sm text-green-600"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
             >
-              ✓ {{ archivosSeleccionados["reciboServicio"].name }}
-            </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosSeleccionados["reciboServicio"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosSeleccionados["reciboServicio"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{
+                        formatFileSize(archivosSeleccionados["reciboServicio"].size)
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivo('reciboServicio')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Foto de Fachada -->
           <div
             class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
           >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosPreview['fachada']" class="mb-4">
+              <img
+                [src]="archivosPreview['fachada']"
+                alt="Preview Fachada"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
+            </div>
+
+            <!-- Ícono por defecto si no hay preview -->
             <svg
+              *ngIf="!archivosPreview['fachada']"
               class="mx-auto h-12 w-12 text-gray-400 mb-4"
               stroke="currentColor"
               fill="none"
               viewBox="0 0 48 48"
             >
               <path
-                d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m-46-4v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
             </svg>
+
             <label class="cursor-pointer">
               <span class="block text-sm font-medium text-gray-900 mb-1"
-                >Foto de Fachada *</span
+                >DNI Frente *</span
               >
               <span class="block text-xs text-gray-500 mb-4"
                 >PNG, JPG hasta 5MB</span
@@ -570,38 +848,79 @@
               <span
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Seleccionar archivo
+                {{
+                  archivosSeleccionados["fachada"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
               </span>
             </label>
-            <p
+
+            <!-- Información del archivo seleccionado -->
+            <div
               *ngIf="archivosSeleccionados['fachada']"
-              class="mt-2 text-sm text-green-600"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
             >
-              ✓ {{ archivosSeleccionados["fachada"].name }}
-            </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosSeleccionados["fachada"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosSeleccionados["fachada"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{
+                        formatFileSize(archivosSeleccionados["fachada"].size)
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivo('fachada')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- Archivos opcionales -->
-          <div
-            *ngIf="mostrarCampoLicencia()"
+          <!-- ///////archivos opcionales   -->
+           <div
+           *ngIf="mostrarCampoLicencia()"
             class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
           >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosPreview['fotoLicenciaFrente']" class="mb-4">
+              <img
+                [src]="archivosPreview['fotoLicenciaFrente']"
+                alt="Preview fotoLicenciaFrente"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
+            </div>
+
+            <!-- Ícono por defecto si no hay preview -->
             <svg
+              *ngIf="!archivosPreview['fotoLicenciaFrente']"
               class="mx-auto h-12 w-12 text-gray-400 mb-4"
               stroke="currentColor"
               fill="none"
               viewBox="0 0 48 48"
             >
               <path
-                d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
             </svg>
+
             <label class="cursor-pointer">
               <span class="block text-sm font-medium text-gray-900 mb-1"
-                >Licencia de Conducir</span
+                >Licencia de Conducir </span
               >
               <span class="block text-xs text-gray-500 mb-4"
                 >PNG, JPG hasta 5MB</span
@@ -615,60 +934,142 @@
               <span
                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
-                Seleccionar archivo
+                {{
+                  archivosSeleccionados["fotoLicenciaFrente"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
               </span>
             </label>
-            <p
+
+            <!-- Información del archivo seleccionado -->
+            <div
               *ngIf="archivosSeleccionados['fotoLicenciaFrente']"
-              class="mt-2 text-sm text-green-600"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
             >
-              ✓ {{ archivosSeleccionados["fotoLicenciaFrente"].name }}
-            </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosSeleccionados["fotoLicenciaFrente"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosSeleccionados["fotoLicenciaFrente"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{
+                        formatFileSize(archivosSeleccionados["fotoLicenciaFrente"].size)
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivo('fotoLicenciaFrente')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div
-            *ngIf="mostrarCampoCertificado()"
-            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-          >
-            <svg
-              class="mx-auto h-12 w-12 text-gray-400 mb-4"
-              stroke="currentColor"
-              fill="none"
-              viewBox="0 0 48 48"
-            >
-              <path
-                d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <label class="cursor-pointer">
-              <span class="block text-sm font-medium text-gray-900 mb-1"
-                >Certificado Laboral</span
-              >
-              <span class="block text-xs text-gray-500 mb-4"
-                >PDF, PNG, JPG hasta 5MB</span
-              >
-              <input
-                type="file"
-                (change)="onFileSelected($event, 'certificadoLaboral')"
-                accept="image/*,application/pdf"
-                class="sr-only"
-              />
-              <span
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Seleccionar archivo
-              </span>
-            </label>
-            <p
-              *ngIf="archivosSeleccionados['certificadoLaboral']"
-              class="mt-2 text-sm text-green-600"
-            >
-              ✓ {{ archivosSeleccionados["certificadoLaboral"].name }}
-            </p>
-          </div>
+
+          <!-- ///////archivos opcionales   -->
+
+         <div
+  *ngIf="mostrarCampoCertificado()"
+  class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+>
+  <!-- Preview de imagen si existe y se puede mostrar -->
+  <div *ngIf="archivosPreview['certificadoLaboral']" class="mb-4">
+    <img
+      [src]="archivosPreview['certificadoLaboral']"
+      alt="Preview certificadoLaboral"
+      class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+    />
+  </div>
+
+  <!-- Icono por defecto para archivos sin preview (PDF, Word, etc.) -->
+  <div *ngIf="archivosSeleccionados['certificadoLaboral'] && !archivosPreview['certificadoLaboral']" class="mb-4">
+    <div class="mx-auto h-32 w-48 bg-gray-100 rounded-lg border-2 border-gray-200 shadow-sm flex items-center justify-center">
+      <div class="text-center">
+        <span class="text-5xl text-gray-500">
+          {{ getFileIcon(archivosSeleccionados['certificadoLaboral']) }}
+        </span>
+        <p class="text-sm text-gray-600 mt-2 font-medium">{{ getFileTypeName(archivosSeleccionados['certificadoLaboral']) }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ícono por defecto si no hay archivo seleccionado -->
+  <svg
+    *ngIf="!archivosSeleccionados['certificadoLaboral']"
+    class="mx-auto h-12 w-12 text-gray-400 mb-4"
+    stroke="currentColor"
+    fill="none"
+    viewBox="0 0 48 48"
+  >
+    <path
+      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+
+  <label class="cursor-pointer">
+    <span class="block text-sm font-medium text-gray-900 mb-1">Certificado Laboral</span>
+    <span class="block text-xs text-gray-500 mb-4">PNG, JPG, PDF, DOC, DOCX, XLS, XLSX, TXT hasta 10MB</span>
+    <input
+      type="file"
+      (change)="onFileSelected($event, 'certificadoLaboral')"
+      accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain"
+      class="sr-only"
+    />
+    <span
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+    >
+      {{
+        archivosSeleccionados["certificadoLaboral"]
+          ? "Cambiar archivo"
+          : "Seleccionar archivo"
+      }}
+    </span>
+  </label>
+
+  <!-- Información del archivo seleccionado -->
+  <div
+    *ngIf="archivosSeleccionados['certificadoLaboral']"
+    class="mt-3 p-2 bg-green-50 rounded-lg"
+  >
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="text-green-600 text-lg">{{
+          getFileIcon(archivosSeleccionados["certificadoLaboral"])
+        }}</span>
+        <div class="text-sm">
+          <p class="text-green-800 font-medium">
+            {{ archivosSeleccionados["certificadoLaboral"].name }}
+          </p>
+          <p class="text-green-600 text-xs">
+            {{ formatFileSize(archivosSeleccionados["certificadoLaboral"].size) }}
+            • {{ getFileTypeName(archivosSeleccionados["certificadoLaboral"]) }}
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        (click)="eliminarArchivo('certificadoLaboral')"
+        class="text-red-500 hover:text-red-700 text-sm"
+      >
+        🗑️ Eliminar
+      </button>
+    </div>
+  </div>
+</div>
+         
+
         </div>
       </div>
 
@@ -795,7 +1196,7 @@
 
         <div *ngIf="requiereFiador">
           <form [formGroup]="formFiador" class="space-y-6">
-            <!-- DNI y búsqueda -->
+            <!-- DNI y búsqueda del fiador -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2"
@@ -815,23 +1216,116 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2"
                   >Número de Documento *</label
                 >
-                <input
-                  type="text"
-                  formControlName="documentNumber"
-                  (blur)="buscarFiadorExistente()"
-                  maxlength="12"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <div class="relative">
+                  <input
+                    type="text"
+                    formControlName="documentNumber"
+                    (blur)="buscarFiadorExistente()"
+                    maxlength="12"
+                    placeholder="Ingrese 8 dígitos"
+                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+
+                  <!-- Indicador de consulta RENIEC Fiador -->
+                  <div
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    <div
+                      *ngIf="consultandoDNIFiador"
+                      class="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full"
+                    ></div>
+                    <svg
+                      *ngIf="
+                        !consultandoDNIFiador &&
+                        ultimaConsultaDNIFiador ===
+                          formFiador.get('documentNumber')?.value &&
+                        ultimaConsultaDNIFiador.length === 8
+                      "
+                      class="h-4 w-4 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Mensaje de estado DNI Fiador -->
+                <div class="mt-1 text-xs">
+                  <span *ngIf="consultandoDNIFiador" class="text-blue-600">
+                    🔍 Consultando fiador en RENIEC...
+                  </span>
+                  <span
+                    *ngIf="
+                      !consultandoDNIFiador &&
+                      ultimaConsultaDNIFiador ===
+                        formFiador.get('documentNumber')?.value &&
+                      ultimaConsultaDNIFiador.length === 8
+                    "
+                    class="text-green-600"
+                  >
+                    ✅ Datos del fiador obtenidos de RENIEC
+                  </span>
+                </div>
               </div>
 
               <div class="flex items-end">
                 <button
                   type="button"
-                  (click)="buscarFiadorExistente()"
-                  class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  (click)="consultarDNIFiador()"
+                  [disabled]="
+                    consultandoDNIFiador ||
+                    formFiador.get('documentNumber')?.value?.length !== 8
+                  "
+                  class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Buscar Fiador
+                  <span *ngIf="!consultandoDNIFiador">🔍 Consultar RENIEC</span>
+                  <span *ngIf="consultandoDNIFiador">
+                    <span
+                      class="animate-spin inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                    ></span>
+                    Consultando...
+                  </span>
                 </button>
+              </div>
+            </div>
+
+            <!-- Alerta RENIEC exitoso para fiador -->
+            <div
+              *ngIf="
+                ultimaConsultaDNIFiador ===
+                  formFiador.get('documentNumber')?.value &&
+                ultimaConsultaDNIFiador.length === 8
+              "
+              class="bg-green-50 border border-green-200 rounded-lg p-4"
+            >
+              <div class="flex items-start">
+                <div class="flex-shrink-0">
+                  <svg
+                    class="h-5 w-5 text-green-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-green-800">
+                    Datos del fiador consultados en RENIEC
+                  </h3>
+                  <p class="mt-1 text-sm text-green-700">
+                    Los nombres y apellidos del fiador se han completado
+                    automáticamente desde RENIEC.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -1020,189 +1514,276 @@
         <!-- Mostrar solo si requiere fiador -->
         <div *ngIf="requiereFiador">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Selfie del Fiador -->
-            <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-            >
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400 mb-4"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <label class="cursor-pointer">
-                <span class="block text-sm font-medium text-gray-900 mb-1"
-                  >Selfie del Fiador *</span
-                >
-                <span class="block text-xs text-gray-500 mb-4"
-                  >PNG, JPG hasta 5MB</span
-                >
-                <input
-                  type="file"
-                  (change)="onFileSelectedFiador($event, 'fiadorSelfie')"
-                  accept="image/*"
-                  class="sr-only"
-                />
-                <span
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Seleccionar archivo
-                </span>
-              </label>
-              <p
-                *ngIf="archivosFiadorSeleccionados['fiadorSelfie']"
-                class="mt-2 text-sm text-green-600"
-              >
-                ✓ {{ archivosFiadorSeleccionados["fiadorSelfie"].name }}
-              </p>
-            </div>
+            
+        
 
             <!-- DNI Frente del Fiador -->
-            <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-            >
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400 mb-4"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <label class="cursor-pointer">
-                <span class="block text-sm font-medium text-gray-900 mb-1"
-                  >DNI Frente del Fiador *</span
-                >
-                <span class="block text-xs text-gray-500 mb-4"
-                  >PNG, JPG hasta 5MB</span
-                >
-                <input
-                  type="file"
-                  (change)="onFileSelectedFiador($event, 'fiadorDniFrente')"
-                  accept="image/*"
-                  class="sr-only"
-                />
-                <span
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Seleccionar archivo
-                </span>
-              </label>
-              <p
-                *ngIf="archivosFiadorSeleccionados['fiadorDniFrente']"
-                class="mt-2 text-sm text-green-600"
-              >
-                ✓ {{ archivosFiadorSeleccionados["fiadorDniFrente"].name }}
-              </p>
+             <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosFiadorPreview['fiadorDniFrente']" class="mb-4">
+              <img
+                [src]="archivosFiadorPreview['fiadorDniFrente']"
+                alt="Preview DNI Frente Fiador"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
             </div>
+
+            <!-- Ícono por defecto si no hay preview -->
+            <svg
+              *ngIf="!archivosFiadorPreview['fiadorDniFrente']"
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Dni Frente del Fiador *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelectedFiador($event, 'fiadorDniFrente')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                {{
+                  archivosFiadorSeleccionados["fiadorDniFrente"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
+              </span>
+            </label>
+
+            <!-- Información del archivo seleccionado -->
+            <div
+              *ngIf="archivosFiadorSeleccionados['fiadorDniFrente']"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosFiadorSeleccionados["fiadorDniFrente"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosFiadorSeleccionados["fiadorDniFrente"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{ formatFileSize(archivosFiadorSeleccionados["fiadorDniFrente"].size) }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivoFiador('fiadorDniFrente')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
 
             <!-- DNI Reverso del Fiador -->
-            <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-            >
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400 mb-4"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <label class="cursor-pointer">
-                <span class="block text-sm font-medium text-gray-900 mb-1"
-                  >DNI Reverso del Fiador *</span
-                >
-                <span class="block text-xs text-gray-500 mb-4"
-                  >PNG, JPG hasta 5MB</span
-                >
-                <input
-                  type="file"
-                  (change)="onFileSelectedFiador($event, 'fiadorDniReverso')"
-                  accept="image/*"
-                  class="sr-only"
-                />
-                <span
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Seleccionar archivo
-                </span>
-              </label>
-              <p
-                *ngIf="archivosFiadorSeleccionados['fiadorDniReverso']"
-                class="mt-2 text-sm text-green-600"
-              >
-                ✓ {{ archivosFiadorSeleccionados["fiadorDniReverso"].name }}
-              </p>
+         <div
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosFiadorPreview['fiadorDniReverso']" class="mb-4">
+              <img
+                [src]="archivosFiadorPreview['fiadorDniReverso']"
+                alt="Preview DNI Reverso del Fiador"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
             </div>
 
+            <!-- Ícono por defecto si no hay preview -->
+            <svg
+              *ngIf="!archivosFiadorPreview['fiadorDniReverso']"
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Dni Reverso del Fiador *</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelectedFiador($event, 'fiadorDniReverso')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                {{
+                  archivosFiadorSeleccionados["fiadorDniReverso"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
+              </span>
+            </label>
+
+            <!-- Información del archivo seleccionado -->
+            <div
+              *ngIf="archivosFiadorSeleccionados['fiadorDniReverso']"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosFiadorSeleccionados["fiadorDniReverso"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosFiadorSeleccionados["fiadorDniReverso"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{ formatFileSize(archivosFiadorSeleccionados["fiadorDniReverso"].size) }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivoFiador('fiadorDniReverso')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          
             <!-- Recibo de Servicio del Fiador (Opcional) -->
             <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
-            >
-              <svg
-                class="mx-auto h-12 w-12 text-gray-400 mb-4"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <path
-                  d="M9 12h6m-6 4h6m2 5l-3-3m0 0l-3 3m3-3v12"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <label class="cursor-pointer">
-                <span class="block text-sm font-medium text-gray-900 mb-1"
-                  >Recibo de Servicio del Fiador</span
-                >
-                <span class="block text-xs text-gray-500 mb-4"
-                  >PDF, PNG, JPG hasta 5MB (Opcional)</span
-                >
-                <input
-                  type="file"
-                  (change)="
-                    onFileSelectedFiador($event, 'fiadorReciboServicio')
-                  "
-                  accept="image/*,application/pdf"
-                  class="sr-only"
-                />
-                <span
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Seleccionar archivo
-                </span>
-              </label>
-              <p
-                *ngIf="archivosFiadorSeleccionados['fiadorReciboServicio']"
-                class="mt-2 text-sm text-green-600"
-              >
-                ✓ {{ archivosFiadorSeleccionados["fiadorReciboServicio"].name }}
-              </p>
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+          >
+            <!-- Preview de imagen si existe -->
+            <div *ngIf="archivosFiadorPreview['fiadorReciboServicio']" class="mb-4">
+              <img
+                [src]="archivosFiadorPreview['fiadorReciboServicio']"
+                alt="Preview Recibo de Servicio del Fiador"
+                class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+              />
             </div>
+
+            <!-- Ícono por defecto si no hay preview -->
+            <svg
+              *ngIf="!archivosFiadorPreview['fiadorReciboServicio']"
+              class="mx-auto h-12 w-12 text-gray-400 mb-4"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <label class="cursor-pointer">
+              <span class="block text-sm font-medium text-gray-900 mb-1"
+                >Recibo de Servicio del Fiador</span
+              >
+              <span class="block text-xs text-gray-500 mb-4"
+                >PNG, JPG hasta 5MB</span
+              >
+              <input
+                type="file"
+                (change)="onFileSelectedFiador($event, 'fiadorReciboServicio')"
+                accept="image/*"
+                class="sr-only"
+              />
+              <span
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                {{
+                  archivosFiadorSeleccionados["fiadorReciboServicio"]
+                    ? "Cambiar archivo"
+                    : "Seleccionar archivo"
+                }}
+              </span>
+            </label>
+
+            <!-- Información del archivo seleccionado -->
+            <div
+              *ngIf="archivosFiadorSeleccionados['fiadorReciboServicio']"
+              class="mt-3 p-2 bg-green-50 rounded-lg"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="text-green-600">{{
+                    getFileIcon(archivosFiadorSeleccionados["fiadorReciboServicio"])
+                  }}</span>
+                  <div class="text-sm">
+                    <p class="text-green-800 font-medium">
+                      {{ archivosFiadorSeleccionados["fiadorReciboServicio"].name }}
+                    </p>
+                    <p class="text-green-600 text-xs">
+                      {{ formatFileSize(archivosFiadorSeleccionados["fiadorReciboServicio"].size) }}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  (click)="eliminarArchivoFiador('fiadorReciboServicio')"
+                  class="text-red-500 hover:text-red-700 text-sm"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
 
             <!-- Foto de Fachada del Fiador (Opcional) -->
             <div
               class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
             >
+              <!-- Preview de imagen si existe -->
+              <div *ngIf="archivosFiadorPreview['fiadorFachada']" class="mb-4">
+                <img
+                  [src]="archivosFiadorPreview['fiadorFachada']"
+                  alt="Preview Fachada del Fiador"
+                  class="mx-auto h-32 w-48 object-cover rounded-lg border-2 border-gray-200 shadow-sm"
+                />
+              </div>
+
+              <!-- Ícono por defecto si no hay preview -->
               <svg
+                *ngIf="!archivosFiadorPreview['fiadorFachada']"
+              
                 class="mx-auto h-12 w-12 text-gray-400 mb-4"
                 stroke="currentColor"
                 fill="none"
@@ -1229,17 +1810,39 @@
                   class="sr-only"
                 />
                 <span
-                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"                  
                 >
-                  Seleccionar archivo
+                  {{
+                    archivosFiadorSeleccionados["fiadorFachada"]
+                      ? "Cambiar archivo"
+                      : "Seleccionar archivo"
+                  }}
                 </span>
               </label>
-              <p
+              <!-- Información del archivo seleccionado -->
+              <div
                 *ngIf="archivosFiadorSeleccionados['fiadorFachada']"
-                class="mt-2 text-sm text-green-600"
+                class="mt-3 p-2 bg-green-50 rounded-lg"
               >
-                ✓ {{ archivosFiadorSeleccionados["fiadorFachada"].name }}
-              </p>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <span class="text-green-600">{{
+                      getFileIcon(archivosFiadorSeleccionados["fiadorFachada"])
+                    }}</span>
+                    <div class="text-sm">
+                      <p class="text-green-800 font-medium">
+                        {{ archivosFiadorSeleccionados["fiadorFachada"].name }}
+                      </p>
+                      <p class="text-green-600 text-xs">
+                        {{ formatFileSize(archivosFiadorSeleccionados["fiadorFachada"].size) }}
+                      </p>
+                    </div>
+                  </div>
+                  <button type="button" (click)="eliminarArchivoFiador('fiadorFachada')" class="text-red-500 hover:text-red-700 text-sm">
+                    🗑️ Eliminar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1265,7 +1868,7 @@
                 </h3>
                 <p class="mt-1 text-sm text-blue-700">
                   Los archivos obligatorios son:
-                  <strong>Selfie, DNI Frente y DNI Reverso</strong>. Los demás
+                  <strong> DNI Frente y DNI Reverso</strong>. Los demás
                   documentos son opcionales pero ayudan en la evaluación.
                 </p>
               </div>

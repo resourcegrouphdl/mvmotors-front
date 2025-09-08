@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cliente } from '../../model/cliente';
 import { Referencia } from '../../model/referencia';
@@ -8,6 +8,9 @@ import { SolicitudDeCredito } from '../../model/solicitud-de-credito';
 import { MarcaMoto, MarcasMotosArray } from '../../model/enums';
 import { FirebaseFotmularioService } from '../../serivices/firebase-fotmulario.service';
 import { CommonModule } from '@angular/common';
+import { ServiciosExternosService } from '../../../acces-data-services/servicios-externos.service';
+import { AuthServiceService } from '../../../acces-data-services/auth-service.service';
+import { BaseUser } from '../../../models/model-auth';
 
 export interface FormularioEstado {
   paso: number;
@@ -36,6 +39,19 @@ export const DEPARTAMENTOS_PERU = [
   styleUrl: './solicitud-financiamiento.component.css'
 })
 export class SolicitudFinanciamientoComponent implements OnInit {
+  reniec = inject(ServiciosExternosService);
+  authService = inject(AuthServiceService);
+  
+
+  consultandoDNI: boolean = false;
+  consultandoDNIFiador: boolean = false;
+  ultimaConsultaDNI: string = '';
+  ultimaConsultaDNIFiador: string = '';
+
+  // Timer para debounce
+  private dniTimer: any;
+  private dniFiadorTimer: any;
+
 
   // Formularios reactivos
   formTitular!: FormGroup;
@@ -54,10 +70,14 @@ export class SolicitudFinanciamientoComponent implements OnInit {
   departamentos = DEPARTAMENTOS_PERU;
   marcasMotos = MarcasMotosArray;
   aniosDisponibles: number[] = [];
+
   
   // Archivos
   archivosSeleccionados: { [key: string]: File } = {};
   archivosFiadorSeleccionados: { [key: string]: File } = {};
+  // Agregar estas propiedades para los previews
+  archivosPreview: { [key: string]: string | null } = {};
+  archivosFiadorPreview: { [key: string]: string | null } = {};
   
   // Cliente existente
   clienteExistente: Cliente | null = null;
@@ -77,7 +97,10 @@ export class SolicitudFinanciamientoComponent implements OnInit {
   mostrarModalExito: boolean = false;
   numeroSolicitud: string = '';
   aceptaTerminos: boolean = false;
-  
+
+  usuarioActivo: BaseUser | null = null;
+  idTiendaVendedor: string = this.getIdTienda();
+
   // Pasos
   pasos: string[] = [
     'Titular',           // Paso 1
@@ -92,14 +115,20 @@ export class SolicitudFinanciamientoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private firebaseService: FirebaseFotmularioService,
-    private router: Router
+    private router: Router,
   ) {
     this.generarAniosDisponibles();
     this.inicializarFormularios();
+    this.configurarEscuchasDNI();
   }
 
   ngOnInit(): void {
-    // Ya se inicializa en el constructor, evitamos duplicar
+    this.getCurrentUser();
+    this.setVendedorInfo(this.usuarioActivo!);
+    
+    
+    
+    // Nota: Si el usuario no se carga de inmediato, considera suscribirte a `authService.currentUser$` para recibir los datos de forma asíncrona.
   }
 
   private inicializarFormularios(): void {
@@ -147,6 +176,7 @@ export class SolicitudFinanciamientoComponent implements OnInit {
     // Formulario de referencias
     this.formReferencias = this.fb.group({
       referencias: this.fb.array([
+        this.crearReferenciaFormGroup(),
         this.crearReferenciaFormGroup()
       ])
     });
@@ -188,6 +218,295 @@ export class SolicitudFinanciamientoComponent implements OnInit {
     });
   }
 
+  // =============== CONFIGURAR ESCUCHAS DE DNI ===============
+
+  private configurarEscuchasDNI(): void {
+    // Escucha cambios en DNI del titular
+    this.formTitular.get('documentNumber')?.valueChanges.subscribe(value => {
+      this.onDNIChange(value, 'titular');
+    });
+
+    // Escucha cambios en DNI del fiador
+    this.formFiador.get('documentNumber')?.valueChanges.subscribe(value => {
+      this.onDNIChange(value, 'fiador');
+    });
+  }
+  private onDNIChange(dni: string, tipo: 'titular' | 'fiador'): void {
+    // Limpiar timer anterior
+    if (tipo === 'titular') {
+      clearTimeout(this.dniTimer);
+    } else {
+      clearTimeout(this.dniFiadorTimer);
+    }
+
+    // Validar que sea DNI y tenga 8 dígitos
+    if (!dni || dni.length !== 8 || !/^\d+$/.test(dni)) {
+      // Limpiar datos si no es válido
+      this.limpiarDatosConsulta(tipo);
+      return;
+    }
+
+    // Verificar que no sea la misma consulta
+    const ultimaConsulta = tipo === 'titular' ? this.ultimaConsultaDNI : this.ultimaConsultaDNIFiador;
+    if (dni === ultimaConsulta) {
+      return;
+    }
+
+    // Configurar debounce de 500ms
+    const timer = setTimeout(() => {
+      this.consultarDNI(dni, tipo);
+    }, 500);
+
+    if (tipo === 'titular') {
+      this.dniTimer = timer;
+    } else {
+      this.dniFiadorTimer = timer;
+    }
+  }
+  
+   private consultarDNI(dni: string, tipo: 'titular' | 'fiador'): void {
+    // Verificar tipo de documento antes de consultar
+    const tipoDoc = tipo === 'titular' 
+      ? this.formTitular.get('documentType')?.value 
+      : this.formFiador.get('documentType')?.value;
+    
+    if (tipoDoc !== 'DNI') {
+      return; // Solo consultar si es DNI
+    }
+
+    // Establecer estado de carga
+    if (tipo === 'titular') {
+      this.consultandoDNI = true;
+      this.mensajeCarga = 'Consultando datos en RENIEC...';
+    } else {
+      this.consultandoDNIFiador = true;
+      this.mensajeCarga = 'Consultando datos del fiador en RENIEC...';
+    }
+
+    // Realizar consulta
+    this.reniec.consultarDNI(dni).subscribe({
+      next: (data) => {
+        this.onConsultaExitosa(data, tipo, dni);
+      },
+      error: (error) => {
+        this.onConsultaError(error, tipo, dni);
+      },
+      complete: () => {
+        // Limpiar estado de carga
+        if (tipo === 'titular') {
+          this.consultandoDNI = false;
+        } else {
+          this.consultandoDNIFiador = false;
+        }
+        this.mensajeCarga = '';
+      }
+    });
+  }
+
+  // =============== MANEJO DE RESPUESTA EXITOSA ===============
+
+  private onConsultaExitosa(data: any, tipo: 'titular' | 'fiador', dni: string): void {
+    const form = tipo === 'titular' ? this.formTitular : this.formFiador;
+    
+    // Actualizar datos en el formulario
+    form.patchValue({
+      nombres: this.capitalizarNombres(data.nombres || ''),
+      apellidoPaterno: this.capitalizarNombres(data.apellidoPaterno || ''),
+      apellidoMaterno: this.capitalizarNombres(data.apellidoMaterno || '')
+    });
+
+    // Guardar última consulta exitosa
+    if (tipo === 'titular') {
+      this.ultimaConsultaDNI = dni;
+      this.clienteExistente = null; // Limpiar cliente existente si había
+      console.log('Datos del titular consultados:', data);
+    } else {
+      this.ultimaConsultaDNIFiador = dni;
+    }
+
+    // Mostrar mensaje de éxito
+    this.mostrarMensaje(`Datos de ${tipo} consultados exitosamente en RENIEC`, 'success');
+  }
+
+  // =============== MANEJO DE ERROR EN CONSULTA ===============
+
+  private onConsultaError(error: any, tipo: 'titular' | 'fiador', dni: string): void {
+    console.error(`Error al consultar DNI ${tipo}:`, error);
+    
+    // Limpiar datos si hay error
+    this.limpiarDatosConsulta(tipo);
+    
+    // Mostrar mensaje de error específico
+    let mensajeError = 'Error al consultar DNI';
+    
+    if (error.status === 404) {
+      mensajeError = 'DNI no encontrado en RENIEC';
+    } else if (error.status === 500) {
+      mensajeError = 'Servicio RENIEC no disponible temporalmente';
+    } else if (error.status === 0) {
+      mensajeError = 'Sin conexión a internet';
+    }
+
+    this.mostrarMensaje(`${mensajeError} para ${tipo}`, 'error');
+  }
+
+  // =============== MÉTODOS DE UTILIDAD ===============
+
+  private limpiarDatosConsulta(tipo: 'titular' | 'fiador'): void {
+    const form = tipo === 'titular' ? this.formTitular : this.formFiador;
+    
+    // Solo limpiar si los campos están vacíos o fueron llenados por consulta anterior
+    const nombres = form.get('nombres')?.value;
+    const apellidoPaterno = form.get('apellidoPaterno')?.value;
+    const apellidoMaterno = form.get('apellidoMaterno')?.value;
+
+    // Limpiar solo si parece que fueron llenados automáticamente
+    if (nombres || apellidoPaterno || apellidoMaterno) {
+      form.patchValue({
+        nombres: '',
+        apellidoPaterno: '',
+        apellidoMaterno: ''
+      });
+    }
+
+    // Limpiar última consulta
+    if (tipo === 'titular') {
+      this.ultimaConsultaDNI = '';
+    } else {
+      this.ultimaConsultaDNIFiador = '';
+    }
+  }
+
+  private capitalizarNombres(texto: string): string {
+    return texto.toLowerCase()
+      .split(' ')
+      .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+      .join(' ');
+  }
+
+  private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' | 'info' = 'info'): void {
+    // Implementar tu sistema de notificaciones aquí
+    // Por ejemplo, usando toastr, sweet alert, o tu propio sistema
+    if (tipo === 'success') {
+      // toast.success(mensaje);
+      console.log(`✅ ${mensaje}`);
+    } else if (tipo === 'error') {
+      // toast.error(mensaje);
+      console.error(`❌ ${mensaje}`);
+    } else {
+      // toast.info(mensaje);
+      console.info(`ℹ️ ${mensaje}`);
+    }
+  }
+
+  // =============== MÉTODOS PÚBLICOS PARA CONSULTA MANUAL ===============
+
+  consultarDNITitular(): void {
+    const dni = this.formTitular.get('documentNumber')?.value;
+    if (dni && dni.length === 8 && /^\d+$/.test(dni)) {
+      this.consultarDNI(dni, 'titular');
+    } else {
+      this.mostrarMensaje('Ingrese un DNI válido de 8 dígitos', 'error');
+    }
+  }
+
+  consultarDNIFiador(): void {
+    const dni = this.formFiador.get('documentNumber')?.value;
+    if (dni && dni.length === 8 && /^\d+$/.test(dni)) {
+      this.consultarDNI(dni, 'fiador');
+    } else {
+      this.mostrarMensaje('Ingrese un DNI válido de 8 dígitos para el fiador', 'error');
+    }
+  }
+
+  // =============== ACTUALIZAR MÉTODOS EXISTENTES ===============
+
+  async buscarClienteExistente(): Promise<void> {
+    const documentNumber = this.formTitular.get('documentNumber')?.value;
+    if (documentNumber && documentNumber.length >= 8) {
+      try {
+        this.cargando = true;
+        this.mensajeCarga = 'Buscando cliente en base de datos...';
+        
+        const cliente = await this.firebaseService.buscarClientePorDNI(documentNumber);
+        
+        if (cliente) {
+          this.clienteExistente = cliente;
+          this.formTitular.patchValue(cliente);
+          this.mostrarMensaje('Cliente encontrado en base de datos', 'success');
+        } else {
+          this.clienteExistente = null;
+          // Si no encuentra en BD y es DNI válido, consultar RENIEC automáticamente
+          if (documentNumber.length === 8 && /^\d+$/.test(documentNumber)) {
+            this.consultarDNI(documentNumber, 'titular');
+          }
+        }
+      } catch (error) {
+        console.error('Error al buscar cliente:', error);
+        this.mostrarMensaje('Error al buscar el cliente en base de datos', 'error');
+      } finally {
+        this.cargando = false;
+        this.mensajeCarga = '';
+      }
+    }
+  }
+
+  async buscarFiadorExistente(): Promise<void> {
+    const documentNumber = this.formFiador.get('documentNumber')?.value;
+    if (documentNumber && documentNumber.length >= 8) {
+      try {
+        this.cargando = true;
+        this.mensajeCarga = 'Buscando fiador en base de datos...';
+        
+        const fiador = await this.firebaseService.buscarClientePorDNI(documentNumber);
+        
+        if (fiador) {
+          this.formFiador.patchValue(fiador);
+          this.mostrarMensaje('Fiador encontrado en base de datos', 'success');
+        } else {
+          // Si no encuentra en BD y es DNI válido, consultar RENIEC automáticamente
+          if (documentNumber.length === 8 && /^\d+$/.test(documentNumber)) {
+            this.consultarDNI(documentNumber, 'fiador');
+          }
+        }
+      } catch (error) {
+        console.error('Error al buscar fiador:', error);
+        this.mostrarMensaje('Error al buscar el fiador en base de datos', 'error');
+      } finally {
+        this.cargando = false;
+        this.mensajeCarga = '';
+      }
+    }
+  }
+
+  // =============== CLEANUP ===============
+
+  ngOnDestroy(): void {
+    // Limpiar timers al destruir componente
+    if (this.dniTimer) {
+      clearTimeout(this.dniTimer);
+    }
+    if (this.dniFiadorTimer) {
+      clearTimeout(this.dniFiadorTimer);
+    }
+  }
+
+
+
+  getDni(){
+    this.reniec.consultarDNI(this.formTitular.get('documentNumber')?.value || '').subscribe({
+      next: (data) => {
+        this.formTitular.patchValue({
+          nombres: data.nombres,
+          apellidoPaterno: data.apellidoPaterno,
+          apellidoMaterno: data.apellidoMaterno
+        });
+      },
+      error: (error) => {
+        console.error('Error al consultar DNI:', error);
+      }
+    });
+  }
   // =============== NAVEGACIÓN ===============
 
   get progreso(): number {
@@ -218,7 +537,12 @@ export class SolicitudFinanciamientoComponent implements OnInit {
   siguientePaso(): void {
     if (this.puedeAvanzar()) {
       this.pasoActual++;
+      // Hacer scroll al inicio del formulario
+      this.scrollToTop();
     }
+  }
+  private scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   pasoAnterior(): void {
@@ -279,7 +603,7 @@ export class SolicitudFinanciamientoComponent implements OnInit {
 
   // =============== MANEJO DE ARCHIVOS ===============
 
-  onFileSelected(event: any, tipoArchivo: string): void {
+   onFileSelected(event: any, tipoArchivo: string): void {
     const file = event.target.files[0];
     if (file) {
       // Validar tamaño (5MB máximo)
@@ -296,6 +620,14 @@ export class SolicitudFinanciamientoComponent implements OnInit {
       }
       
       this.archivosSeleccionados[tipoArchivo] = file;
+      
+      // Generar preview si es imagen
+      if (this.esImagen(file)) {
+        this.generarPreview(file, tipoArchivo, 'archivosPreview');
+      } else {
+        // Si es PDF, limpiar el preview
+        this.archivosPreview[tipoArchivo] = null;
+      }
     }
   }
 
@@ -322,10 +654,9 @@ export class SolicitudFinanciamientoComponent implements OnInit {
 
    // =============== NUEVOS MÉTODOS PARA ARCHIVOS DEL FIADOR ===============
    private validarArchivosFiador(): boolean {
-    if (!this.requiereFiador) return true;
-    
-    // Archivos obligatorios para el fiador
-    const archivosFiadorObligatorios = ['fiadorSelfie', 'fiadorDniFrente', 'fiadorDniReverso'];
+    if (!this.requiereFiador) return true;    
+    // Archivos obligatorios para el fiador, según el texto informativo en el HTML.
+    const archivosFiadorObligatorios = [ 'fiadorDniFrente', 'fiadorDniReverso'];
     return archivosFiadorObligatorios.every(tipo => this.archivosFiadorSeleccionados[tipo]);
   }
 
@@ -346,7 +677,68 @@ export class SolicitudFinanciamientoComponent implements OnInit {
       }
       
       this.archivosFiadorSeleccionados[tipoArchivo] = file;
+      
+      // Generar preview si es imagen
+      if (this.esImagen(file)) {
+        this.generarPreview(file, tipoArchivo, 'archivosFiadorPreview');
+      } else {
+        // Si es PDF, limpiar el preview
+        this.archivosFiadorPreview[tipoArchivo] = null;
+      }
     }
+  }
+
+   // =============== NUEVOS MÉTODOS PARA PREVIEW ===============
+
+  private esImagen(file: File): boolean {
+    return file.type.startsWith('image/');
+  }
+
+  private generarPreview(file: File, tipoArchivo: string, tipoPreview: 'archivosPreview' | 'archivosFiadorPreview'): void {
+    const reader = new FileReader();
+    
+    reader.onload = (e: any) => {
+      if (tipoPreview === 'archivosPreview') {
+        this.archivosPreview[tipoArchivo] = e.target.result;
+      } else {
+        this.archivosFiadorPreview[tipoArchivo] = e.target.result;
+      }
+    };
+    
+    reader.readAsDataURL(file);
+  }
+
+  // =============== MÉTODOS PARA LIMPIAR ARCHIVOS ===============
+
+  eliminarArchivo(tipoArchivo: string): void {
+    delete this.archivosSeleccionados[tipoArchivo];
+    delete this.archivosPreview[tipoArchivo];
+  }
+
+  eliminarArchivoFiador(tipoArchivo: string): void {
+    delete this.archivosFiadorSeleccionados[tipoArchivo];
+    delete this.archivosFiadorPreview[tipoArchivo];
+  }
+
+  // =============== MÉTODOS DE UTILIDAD ===============
+
+  getFileIcon(file: File): string {
+    if (file.type === 'application/pdf') {
+      return '📄';
+    } else if (file.type.startsWith('image/')) {
+      return '🖼️';
+    }
+    return '📎';
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
   getArchivosFiadorSubidos(): Array<{nombre: string, archivo: File}> {
@@ -358,7 +750,6 @@ export class SolicitudFinanciamientoComponent implements OnInit {
 
   private getNombreAmigableArchivoFiador(tipo: string): string {
     const nombres: {[key: string]: string} = {
-      'fiadorSelfie': 'Selfie del Fiador',
       'fiadorDniFrente': 'DNI Frente del Fiador',
       'fiadorDniReverso': 'DNI Reverso del Fiador',
       'fiadorReciboServicio': 'Recibo de Servicio del Fiador',
@@ -379,57 +770,11 @@ export class SolicitudFinanciamientoComponent implements OnInit {
     return ocupacion === 'dependiente';
   }
 
-  // =============== BÚSQUEDA DE CLIENTES ===============
+  
 
-  async buscarClienteExistente(): Promise<void> {
-    const documentNumber = this.formTitular.get('documentNumber')?.value;
-    if (documentNumber && documentNumber.length >= 8) {
-      try {
-        this.cargando = true;
-        this.mensajeCarga = 'Buscando cliente...';
-        
-        const cliente = await this.firebaseService.buscarClientePorDNI(documentNumber);
-        
-        if (cliente) {
-          this.clienteExistente = cliente;
-          // Rellenar formulario con datos existentes
-          this.formTitular.patchValue(cliente);
-        } else {
-          this.clienteExistente = null;
-        }
-      } catch (error) {
-        console.error('Error al buscar cliente:', error);
-        alert('Error al buscar el cliente. Intente nuevamente.');
-      } finally {
-        this.cargando = false;
-        this.mensajeCarga = '';
-      }
-    }
-  }
+  
 
-  async buscarFiadorExistente(): Promise<void> {
-    const documentNumber = this.formFiador.get('documentNumber')?.value;
-    if (documentNumber && documentNumber.length >= 8) {
-      try {
-        this.cargando = true;
-        this.mensajeCarga = 'Buscando fiador...';
-        
-        const fiador = await this.firebaseService.buscarClientePorDNI(documentNumber);
-        
-        if (fiador) {
-          // Rellenar formulario con datos existentes
-          this.formFiador.patchValue(fiador);
-        }
-      } catch (error) {
-        console.error('Error al buscar fiador:', error);
-        alert('Error al buscar el fiador. Intente nuevamente.');
-      } finally {
-        this.cargando = false;
-        this.mensajeCarga = '';
-      }
-    }
-  }
-
+  
   // =============== MANEJO DE REFERENCIAS ===============
 
   getReferenciasFormArray(): FormArray {
@@ -437,8 +782,8 @@ export class SolicitudFinanciamientoComponent implements OnInit {
   }
 
   agregarReferencia(): void {
-    if (this.getReferenciasFormArray().length < 3) {
-      this.getReferenciasFormArray().push(this.crearReferenciaFormGroup());
+    if (this.getReferenciasFormArray().length < 3) {              // Límite de 3 referencias
+      this.getReferenciasFormArray().push(this.crearReferenciaFormGroup());  // Agregar nueva referencia
     }
   }
 
@@ -530,6 +875,36 @@ export class SolicitudFinanciamientoComponent implements OnInit {
       this.mostrarResumen = false;
     }
   }
+
+  // Obtener nombre del tipo de archivo
+getFileTypeName(file: File): string {
+  if (!file) return '';
+  
+  const extension = file.name.split('.').pop()?.toLowerCase();
+  const type = file.type.toLowerCase();
+  
+  if (type.includes('image') || ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension || '')) {
+    return 'Imagen';
+  }
+  
+  if (type.includes('pdf') || extension === 'pdf') {
+    return 'PDF';
+  }
+  
+  if (type.includes('word') || type.includes('document') || ['doc', 'docx'].includes(extension || '')) {
+    return 'Word';
+  }
+  
+  if (type.includes('sheet') || type.includes('excel') || ['xls', 'xlsx'].includes(extension || '')) {
+    return 'Excel';
+  }
+  
+  if (type.includes('text') || extension === 'txt') {
+    return 'Texto';
+  }
+  
+  return 'Documento';
+}
 
   // =============== ENVÍO Y GUARDADO ===============
 
@@ -667,8 +1042,37 @@ export class SolicitudFinanciamientoComponent implements OnInit {
     }
   }
 
+  // =============== OBTENER CURRENTUSER ACTIVO  ===============
+
+  getCurrentUser() {
+    this.authService.currentUser$.subscribe(user => {
+      this.usuarioActivo = user;
+      if (user) {
+        this.idTiendaVendedor = this.getIdTienda();
+        this.setVendedorInfo(user);
+        
+      }
+    });
+  
+  }
+
+  setVendedorInfo(vendedor: BaseUser): void {
+    this.formSolicitud.patchValue({
+      vendedorId: vendedor.uid,
+      vendedorNombre: `${vendedor.firstName} ${vendedor.lastName}`,
+      vendedorTienda: vendedor.storeIds || ''
+    });
+  }
+  
+  getIdTienda():string {
+    const idTienda = this.authService.vendorUser$[0];
+    return idTienda;
+  }
+
+
+  // =============== MODAL Y NAVEGACIÓN ===============
   cerrarModal(): void {
     this.mostrarModalExito = false;
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['quienes-somos/vendor/info']);
   }
 }

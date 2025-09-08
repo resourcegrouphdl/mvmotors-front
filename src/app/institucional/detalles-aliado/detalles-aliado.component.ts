@@ -1,6 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
+import { AuthServiceService } from '../../acces-data-services/auth-service.service';
+import { BaseUser } from '../../models/model-auth';
 
 interface Usuario {
   id: string;
@@ -35,6 +37,7 @@ export class DetallesAliadoComponent {
   // ================================================================
   
   private router = inject(Router);
+  private auth = inject(AuthServiceService); 
   // private authService = inject(AuthService);           // Se implementará
   // private notificationService = inject(NotificationService); // Se implementará
   // private userService = inject(UserService);           // Se implementará
@@ -42,7 +45,11 @@ export class DetallesAliadoComponent {
   // ================================================================
   // SIGNALS Y STATE MANAGEMENT
   // ================================================================
-  
+
+  userActivo = signal<BaseUser | null>(null);
+
+  isAuthenticated = this.auth.isAuthenticated$;
+
   // User state
   currentUser = signal<Usuario | null>({
     id: '1',
@@ -72,7 +79,7 @@ export class DetallesAliadoComponent {
     {
       id: 'dashboard',
       label: 'Dashboard',
-      route: '/vendedor/dashboard',
+      route: 'quienes-somos/vendor/info',
       icon: 'fas fa-chart-line',
       active: false,
       visible: true
@@ -80,7 +87,7 @@ export class DetallesAliadoComponent {
     {
       id: 'cliente-rapido',
       label: 'Cliente Rápido',
-      route: '/clientes/nuevo-rapido',
+      route: 'quienes-somos/vendor/formulario-cliente',
       icon: 'fas fa-user-plus',
       active: false,
       badge: 0,
@@ -89,20 +96,12 @@ export class DetallesAliadoComponent {
     {
       id: 'cliente-completo',
       label: 'Cliente Completo',
-      route: '/clientes/nuevo-completo',
+      route: 'quienes-somos/vendor/formulario-cliente',
       icon: 'fas fa-user-edit',
       active: false,
       visible: true
-    },
-    {
-      id: 'mis-clientes',
-      label: 'Mis Clientes',
-      route: '/clientes/lista',
-      icon: 'fas fa-users',
-      active: false,
-      badge: 0,
-      visible: true
     }
+    
   ]);
   
   // ================================================================
@@ -113,6 +112,7 @@ export class DetallesAliadoComponent {
     this.initializeComponent();
     this.subscribeToRouteChanges();
     this.subscribeToClickOutside();
+    
     // this.loadCurrentUser();
     // this.loadNotifications();
   }
@@ -124,6 +124,7 @@ export class DetallesAliadoComponent {
   private initializeComponent(): void {
     // Configuración inicial del componente
     this.updateActiveRoute();
+    this.auth.currentUser$.subscribe(user => this.userActivo.set(user));
     console.log('Header Navigation Component initialized');
   }
   
@@ -154,7 +155,7 @@ export class DetallesAliadoComponent {
   // ================================================================
   
   navigateToHome(): void {
-    this.router.navigate(['/vendedor/dashboard']);
+    this.router.navigate(['quienes-somos/vendor/info']);
   }
   
   navigateToRoute(route: string): void {
@@ -219,33 +220,31 @@ export class DetallesAliadoComponent {
   // ================================================================
   
   getUserInitials(): string {
-    const user = this.currentUser();
+    const user = this.userActivo;
     if (!user) return 'U';
-    
-    const nombres = user.nombre?.charAt(0) || '';
-    const apellidos = user.apellidos?.charAt(0) || '';
+
+    const nombres = this.userActivo()?.firstName?.charAt(0) || '';
+    const apellidos = this.userActivo()?.lastName?.charAt(0) || '';
     return (nombres + apellidos).toUpperCase();
   }
   
   getRolLabel(): string {
-    const rol = this.currentUser()?.rol;
-    const labels = {
-      'vendedor': 'Vendedor',
-      'supervisor': 'Supervisor',
-      'admin': 'Administrador'
+    const rol = this.userActivo()?.userType;
+    const labels: Record<string, string> = {
+      'STORE': 'Aliado',
+      'SUPERVISOR': 'Supervisor',
+      'ADMIN': 'Administrador'
     };
-    return labels[rol || 'vendedor'];
+    return labels[rol || 'STORE'] || 'Aliado';
   }
   
-  isAdmin(): boolean {
-    return this.currentUser()?.rol === 'admin';
-  }
+  
   
   async logout(): Promise<void> {
     try {
       // await this.authService.logout();
       console.log('Cerrando sesión...');
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/quienes-somos/login']);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }

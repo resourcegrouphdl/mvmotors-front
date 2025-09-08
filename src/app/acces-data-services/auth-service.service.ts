@@ -20,6 +20,7 @@ export class AuthServiceService {
 
   private currentUserSubject = new BehaviorSubject<BaseUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+  public vendorUser$: string[] = [];
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
@@ -149,7 +150,6 @@ async changePassword(newPassword: string): Promise<{ success: boolean; error?: s
         
         return Object.assign(new StoreUser(), userData);
       } else if (userData.userType === UserType.VENDOR) {
-        
         return Object.assign(new VendorUser(), userData);
       }
       

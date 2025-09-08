@@ -217,11 +217,11 @@ export class DashboardOverviewComponentComponent {
   }
   
   crearClienteRapido(): void {
-    this.router.navigate(['/clientes/nuevo-rapido']);
+    this.router.navigate(['quienes-somos/vendor/formulario-cliente']);
   }
   
   crearClienteCompleto(): void {
-    this.router.navigate(['/clientes/nuevo-completo']);
+    this.router.navigate(['quienes-somos/vendor/formulario-cliente']);
   }
   
   // ================================================================

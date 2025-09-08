@@ -294,7 +294,15 @@ export class FirebaseFotmularioService {
   // =============== UTILIDADES ===============
 
   calcularMontoCuota(precio: number, inicial: number, plazoQuincenas: number): number {
-    const montoFinanciar = precio - inicial;
+
+    const soat : number= 100; // Ejemplo fijo
+    const tarjetaPropiedad: number = 100; // Ejemplo fijo
+    const traminteDePlaca: number = 100; // Ejemplo fijo
+
+
+    const montoBruto:number = precio + soat + tarjetaPropiedad + traminteDePlaca - inicial;
+    
+    const montoFinanciar = montoBruto - inicial;
     // Aquí puedes agregar la lógica de intereses
     return montoFinanciar / plazoQuincenas;
   }
