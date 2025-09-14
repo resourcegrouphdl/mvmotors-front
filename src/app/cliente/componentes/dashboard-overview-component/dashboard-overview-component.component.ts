@@ -41,7 +41,7 @@ enum EstadoCliente {
 @Component({
   selector: 'app-dashboard-overview-component',
   standalone: true,
-  imports: [StatusBadgeComponent],
+  imports: [],
   templateUrl: './dashboard-overview-component.component.html',
   styleUrl: './dashboard-overview-component.component.css'
 })

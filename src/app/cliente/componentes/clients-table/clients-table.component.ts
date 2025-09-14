@@ -270,6 +270,10 @@ export class ClientsTableComponent implements OnInit {
     });
   }
   
+  irACalculadora(): void {
+    this.router.navigate(['quienes-somos/vendor/calculadora']);
+  }
+  
   // ================================================================
   // EVENT HANDLERS
   // ================================================================

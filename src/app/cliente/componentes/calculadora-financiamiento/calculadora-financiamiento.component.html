@@ -1,0 +1,309 @@
+<div class="max-w-6xl mx-auto p-4 font-sans bg-gray-50 min-h-screen">
+  
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Opciones de Financiamiento</h1>
+    <p class="text-gray-600 max-w-2xl mx-auto">
+      Elige la opción que mejor se adapte a tu presupuesto. Todos los cálculos incluyen SOAT y gestiones.
+    </p>
+  </div>
+
+  <!-- Información de Límites -->
+  <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-blue-800">Información Importante</h3>
+        <div class="mt-2 text-sm text-blue-700">
+          <p class="mb-2">• <strong>Monto máximo a financiar:</strong> S/ 6,000</p>
+          <p>• <strong>Inicial mínima:</strong> 25% del precio de la motocicleta o el monto necesario para cumplir el límite de financiamiento</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100" *ngIf="!showResults()">
+    <div class="flex items-center mb-6">
+      <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 002 2z"></path>
+        </svg>
+      </div>
+      <h2 class="text-xl font-semibold text-gray-800">Configura tu Financiamiento</h2>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700" for="precioMoto">
+          Precio de la Motocicleta
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium text-sm">S/</span>
+          <input 
+            type="number" 
+            id="precioMoto" 
+            class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-xl text-base font-medium transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white hover:border-gray-400" 
+            [(ngModel)]="precioMoto"
+            [min]="1000" 
+            step="100"
+            (input)="actualizarInicialMinima()">
+        </div>
+        <p class="text-xs text-gray-500">Precio de venta del modelo elegido</p>
+      </div>
+      
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700" for="adicionalFijo">
+          Gastos Administrativos
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium text-sm">S/</span>
+          <input 
+            type="number" 
+            id="adicionalFijo" 
+            class="w-full pl-8 pr-3 py-3 border border-gray-200 rounded-xl text-base font-medium bg-gray-50 text-gray-600" 
+            [value]="CONFIG.ADICIONAL_FIJO" 
+            readonly>
+        </div>
+        <p class="text-xs text-gray-500">SOAT, trámites y seguros incluidos</p>
+      </div>
+      
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700" for="inicialPersonalizada">
+          Inicial Adicional <span class="text-gray-400">(Opcional)</span>
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium text-sm">S/</span>
+          <input 
+            type="number" 
+            id="inicialPersonalizada" 
+            class="w-full pl-8 pr-3 py-3 border border-gray-300 rounded-xl text-base font-medium transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white hover:border-gray-400" 
+            [(ngModel)]="inicialPersonalizada"
+            [min]="inicialMinimaCalculada()" 
+            step="50" 
+            [placeholder]="inicialMinimaCalculada().toFixed(2)">
+        </div>
+        <p class="text-xs font-medium" [style.color]="getHelpColor()">
+          {{ getHelpText() }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Advertencia de Límite de Financiamiento -->
+    <div *ngIf="(precioMoto() + CONFIG.ADICIONAL_FIJO - inicialMinimaCalculada()) >= CONFIG.MONTO_MAXIMO_FINANCIAR" 
+         class="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-yellow-800">Límite de Financiamiento Alcanzado</h3>
+          <div class="mt-2 text-sm text-yellow-700">
+            <p>El monto máximo a financiar es de <strong>S/ 6,000</strong>. La inicial se ha ajustado automáticamente para cumplir con este límite.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button 
+      class="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3.5 px-6 rounded-xl text-base font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2 shadow-md"
+      (click)="calcular()"
+      [disabled]="isCalculating()">
+      <svg *ngIf="!isCalculating()" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+      </svg>
+      <span *ngIf="!isCalculating()">Calcular Opciones</span>
+      <div *ngIf="isCalculating()" class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+    </button>
+  </div>
+
+  <!-- Results Section -->
+  <div *ngIf="showResults()" class="animate-fade-in">
+    
+    <!-- Advertencia de Cálculos de Referencia -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <svg class="w-5 h-5 text-amber-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-amber-800">Cálculos de Referencia</h3>
+          <div class="mt-2 text-sm text-amber-700">
+            <p>Los valores mostrados son <strong>cálculos referenciales</strong>. La inicial y las cuotas finales están sujetas a evaluación y aprobación del asesor financiero de <strong>Motoya Digital</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ajuste por Límite -->
+    <div *ngIf="datosCalculados()?.montoAjustadoPorTope" 
+         class="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+      <div class="flex items-start">
+        <div class="flex-shrink-0">
+          <svg class="w-5 h-5 text-orange-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-orange-800">Financiamiento Ajustado</h3>
+          <div class="mt-2 text-sm text-orange-700">
+            <p>El monto a financiar se ha limitado a <strong>S/ 6,000</strong> (máximo permitido). Tu inicial se ajustó automáticamente para cumplir esta condición.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Summary Card -->
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 mb-8 border border-blue-100 shadow-sm">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800">Resumen de tu Financiamiento</h3>
+      </div>
+      
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="text-center p-3 bg-white rounded-lg shadow-sm border border-blue-100">
+          <p class="text-sm text-gray-600 font-medium mb-1">Precio Total</p>
+          <p class="text-lg font-bold text-gray-800">{{ datosCalculados()?.precioTotal | currency:'PEN':'symbol':'1.2-2' }}</p>
+        </div>
+        <div class="text-center p-3 bg-white rounded-lg shadow-sm border border-blue-100">
+          <p class="text-sm text-gray-600 font-medium mb-1">Tu Inicial</p>
+          <p class="text-lg font-bold text-blue-600">{{ datosCalculados()?.inicialFinal | currency:'PEN':'symbol':'1.2-2' }}</p>
+        </div>
+        <div class="text-center p-3 bg-white rounded-lg shadow-sm border border-blue-100">
+          <p class="text-sm text-gray-600 font-medium mb-1">A Financiar</p>
+          <p class="text-lg font-bold text-gray-800">{{ datosCalculados()?.montoFinanciar | currency:'PEN':'symbol':'1.2-2' }}</p>
+        </div>
+        <div class="text-center p-3 bg-white rounded-lg shadow-sm border border-blue-100">
+          <p class="text-sm text-gray-600 font-medium mb-1">Inicial Mínima</p>
+          <p class="text-lg font-bold text-gray-600">{{ datosCalculados()?.inicialMinima | currency:'PEN':'symbol':'1.2-2' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Options Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+      <div 
+        *ngFor="let opcion of opciones(); trackBy: trackByPlazo"
+        class="relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-gray-100 overflow-hidden group"
+        [class.ring-2]="opcionSeleccionada() === opcion.plazo"
+        [class.ring-blue-500]="opcionSeleccionada() === opcion.plazo"
+        [class.shadow-xl]="opcionSeleccionada() === opcion.plazo"
+        (click)="seleccionarOpcion(opcion.plazo)">
+        
+        <!-- Popular Badge -->
+        <div *ngIf="opcion.popularidad === 'popular'" 
+             class="absolute top-4 right-4 bg-gradient-to-r from-orange-400 to-red-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md z-10">
+          ⭐ MÁS POPULAR
+        </div>
+        
+        <div *ngIf="opcion.popularidad === 'rapido'" 
+             class="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-emerald-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md z-10">
+          ⚡ MÁS RÁPIDO
+        </div>
+        
+        <div *ngIf="opcion.popularidad === 'economico'" 
+             class="absolute top-4 right-4 bg-gradient-to-r from-blue-400 to-indigo-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md z-10">
+          💰 MÁS ECONÓMICO
+        </div>
+
+        <!-- Selected Indicator -->
+        <div *ngIf="opcionSeleccionada() === opcion.plazo" 
+             class="absolute top-4 left-4 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-md z-10">
+          ✓
+        </div>
+        
+        <!-- Card Header -->
+        <div class="p-6 pb-4">
+          <div class="text-center mb-6">
+            <div class="text-5xl font-black text-gray-800 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+              {{ opcion.quincenas }}
+            </div>
+            <div class="text-sm font-bold text-gray-500 uppercase tracking-wider">
+              Quincenas ({{ opcion.plazo }} meses)
+            </div>
+          </div>
+          
+          <!-- Main Price -->
+          <div class="text-center mb-6 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-100 group-hover:from-blue-50 group-hover:to-indigo-50 transition-all duration-200">
+            <div class="text-3xl font-black text-blue-600 mb-1">
+              {{ opcion.cuotaQuincenal | currency:'PEN':'symbol':'1.2-2' }}
+            </div>
+            <div class="text-sm font-semibold text-gray-600">
+              Cada 15 días
+            </div>
+          </div>
+        </div>
+        
+        <!-- Card Body -->
+        <div class="px-6 pb-6">
+          <!-- Details Grid -->
+          <div class="space-y-3 mb-6">
+            <div class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
+              <span class="text-sm font-medium text-gray-600">Cuota Mensual</span>
+              <span class="font-bold text-gray-800">{{ opcion.cuotaMensual | currency:'PEN':'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
+              <span class="text-sm font-medium text-gray-600">TEA</span>
+              <span class="font-bold text-gray-800">{{ opcion.tea.toFixed(1) }}%</span>
+            </div>
+            <div class="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
+              <span class="text-sm font-medium text-gray-600">Total a Pagar</span>
+              <span class="font-bold text-gray-800">{{ opcion.montoTotalPagar | currency:'PEN':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+          
+          <!-- Select Button -->
+          <button 
+            class="w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 text-sm"
+            [class.bg-blue-500]="opcionSeleccionada() === opcion.plazo"
+            [class.text-white]="opcionSeleccionada() === opcion.plazo"
+            [class.shadow-md]="opcionSeleccionada() === opcion.plazo"
+            [class.bg-gray-100]="opcionSeleccionada() !== opcion.plazo"
+            [class.text-gray-700]="opcionSeleccionada() !== opcion.plazo"
+            [class.hover:bg-gray-200]="opcionSeleccionada() !== opcion.plazo"
+            (click)="seleccionarOpcion(opcion.plazo); $event.stopPropagation()">
+            <span *ngIf="opcionSeleccionada() === opcion.plazo">✓ Seleccionado</span>
+            <span *ngIf="opcionSeleccionada() !== opcion.plazo">Seleccionar Plan</span>
+          </button>
+        </div>
+
+        
+
+
+
+      </div>
+
+      
+    </div>
+    <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button 
+            class="bg-white text-gray-700 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 py-3 px-8 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5 shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+            (click)="nuevoCalculo()">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0H15"></path>
+            </svg>
+            Calcular Nuevamente
+          </button>
+          
+          <button 
+            *ngIf="opcionSeleccionada()" (click)="irAformulario()"
+            class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 px-8 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Solicitar Financiamiento
+          </button>
+        </div>

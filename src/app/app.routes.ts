@@ -20,6 +20,7 @@ import { ChangePasswordComponent } from './institucional/change-password/change-
 import { DashboardOverviewComponentComponent } from './cliente/componentes/dashboard-overview-component/dashboard-overview-component.component';
 import { DashboardCreditosComponent } from './cliente/componentes/dashboard-creditos/dashboard-creditos.component';
 import { SolicitudFinanciamientoComponent } from './cliente/componentes/solicitud-financiamiento/solicitud-financiamiento.component';
+import { CalculadoraFinanciamientoComponent } from './cliente/componentes/calculadora-financiamiento/calculadora-financiamiento.component';
 
 
 export const routes: Routes = [
@@ -82,6 +83,10 @@ export const routes: Routes = [
             path: 'formulario-cliente',
             component: SolicitudFinanciamientoComponent,
           },
+          {
+            path: 'calculadora',
+            component: CalculadoraFinanciamientoComponent,
+          }
         ]
 
       }

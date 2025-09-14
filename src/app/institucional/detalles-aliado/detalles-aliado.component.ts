@@ -85,8 +85,17 @@ export class DetallesAliadoComponent {
       visible: true
     },
     {
+      id: 'calculadora',
+      label: 'Calculadora',
+      route: 'quienes-somos/vendor/calculadora',
+      icon: 'fas fa-calculator',
+      active: false,
+      visible: true
+    
+    },
+    {
       id: 'cliente-rapido',
-      label: 'Cliente Rápido',
+      label: 'Consulta Rápida',
       route: 'quienes-somos/vendor/formulario-cliente',
       icon: 'fas fa-user-plus',
       active: false,
@@ -95,7 +104,7 @@ export class DetallesAliadoComponent {
     },
     {
       id: 'cliente-completo',
-      label: 'Cliente Completo',
+      label: 'Formulario',
       route: 'quienes-somos/vendor/formulario-cliente',
       icon: 'fas fa-user-edit',
       active: false,
