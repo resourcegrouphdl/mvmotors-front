@@ -9,6 +9,7 @@ interface OpcionFinanciamiento {
   tasa: number;
   interesTotal: number;
   montoTotalPagar: number;
+  sumaTotal: number;
   cuotaQuincenal: number;
   cuotaMensual: number;
   tea: number;
@@ -24,6 +25,7 @@ interface DatosCalculados {
   inicialFinal: number;
   montoFinanciar: number;
   montoAjustadoPorTope: boolean;
+  sumaTotal: number;
 }
 
 @Component({
@@ -60,6 +62,7 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
   opcionSeleccionada = signal<number | null>(null);
   datosCalculados = signal<DatosCalculados | null>(null);
   opciones = signal<OpcionFinanciamiento[]>([]);
+  sumaTotal = signal<number>(0);
 
   inicialMinimaCalculada = computed(() => {
     const precioTotal = this.precioMoto() + this.CONFIG.ADICIONAL_FIJO;
@@ -142,7 +145,8 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
         inicialMinima,
         inicialFinal: precioTotal - montoFinanciar, // Recalcular inicial final si se ajustó
         montoFinanciar,
-        montoAjustadoPorTope
+        montoAjustadoPorTope,
+        sumaTotal: montoFinanciar + inicialFinal
       };
 
       this.datosCalculados.set(datosCalc);
@@ -151,6 +155,7 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
         const tasa = this.CONFIG.TASAS_INTERES[plazo];
         const interesTotal = montoFinanciar * tasa;
         const montoTotalPagar = montoFinanciar + interesTotal;
+        const sumaTotal = montoTotalPagar + datosCalc.inicialFinal;
         const cuotaQuincenal = montoTotalPagar / plazo;
         const cuotaMensual = cuotaQuincenal * 2;
         
@@ -166,7 +171,7 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
           quincenas: plazo,
           tasa: tasa * 100,
           interesTotal,
-          montoTotalPagar,
+          montoTotalPagar,sumaTotal,
           cuotaQuincenal,
           cuotaMensual,
           tea,
