@@ -122,6 +122,10 @@ export const routes: Routes = [
         path: 'formulario',
         component: FormularioComponent,
       },
+      {
+        path: 'calculator',
+        component: CalculadoraFinanciamientoComponent,
+      }
     ],
   },
   {

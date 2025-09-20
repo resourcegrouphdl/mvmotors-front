@@ -1,3 +1,13 @@
+<div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+              <button
+                type="button"
+                (click)="irACalculadora()"
+                class="flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg">
+                <i class="fas fa-user-plus mr-2"></i>
+                <span>Calculadora</span>
+              </button>
+</div>
+
 <section class="section-custom">
   <div class="div-custom">
     <form [formGroup]="formularioCliente" (submit)="onSubmit()">

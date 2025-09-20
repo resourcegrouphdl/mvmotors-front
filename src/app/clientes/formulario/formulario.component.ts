@@ -16,6 +16,7 @@ import { IModelos, IMotos, MOTOS } from '../data-acces/motos';
 import { toast } from 'ngx-sonner';
 import 'flowbite';
 import { StorageService } from '../service/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formulario',
@@ -34,7 +35,7 @@ export class FormularioComponent implements OnInit {
   currentSection: number = 1;
   isModalOpen : boolean = false;
   archivosSeleccionados: File[] = [];
-  
+  router = inject(Router);
 
   documentTypes = [
     { value: 'dni', label: 'Doc Nac Identidad' },
@@ -293,6 +294,10 @@ export class FormularioComponent implements OnInit {
       });
   }
 
+
+  irACalculadora(){
+    this.router.navigate(['cliente/calculator']);
+  }
 
   async nextSection() {
     try{

@@ -40,7 +40,7 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
 
   readonly CONFIG = {
     ADICIONAL_FIJO: 890,
-    INICIAL_MINIMA_PORCENTAJE: 0.25,
+    INICIAL_MINIMA_PORCENTAJE: 0.20,
     MONTO_MAXIMO_FINANCIAR: 6000, // Nuevo límite máximo
     TASAS_INTERES: {
       16: 0.2626,
