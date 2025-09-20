@@ -66,7 +66,8 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
 
   inicialMinimaCalculada = computed(() => {
     const precioTotal = this.precioMoto() + this.CONFIG.ADICIONAL_FIJO;
-    const inicialMinimaPorcentaje = this.precioMoto() * this.CONFIG.INICIAL_MINIMA_PORCENTAJE;
+    // CORRECCIÓN: La inicial mínima debe ser el 20% del precio total (moto + gastos administrativos)
+    const inicialMinimaPorcentaje = precioTotal * this.CONFIG.INICIAL_MINIMA_PORCENTAJE;
     
     // Verificar si el monto a financiar excede el límite
     const montoAFinanciarConMinima = precioTotal - inicialMinimaPorcentaje;
@@ -171,7 +172,8 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
           quincenas: plazo,
           tasa: tasa * 100,
           interesTotal,
-          montoTotalPagar,sumaTotal,
+          montoTotalPagar,
+          sumaTotal,
           cuotaQuincenal,
           cuotaMensual,
           tea,
@@ -205,8 +207,6 @@ export class CalculadoraFinanciamientoComponent implements OnInit {
   }
 
   irAformulario(){
-
     this.router.navigate(['quienes-somos/vendor/formulario-cliente']);
   }
-  
 }
